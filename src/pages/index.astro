@@ -1,0 +1,375 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { getCollection } from 'astro:content';
+
+const title = 'Woo Kin Wai — software builder & technical partner';
+const description =
+  'I work with founders and SMEs to shape and build the software their business needs next — from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
+
+// Selected work — CMS-driven (section 03).
+const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+
+const statusLabel = { live: 'Live', building: 'Building', closed: 'Closed' } as const;
+// Engagement → "Model" cell. Cobalt (acc-blue) is the one sanctioned categorical
+// secondary: build engagements vs red upside participation.
+const modelMap = {
+  upside: { value: 'Upside participation', tone: 'acc' },
+  engaged: { value: 'Engaged to build', tone: 'blue' },
+} as const;
+
+const flow = [
+  {
+    n: '01',
+    label: 'The growth',
+    title: 'Where the business wants to go',
+    desc: 'New revenue, better operations, a product idea, a platform, or a market opportunity that is starting to become real.',
+  },
+  {
+    n: '02',
+    label: 'The gap',
+    title: 'The system is missing',
+    desc: 'The work is still manual, scattered, unclear, or technically fragile. The ambition exists, but the operating shape does not.',
+  },
+  {
+    n: '03',
+    label: 'The build',
+    title: 'Software that can carry it',
+    desc: 'A product, platform, portal, internal tool, workflow, or technical foundation designed around how the business actually works.',
+    build: true,
+  },
+];
+
+const scenarios = [
+  ['New product', 'A new product has to become real', 'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, architected, and built.'],
+  ['Operations', 'Operations have outgrown the workaround', 'The business runs on spreadsheets, WhatsApp, manual checks, duplicated effort, and knowledge that lives in people’s heads.'],
+  ['Platform', 'A platform needs technical direction', 'The idea is bigger than a simple website. It needs a backend, data model, workflows, integrations, and decisions that will hold up later.'],
+  ['Partnership', 'The business needs a technical partner', 'Not just someone to take tickets, but someone who can understand the business, make tradeoffs, and stay close to the outcome.'],
+];
+
+const steps = [
+  ['01', 'Listen', 'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.'],
+  ['02', 'Shape', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
+  ['03', 'Build', 'Create the smallest serious version that can be used, tested, and improved.'],
+  ['04', 'Stay close', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
+];
+
+const checklist = [
+  'Your business has outgrown spreadsheets, manual work, or disconnected tools.',
+  'You are building a new product but need help shaping the first serious version.',
+  'You see an opportunity but do not yet have a technical partner.',
+  'Your current systems no longer match how the business actually works.',
+  'You need someone who can think through the business and build the system.',
+];
+
+// shared section spacing (the masthead itself lives in <SectionHead/>)
+const secWrap = 'reveal pt-[112px] max-[760px]:pt-[84px]';
+const lead = 'mt-[26px] max-w-[660px] text-[17px] leading-[1.66] text-mut';
+
+const ndLabel = 'whitespace-nowrap border-r-2 border-rule px-4 py-[13px] font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] text-soft';
+const ndText = 'px-4 py-[13px] text-[15px] leading-[1.4] text-ink';
+const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] text-soft';
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <header class="pt-[84px]">
+    <div class="rise d1 flex flex-wrap gap-[10px] font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acc">
+      <span>Software builder · Technical partner</span><span class="text-soft">Founder, Tiny Edges · Kuala Lumpur</span>
+    </div>
+    <h1
+      class="rise d2 mt-6 max-w-[1000px] text-balance font-sans text-[clamp(40px,7vw,82px)] font-extrabold uppercase leading-[0.98] tracking-[-0.04em] text-ink"
+    >
+      I work with businesses that know where they want to grow next, but do not yet have the
+      <span class="text-acc">system to carry them there</span>.
+    </h1>
+    <p class="rise d3 mt-[26px] max-w-[580px] text-[17px] leading-[1.6] text-mut">
+      Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
+      Sometimes it means helping a founder shape the technical path before the first serious build.
+    </p>
+    <a
+      href="#work"
+      class="rise d3 mt-7 inline-flex items-center gap-2 pb-[3px] font-mono text-[11.5px] font-bold uppercase tracking-[0.12em] text-ink no-underline shadow-[inset_0_-2px_0_var(--color-acc)] transition-all hover:gap-3"
+      >See selected work ↓</a
+    >
+
+    <!-- growth → gap → build flow -->
+    <div class="rise d4 mt-14 flex items-stretch max-[760px]:flex-col max-[760px]:gap-3">
+      {
+        flow.map((f, i) => (
+          <>
+            <div
+              class:list={[
+                'relative flex-1 overflow-hidden rounded-[2px] border-2 px-[22px] pb-6 pt-[22px] transition-all',
+                f.build
+                  ? 'border-acc bg-acc text-on-accent'
+                  : 'border-rule bg-transparent hover:-translate-y-0.5 hover:bg-panel hover:shadow-sm',
+              ]}
+            >
+              <div class="flex items-baseline justify-between">
+                <div class:list={['font-mono text-[10px] font-bold uppercase tracking-[0.18em]', f.build ? 'text-on-accent' : 'text-acc']}>{f.label}</div>
+                <div class:list={['font-mono text-[11px] font-bold', f.build ? 'text-on-accent' : 'text-soft']}>{f.n}</div>
+              </div>
+              <div class:list={['mb-2.5 mt-3 font-sans text-[19px] font-extrabold leading-[1.1] tracking-[-0.02em]', f.build ? 'text-on-accent' : 'text-ink']}>{f.title}</div>
+              <div class:list={['text-[13.5px] leading-[1.55]', f.build ? 'text-on-accent/90' : 'text-mut']}>{f.desc}</div>
+            </div>
+            {i < flow.length - 1 && (
+              <div class="relative flex flex-[0_0_64px] items-center self-center px-[5px] max-[760px]:hidden">
+                <span class="absolute left-px top-1/2 z-[2] -mt-[3px] h-1.5 w-1.5 bg-acc" />
+                <div class="h-[2px] w-full bg-line" />
+                <svg width="11" height="11" viewBox="0 0 11 11" class="absolute -right-px text-acc" aria-hidden="true">
+                  <path d="M1.5 5.5h6M5.5 2.5l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+            )}
+          </>
+        ))
+      }
+    </div>
+  </header>
+
+  <!-- 01 — The pattern -->
+  <section class={secWrap}>
+    <SectionHead
+      index="01 / The pattern"
+      title="What this usually looks like"
+      sub="Growth exposes the systems a business does not have yet."
+    />
+    <p class={lead}>
+      The work often starts before the code. The first question is not which stack to use. It is what kind of system the
+      business needs in order to move.
+    </p>
+    <div class="mt-[34px] grid grid-cols-2 overflow-hidden rounded-[2px] border-2 border-rule max-[760px]:grid-cols-1">
+      {
+        scenarios.map(([cat, h, p], i) => (
+          <div class:list={[i % 2 === 1 && 'border-l-2 border-rule max-[760px]:border-l-0', i >= 2 && 'border-t-2 border-rule', 'max-[760px]:border-t-2 max-[760px]:[&:first-child]:border-t-0']}>
+            <div class="group h-full bg-transparent p-[28px_26px] text-ink transition-colors hover:bg-ink hover:text-on-ink">
+              <div class="mb-3 flex items-center gap-[9px]">
+                <span class="h-[7px] w-[7px] flex-none bg-acc" />
+                <span class="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-mut transition-colors group-hover:text-on-ink">{cat}</span>
+              </div>
+              <h3 class="mb-2.5 font-sans text-[20px] font-extrabold leading-[1.08] tracking-[-0.02em]">{h}</h3>
+              <p class="m-0 text-[14px] leading-[1.58] text-mut transition-colors group-hover:text-on-ink">{p}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 02 — About -->
+  <section class={secWrap} id="about">
+    <SectionHead index="02 / About" title="The short version" />
+    <div class="mt-[38px] grid grid-cols-[1fr_230px] items-start gap-[56px] max-[760px]:grid-cols-1 max-[760px]:gap-[30px]">
+      <div class="text-[17px] leading-[1.7] text-ink">
+        <p class="mb-4">I started as an engineer, then spent a decade as the person responsible for turning ideas into working systems.</p>
+        <p class="mb-4">
+          Over time, I moved from writing code to leading technical work, helping scale a company from a small team of
+          around <b class="font-bold">10 people to about 100</b>. That experience shaped how I see software.
+        </p>
+        <p class="mb-4">
+          Good software is not just clean code. It is a system that fits the business, the people, the timing, the
+          constraints, and the next stage of growth.
+        </p>
+        <p class="mb-4">
+          Today I run <b class="font-bold">Tiny Edges</b>. I work with founders and SMEs to shape and build the
+          software their business needs next.
+        </p>
+        <p class="mb-4">
+          Sometimes it is a straightforward build. Sometimes, when the opportunity is strong and the fit is right, I work
+          closer to the outcome through a <b class="font-bold text-acc">stake, revenue share, or longer-term partnership</b>.
+        </p>
+        <blockquote
+          class="my-[30px] border-l-4 border-acc pl-[22px] font-sans text-[clamp(24px,3.2vw,34px)] font-extrabold uppercase leading-[1.08] tracking-[-0.03em] text-ink"
+        >
+          What system does this business need in order to grow?
+        </blockquote>
+        <div class="mt-[26px] flex items-center gap-[14px]">
+          <div class="grid h-12 w-12 flex-none place-items-center rounded-[2px] border-2 border-rule bg-panel font-mono text-[13px] font-bold text-ink">
+            WKW
+          </div>
+          <div class="font-sans text-[18px] font-extrabold uppercase tracking-[-0.02em] text-ink">
+            Kin Wai<small class="mt-1 block font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-soft">Kuala Lumpur</small>
+          </div>
+        </div>
+      </div>
+      <aside class="sticky top-[92px] max-[760px]:static max-[760px]:order-[-1] max-[760px]:max-w-[230px]">
+        <div
+          class="flex aspect-[4/5] items-end justify-center overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card"
+          style="background-image:repeating-linear-gradient(45deg, transparent, transparent 9px, var(--color-line-2) 9px, var(--color-line-2) 10px);"
+        >
+          <svg class="w-[76%] opacity-50" viewBox="0 0 100 125" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path
+              style="fill:var(--color-soft);"
+              d="M50 30c9 0 16 7 16 17 0 7-3 13-8 16 12 3 21 12 24 24 1 4-2 8-6 8H24c-4 0-7-4-6-8 3-12 12-21 24-24-5-3-8-9-8-16 0-10 7-17 16-17z"
+            ></path>
+          </svg>
+        </div>
+        <div class="mt-3 text-center font-mono text-[9.5px] font-bold uppercase tracking-[0.14em] text-soft">[ your portrait here ]</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 03 — Selected work -->
+  <section class={secWrap} id="work">
+    <SectionHead index="03 / Selected work" title="Selected work" sub="As of May 2026" />
+    <p class={lead}>
+      A few examples of growth needs turned into working systems, from founder-led products to platforms and internal
+      tools.
+    </p>
+
+    <div class="mt-[30px] border-t-2 border-rule">
+      {work.length === 0 && (
+        <p class="border-b-2 border-rule py-5 font-mono text-[12px] uppercase tracking-[0.12em] text-soft">
+          Selected work will appear here.
+        </p>
+      )}
+      {
+        work.map((entry, i) => {
+          const w = entry.data;
+          const model = w.engagement ? modelMap[w.engagement] : null;
+          return (
+            <div class="flow border-b-2 border-rule">
+              <div class="flow-main group grid cursor-pointer grid-cols-[auto_1fr_auto] items-center gap-[18px] py-5 transition-colors hover:bg-panel max-[760px]:grid-cols-[auto_1fr]">
+                <div class="w-7 font-mono text-[13px] font-bold text-acc">{String(i + 1).padStart(2, '0')}</div>
+                <div>
+                  <div class="flex items-center gap-3 font-sans text-[23px] font-extrabold uppercase tracking-[-0.02em] text-ink transition-colors group-hover:text-acc">
+                    {w.name}
+                    <span class="exp inline-block font-mono text-[15px] font-bold text-acc">+</span>
+                  </div>
+                  <div class="mt-1 text-[14px] text-mut">{w.tease}</div>
+                </div>
+                <div class:list={['flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] font-bold uppercase tracking-[0.16em] max-[760px]:col-span-2 max-[760px]:pl-[34px]', `text-${w.status}`]}>
+                  <span class:list={['smark', w.status]} />
+                  {statusLabel[w.status]}
+                </div>
+              </div>
+              <div class="detail">
+                <div class="pb-9 pt-1.5">
+                  {w.shot && (
+                    <div class="mb-6 aspect-[16/9] max-w-[660px] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
+                      <div class="flex h-[30px] items-center gap-1.5 border-b-2 border-rule bg-bg px-3">
+                        <i class="block h-2 w-2 bg-rule" />
+                        <i class="block h-2 w-2 bg-rule" />
+                        <i class="block h-2 w-2 bg-rule" />
+                        <span class="ml-[9px] font-mono text-[9.5px] font-medium text-soft">{w.shot.url}</span>
+                      </div>
+                      <div
+                        class="grid h-[calc(100%-30px)] place-items-center"
+                        style="background:repeating-linear-gradient(45deg, transparent, transparent 11px, var(--color-line-2) 11px, var(--color-line-2) 12px);"
+                      >
+                        <span class="border-2 border-rule bg-panel px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-soft">
+                          {w.name} screenshot
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  <div class="mb-6 grid max-w-[660px] grid-cols-[auto_1fr] overflow-hidden rounded-[2px] border-2 border-rule">
+                    {w.nd.map((n, j) => (
+                      <>
+                        <span class:list={[ndLabel, j > 0 && 'border-t border-line']}>{n.label}</span>
+                        <span class:list={[ndText, j > 0 && 'border-t border-line']}>{n.text}</span>
+                      </>
+                    ))}
+                  </div>
+                  {(w.role || model) && (
+                    <div class="mb-5 flex w-fit flex-wrap overflow-hidden rounded-[2px] border-2 border-rule">
+                      {w.role && (
+                        <div class="flex flex-col gap-1 px-[18px] py-3">
+                          <span class={metaLabel}>Role</span>
+                          <span class="font-mono text-[13px] font-medium text-ink">{w.role}</span>
+                        </div>
+                      )}
+                      {model && (
+                        <div class="flex flex-col gap-1 border-l-2 border-rule px-[18px] py-3">
+                          <span class={metaLabel}>Model</span>
+                          <span class:list={['inline-flex items-center gap-[7px] font-mono text-[13px] font-medium', model.tone === 'acc' ? 'text-acc' : 'text-acc-blue']}>
+                            <span class:list={['h-1.5 w-1.5 flex-none', model.tone === 'acc' ? 'bg-acc' : 'bg-acc-blue']} />
+                            {model.value}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {w.bodyHtml && (
+                    <p class="mb-[18px] max-w-[660px] text-[16px] leading-[1.66] text-mut [&_b]:font-bold [&_b]:text-ink" set:html={w.bodyHtml} />
+                  )}
+                  {w.stack.length > 0 && (
+                    <div class="flex flex-wrap gap-2">
+                      {w.stack.map((s) => (
+                        <span class="border-2 border-rule px-[10px] py-[5px] font-mono text-[10.5px] uppercase leading-none tracking-[0.08em] text-mut">{s}</span>
+                      ))}
+                    </div>
+                  )}
+                  {w.visit && (
+                    <a
+                      href={w.visit.href}
+                      target="_blank"
+                      rel="noopener"
+                      class="mt-5 inline-flex items-center rounded-[2px] border-2 border-acc px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-acc no-underline transition-all hover:-translate-x-px hover:-translate-y-px hover:bg-acc hover:text-on-accent hover:shadow-acc"
+                    >
+                      {w.visit.label}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <!-- 04 — Process -->
+  <section class={secWrap} id="process">
+    <SectionHead
+      index="04 / Process"
+      title="How the work happens"
+      sub="The same loop, adjusted to the business."
+    />
+    <p class={lead}>
+      The process is deliberately simple. Understand the growth problem, shape the system, build the smallest serious
+      version, and keep learning from real use.
+    </p>
+    <div class="mt-[34px] grid grid-cols-4 overflow-hidden rounded-[2px] border-2 border-rule max-[760px]:grid-cols-2 max-[430px]:grid-cols-1">
+      {
+        steps.map(([num, h, p], i) => (
+          <div class:list={[i > 0 && 'border-l-2 border-rule max-[760px]:[&:nth-child(odd)]:border-l-0 max-[430px]:border-l-0', i >= 2 && 'max-[760px]:border-t-2 max-[760px]:border-rule', 'max-[430px]:border-t-2 max-[430px]:border-rule max-[430px]:[&:first-child]:border-t-0']}>
+            <div class="group h-full bg-transparent p-[26px_22px] text-ink transition-colors hover:bg-acc hover:text-on-accent">
+              <div class="font-mono text-[22px] font-extrabold tracking-[-0.02em] text-acc transition-colors group-hover:text-on-accent">{num}</div>
+              <h3 class="mb-2.5 mt-3 font-sans text-[20px] font-extrabold uppercase tracking-[-0.02em]">{h}</h3>
+              <p class="m-0 text-[13.5px] leading-[1.55] text-mut transition-colors group-hover:text-on-accent">{p}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 05 — Contact -->
+  <section class={secWrap} id="contact">
+    <SectionHead
+      index="05 / Contact"
+      title="When it makes sense to talk"
+      sub="You have a real growth problem, and the system matters."
+    />
+    <p class={lead}>
+      I am especially interested in founder-led businesses, SMEs, and early ventures where the opportunity is practical,
+      the constraints are real, and the technical work has to connect back to the business.
+    </p>
+    <ul class="m-0 mt-8 max-w-[700px] list-none border-t-2 border-rule p-0">
+      {
+        checklist.map((c) => (
+          <li class="relative border-b border-line py-4 pl-[34px] text-[16px] leading-[1.5] text-ink transition-all before:absolute before:left-0 before:top-4 before:font-mono before:text-[14px] before:font-bold before:text-acc before:content-['→'] hover:bg-panel hover:pl-[42px] hover:text-acc hover:before:left-2">
+            {c}
+          </li>
+        ))
+      }
+    </ul>
+    <a
+      href="mailto:hello@wookinwai.com"
+      class="mt-10 inline-block rounded-[2px] border-2 border-rule px-[18px] py-2.5 font-sans text-[clamp(26px,4.4vw,46px)] font-extrabold uppercase tracking-[-0.03em] text-ink no-underline shadow-card transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-acc hover:bg-acc hover:text-on-accent hover:shadow-acc"
+      >hello@wookinwai.com</a
+    >
+  </section>
+</BaseLayout>

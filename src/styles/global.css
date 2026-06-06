@@ -1,0 +1,363 @@
+@import "tailwindcss";
+
+/* ----------------------------------------------------------------------------
+   Press Mono — design tokens.
+
+   The "press" (light) palette is the default, declared in @theme so every
+   generated utility references var(--color-*). The [data-pal="ink"] block below
+   re-declares those same custom properties, re-theming the whole site through
+   the toggle with no per-utility dark variants. Source of truth:
+   docs/claude-design-files/tokens/*.css
+---------------------------------------------------------------------------- */
+@theme {
+  /* surfaces */
+  --color-bg: #f2eee4;
+  --color-panel: #fcfaf4;
+
+  /* text */
+  --color-ink: #15130f;
+  --color-mut: #57514a;
+  --color-soft: #8c8579;
+
+  /* accent — signal red + categorical secondaries */
+  --color-acc: #c1331f;
+  --color-acc-2: #9c2817;
+  --color-acc-soft: #c1331f2e;
+  --color-acc-blue: #2f5fd0;
+  --color-acc-green: #2f7d4f;
+
+  /* rules & hairlines */
+  --color-rule: #15130f;
+  --color-line: #d4cdbe;
+  --color-line-2: #e3dccd;
+
+  /* status */
+  --color-live: #2f7d4f;
+  --color-build: #c1331f;
+  --color-closed: #9b958a;
+
+  /* on-fill text */
+  --color-on-accent: #f7f3ea;
+  --color-on-ink: #f2eee4;
+
+  /* families — no serif in Press Mono */
+  --font-sans: "Hanken Grotesk Variable", "Hanken Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+
+  /* hard offset shadows (solid, no blur) — follow --color-rule/-acc into dark */
+  --shadow-card: 4px 4px 0 var(--color-rule);
+  --shadow-lift: 8px 8px 0 var(--color-rule);
+  --shadow-sm: 3px 3px 0 var(--color-rule);
+  --shadow-acc: 4px 4px 0 var(--color-acc);
+  --shadow-press: 0 0 0 var(--color-rule);
+
+  /* signature easing */
+  --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* "ink" (dark) palette — overrides the generated CSS variables in place. */
+html[data-pal="ink"] {
+  --color-bg: #16140f;
+  --color-panel: #211e16;
+  --color-ink: #f0ece1;
+  --color-mut: #a39c8d;
+  --color-soft: #7c7568;
+  --color-acc: #e8533c;
+  --color-acc-2: #c1331f;
+  --color-acc-soft: #e8533c33;
+  --color-acc-blue: #6695f0;
+  --color-acc-green: #4fa86a;
+  --color-rule: #f0ece1;
+  --color-line: #322e24;
+  --color-line-2: #28241b;
+  --color-live: #4fa86a;
+  --color-build: #e8533c;
+  --color-closed: #6f6859;
+  --color-on-accent: #16140f;
+  --color-on-ink: #16140f;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    transition:
+      background 0.25s var(--ease-smooth),
+      color 0.25s var(--ease-smooth);
+  }
+  ::selection {
+    background: var(--color-acc);
+    color: var(--color-on-accent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-acc);
+    outline-offset: 2px;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Irreducible effects — Press Mono Hard. Pseudo-elements, the newsprint grid +
+   grain, the accordion, the section-rule draw, and entrance motion. Everything
+   else (square corners, hard rules, hover fills) lives in the markup as Tailwind
+   utilities.
+---------------------------------------------------------------------------- */
+
+/* newsprint grain — multiply on light, screen on dark */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html[data-pal="ink"] body::before {
+  mix-blend-mode: screen;
+  opacity: 0.05;
+}
+
+/* hard newsprint grid backdrop — crisp 1px lines, 40px cell, fades by the fold */
+.grid-bg {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 620px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(180deg, #000 0%, #000 30%, transparent 100%);
+}
+
+/* section baseline rule draws in on reveal (3px ink, scaleX) */
+.sec-rule {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease-smooth) 0.05s;
+}
+.reveal.in .sec-rule {
+  transform: scaleX(1);
+}
+
+/* selected-work / flow accordion — kept identical to the old mechanism;
+   BaseLayout's script toggles `.open` on the .flow parent. */
+.flow .exp {
+  transition: transform 0.25s var(--ease-smooth);
+}
+.flow.open .exp {
+  transform: rotate(45deg);
+}
+.detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s var(--ease-smooth);
+}
+.flow.open .detail {
+  max-height: 1600px;
+}
+
+/* square status markers — live blinks (hard step), closed is a hollow box */
+.smark {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  display: block;
+}
+.smark.live {
+  background: var(--color-live);
+  animation: smark-blink 1.4s steps(1, end) infinite;
+}
+.smark.building {
+  background: var(--color-build);
+}
+.smark.closed {
+  background: transparent;
+  border: 1.5px solid var(--color-closed);
+}
+@keyframes smark-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* entrance motion */
+.rise {
+  animation: rise 0.7s var(--ease-smooth) both;
+}
+.d1 {
+  animation-delay: 0.05s;
+}
+.d2 {
+  animation-delay: 0.14s;
+}
+.d3 {
+  animation-delay: 0.24s;
+}
+.d4 {
+  animation-delay: 0.36s;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s var(--ease-smooth),
+    transform 0.7s var(--ease-smooth);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise,
+  .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .sec-rule {
+    transform: scaleX(1) !important;
+  }
+  .smark.live {
+    animation: none !important;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Prose — Press Mono article body (blog/notes). No serif: Hanken for text,
+   JetBrains Mono for code. Square frames, hard 2px rules, red links.
+---------------------------------------------------------------------------- */
+.prose-pressmono {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--color-ink);
+  max-width: 660px;
+}
+.prose-pressmono > * + * {
+  margin-top: 1.1em;
+}
+.prose-pressmono h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.16;
+  margin-top: 1.8em;
+}
+.prose-pressmono h3 {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 1.5em;
+}
+.prose-pressmono p,
+.prose-pressmono ul,
+.prose-pressmono ol {
+  color: var(--color-mut);
+}
+.prose-pressmono a {
+  color: var(--color-acc);
+  text-decoration: none;
+  box-shadow: inset 0 -2px 0 var(--color-acc-soft);
+  transition: box-shadow 0.12s var(--ease-smooth);
+}
+.prose-pressmono a:hover {
+  box-shadow: inset 0 -2px 0 var(--color-acc);
+}
+.prose-pressmono strong,
+.prose-pressmono b {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+.prose-pressmono ul,
+.prose-pressmono ol {
+  padding-left: 0;
+  list-style: none;
+}
+.prose-pressmono li {
+  position: relative;
+  padding-left: 26px;
+}
+.prose-pressmono li + li {
+  margin-top: 0.5em;
+}
+.prose-pressmono ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 7px;
+  height: 7px;
+  background: var(--color-acc);
+}
+.prose-pressmono ol {
+  counter-reset: li;
+}
+.prose-pressmono ol li::before {
+  counter-increment: li;
+  content: counter(li, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-acc);
+}
+.prose-pressmono blockquote {
+  border-left: 3px solid var(--color-acc);
+  padding-left: 20px;
+  color: var(--color-mut);
+  font-size: 18px;
+}
+.prose-pressmono code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  padding: 0.1em 0.4em;
+}
+.prose-pressmono pre {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  background: var(--color-panel);
+  border: 2px solid var(--color-rule);
+  padding: 16px 18px;
+  overflow-x: auto;
+}
+.prose-pressmono pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+.prose-pressmono hr {
+  border: none;
+  border-top: 2px solid var(--color-rule);
+  margin: 2em 0;
+}
+.prose-pressmono img {
+  border: 2px solid var(--color-rule);
+  max-width: 100%;
+  height: auto;
+}

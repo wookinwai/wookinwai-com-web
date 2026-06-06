@@ -1,0 +1,23 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# cloudflare / wrangler
+.wrangler/
+
+# env
+.env
+.env.production
+
+# design + legacy reference (kept locally, not tracked)
+docs/
+
+# generated assets cache
+.cache/
+
+# misc
+.DS_Store
+*.log

@@ -1,0 +1,35 @@
+---
+// Press Mono section masthead — broadsheet composition:
+//   • red mono kicker (index) tight above the headline (they belong together)
+//   • heavy uppercase headline, left
+//   • the dek (sub) anchored BOTTOM-RIGHT to the baseline rule, filling the
+//     right flank as a caption rather than floating orphaned at the top
+//   • one hard 3px ink rule under the whole cluster (draws in on scroll reveal)
+export interface Props {
+  index: string;
+  title: string;
+  sub?: string;
+}
+const { index, title, sub } = Astro.props;
+---
+
+<div class="relative pb-[18px]">
+  <div class="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-10 gap-y-3 max-[760px]:grid-cols-1">
+    <div>
+      <div class="mb-[14px] font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-acc">{index}</div>
+      <h2
+        class="m-0 max-w-[18ch] font-sans text-[clamp(30px,4.4vw,52px)] font-extrabold uppercase leading-[0.98] tracking-[-0.035em] text-ink"
+      >
+        {title}
+      </h2>
+    </div>
+    {
+      sub && (
+        <p class="max-w-[260px] justify-self-end pb-[3px] text-right font-mono text-[12px] leading-[1.55] text-mut max-[760px]:mt-1 max-[760px]:max-w-none max-[760px]:justify-self-start max-[760px]:text-left">
+          {sub}
+        </p>
+      )
+    }
+  </div>
+  <div class="sec-rule absolute inset-x-0 bottom-0 h-[3px] bg-rule"></div>
+</div>

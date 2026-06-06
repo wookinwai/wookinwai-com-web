@@ -1,0 +1,14 @@
+{
+  "name": "Woo Kin Wai",
+  "short_name": "Woo Kin Wai",
+  "description": "Software builder & technical partner. Founder of Tiny Edges, Kuala Lumpur.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2eee4",
+  "theme_color": "#f2eee4",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
