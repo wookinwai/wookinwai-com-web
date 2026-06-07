@@ -1,0 +1,196 @@
+---
+// Interactive mosaic backdrop. Aligns to the same 40px cell grid as `.grid-bg`
+// and fills a scattered subset of cells with low-alpha red/coral tiles — a living
+// echo of the WKW mosaic favicon. Hybrid behaviour: a faint always-on ambient
+// shimmer plus cursor-proximity intensification. Subtle by design (low alpha cap,
+// hard squares, no blur) so it never fights the newsprint restraint.
+//
+// Theme-aware (press⇄ink), reduced-motion-safe (one static frame, no loop),
+// touch-safe (ambient runs regardless), and View-Transitions-safe (clean teardown).
+---
+
+<canvas class="mosaic-bg" aria-hidden="true"></canvas>
+
+<script>
+  const CELL = 40; // matches the .grid-bg cell size
+  const BAND = 620; // matches the .grid-bg height (top band only)
+  const AMBIENT_CAP = 0.06; // max alpha for the idle shimmer (very faint)
+  const PROX_CAP = 0.18; // max alpha added by the cursor
+  const ALPHA_CAP = 0.22; // hard ceiling on combined alpha (restraint)
+  const RADIUS = CELL * 3.4; // cursor influence reach
+  const SHIMMER_SPEED = 0.55; // ambient breathing rate
+
+  let canvas: HTMLCanvasElement | null = null;
+  let ctx: CanvasRenderingContext2D | null = null;
+  let raf = 0;
+  let resizeTimer = 0;
+  let idleTimer = 0;
+  let cols = 0;
+  let rows = 0;
+  let dpr = 1;
+  let palette: number[][] = [];
+  let mo: MutationObserver | null = null;
+
+  // pointer state (CSS px within the band) + eased influence
+  let px = -9999,
+    py = -9999;
+  let mx = -9999,
+    my = -9999;
+  let influence = 0,
+    influenceTarget = 0;
+
+  // ---- helpers -------------------------------------------------------------
+  // stable per-cell pseudo-random in [0,1) — keeps each tile's shade & phase fixed
+  function hash(x: number, y: number) {
+    let h = (x * 374761393 + y * 668265263) | 0;
+    h = (h ^ (h >>> 13)) * 1274126177;
+    h = h ^ (h >>> 16);
+    return (h >>> 0) / 4294967295;
+  }
+
+  function parseColor(v: string): [number, number, number] {
+    v = v.trim();
+    if (v.startsWith('#')) {
+      const n = parseInt(v.slice(1), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+    const m = v.match(/\d+/g);
+    return m ? [+m[0], +m[1], +m[2]] : [193, 51, 31];
+  }
+
+  const lighten = (c: number[], t: number): number[] =>
+    c.map((v) => Math.round(v + (255 - v) * t));
+
+  function readPalette() {
+    const cs = getComputedStyle(document.documentElement);
+    const acc = parseColor(cs.getPropertyValue('--color-acc'));
+    const acc2 = parseColor(cs.getPropertyValue('--color-acc-2'));
+    // four warm shades, mosaic-like: signal red, deep red, coral, warm orange
+    palette = [acc, acc2, lighten(acc, 0.18), [acc[0], Math.min(255, acc[1] + 34), acc[2]]];
+  }
+
+  function resize() {
+    if (!canvas) return;
+    const w = window.innerWidth;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.ceil(w * dpr);
+    canvas.height = Math.ceil(BAND * dpr);
+    canvas.style.width = w + 'px';
+    canvas.style.height = BAND + 'px';
+    ctx = canvas.getContext('2d');
+    ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cols = Math.ceil(w / CELL) + 1;
+    rows = Math.ceil(BAND / CELL) + 1;
+  }
+
+  function draw(t: number) {
+    if (!ctx) return;
+    const w = canvas!.clientWidth;
+    ctx.clearRect(0, 0, w, BAND);
+
+    for (let cy = 0; cy < rows; cy++) {
+      for (let cx = 0; cx < cols; cx++) {
+        const r = hash(cx, cy);
+        const participates = r < 0.42; // ~42% scattered ambient tiles
+        const phase = hash(cx + 7, cy + 3) * Math.PI * 2;
+        const shade = palette[(hash(cx + 1, cy + 11) * palette.length) | 0] || palette[0];
+
+        // ambient breathing (only participating cells)
+        let alpha = participates
+          ? AMBIENT_CAP * (0.45 + 0.55 * Math.sin(t * SHIMMER_SPEED + phase))
+          : 0;
+
+        // cursor proximity (all cells, lightly textured per-cell)
+        if (influence > 0.001) {
+          const dx = cx * CELL + CELL / 2 - mx;
+          const dy = cy * CELL + CELL / 2 - my;
+          const d = Math.hypot(dx, dy);
+          if (d < RADIUS) {
+            const f = 1 - d / RADIUS; // 0..1
+            const texture = 0.55 + 0.45 * hash(cx + 5, cy + 9);
+            alpha += PROX_CAP * f * f * texture * influence;
+          }
+        }
+
+        if (alpha < 0.004) continue;
+        if (alpha > ALPHA_CAP) alpha = ALPHA_CAP;
+
+        // subtle "pop": square grows from inset toward full cell as alpha rises
+        const k = Math.min(alpha / ALPHA_CAP, 1);
+        const inset = 6 - 5 * k;
+        ctx.fillStyle = `rgba(${shade[0]},${shade[1]},${shade[2]},${alpha})`;
+        ctx.fillRect(cx * CELL + inset, cy * CELL + inset, CELL - inset * 2, CELL - inset * 2);
+      }
+    }
+  }
+
+  function loop(now: number) {
+    const paused = document.hidden || window.scrollY > BAND;
+    if (!paused) {
+      // ease pointer + influence
+      mx += (px - mx) * 0.18;
+      my += (py - my) * 0.18;
+      influence += (influenceTarget - influence) * 0.08;
+      draw(now / 1000);
+    }
+    raf = requestAnimationFrame(loop);
+  }
+
+  // ---- lifecycle -----------------------------------------------------------
+  function onMove(e: PointerEvent) {
+    px = e.clientX;
+    py = e.clientY;
+    influenceTarget = 1;
+    clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(() => (influenceTarget = 0), 600);
+  }
+  const onLeave = () => (influenceTarget = 0);
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(resize, 150);
+  }
+
+  function teardown() {
+    cancelAnimationFrame(raf);
+    raf = 0;
+    clearTimeout(resizeTimer);
+    clearTimeout(idleTimer);
+    window.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerleave', onLeave);
+    window.removeEventListener('resize', onResize);
+    mo?.disconnect();
+    mo = null;
+    ctx = null;
+    canvas = null;
+  }
+
+  function init() {
+    teardown();
+    canvas = document.querySelector<HTMLCanvasElement>('.mosaic-bg');
+    if (!canvas) return;
+    readPalette();
+    resize();
+
+    // reduced-motion / no-JS-motion: paint one static frame, no loop, no cursor
+    const reduced =
+      !document.documentElement.classList.contains('motion') ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      draw(0);
+      return;
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true });
+    document.addEventListener('pointerleave', onLeave);
+    window.addEventListener('resize', onResize);
+
+    // re-read shades when the palette toggles (press ⇄ ink)
+    mo = new MutationObserver(readPalette);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-pal'] });
+
+    raf = requestAnimationFrame(loop);
+  }
+
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', teardown);
+</script>

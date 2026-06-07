@@ -119,6 +119,18 @@ html[data-pal="ink"] body::before {
   opacity: 0.05;
 }
 
+/* interactive mosaic layer — sits in the same top band, BEHIND the hairlines.
+   Alpha restraint is handled per-tile in JS (see MosaicBackground.astro), not via
+   a blunt element opacity, so cursor-lit tiles can still read clearly. */
+.mosaic-bg {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 620px;
+  z-index: 0;
+  pointer-events: none;
+  mask-image: linear-gradient(180deg, #000 0%, #000 30%, transparent 100%);
+}
+
 /* hard newsprint grid backdrop — crisp 1px lines, 40px cell, fades by the fold */
 .grid-bg {
   position: fixed;

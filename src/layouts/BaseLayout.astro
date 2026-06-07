@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import MosaicBackground from '../components/MosaicBackground.astro';
 
 // Self-hosted fonts (Fontsource variable). Press Mono uses only Hanken Grotesk
 // (voice + display) and JetBrains Mono (structural labels) — no serif.
@@ -68,6 +69,7 @@ const { title, description, canonical, image } = Astro.props;
       >Skip to content</a
     >
 
+    <MosaicBackground />
     <div class="grid-bg"></div>
 
     <Header transition:persist />
