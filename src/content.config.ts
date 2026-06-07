@@ -60,7 +60,7 @@ const work = defineCollection({
   }),
 });
 
-/** Notes / blog — CMS-driven. */
+/** Notes — CMS-driven. */
 const notes = defineCollection({
   loader: () => loadCollection<{ slug: string } & Record<string, unknown>>('notes', '/api/notes'),
   schema: z.object({

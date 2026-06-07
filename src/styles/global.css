@@ -243,7 +243,7 @@ html[data-pal="ink"] body::before {
 }
 
 /* ----------------------------------------------------------------------------
-   Prose — Press Mono article body (blog/notes). No serif: Hanken for text,
+   Prose — Press Mono article body (notes). No serif: Hanken for text,
    JetBrains Mono for code. Square frames, hard 2px rules, red links.
 ---------------------------------------------------------------------------- */
 .prose-pressmono {

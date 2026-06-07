@@ -10,13 +10,13 @@ export const SITE = {
 } as const;
 
 // Section links point at the homepage (`/#id`) so they work from ANY page —
-// e.g. clicking "Work" on /blog navigates home and scrolls to the section.
+// e.g. clicking "Work" on /notes navigates home and scrolls to the section.
 export const NAV: { label: string; href: string }[] = [
   { label: 'Work', href: '/#work' },
   { label: 'Process', href: '/#process' },
   { label: 'About', href: '/#about' },
   { label: 'Contact', href: '/#contact' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Notes', href: '/notes' },
 ];
 
 export const SOCIALS: { label: string; href: string }[] = [
