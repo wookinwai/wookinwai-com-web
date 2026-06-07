@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import EmailButton from '../components/EmailButton.astro';
+import { SITE, SOCIALS } from '../consts';
+
+const title = 'Contact — Woo Kin Wai';
+const description =
+  "Tell me where your business is trying to grow and what's getting in the way. Direct email, what to expect, and answers to common questions.";
+
+// Shared spacing — same scale as the homepage sections.
+const secWrap = 'reveal pt-[112px] max-[760px]:pt-[84px]';
+const lead = 'mt-[26px] max-w-[660px] text-[17px] leading-[1.66] text-mut';
+const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] text-soft';
+
+// 01 — Fit
+const fit = [
+  'Your business has outgrown spreadsheets, manual work, or disconnected tools.',
+  'You are building a new product but need help shaping the first serious version.',
+  'You see an opportunity but do not yet have a technical partner.',
+  'Your current systems no longer match how the business actually works.',
+  'You need someone who can think through the business and build the system.',
+];
+const lessFit = [
+  'You need a pair of hands to close tickets on a fixed spec, with no say in the system.',
+  'You are looking for the cheapest possible build rather than the right one.',
+  'The work has no real connection to a business outcome.',
+];
+
+// 02 — Next
+const next = [
+  ['01', 'I reply', 'Usually within 1–2 business days, often sooner.'],
+  ['02', 'A short intro call', '~30 minutes to understand the business, the growth goal, and the gap. No charge, no obligation.'],
+  ['03', 'A clear proposal', 'Scope, approach, timeline, and the engagement model — in writing.'],
+  ['04', 'We start small', 'The smallest serious version first, then iterate from real use.'],
+];
+
+// 03 — FAQ (answers are trusted, controlled HTML for light emphasis)
+const faqs: { q: string; a: string }[] = [
+  {
+    q: 'How do you charge?',
+    a: 'Two models. <b class="font-semibold text-ink">Engaged to build</b> — a straightforward project or retainer rate. <b class="font-semibold text-ink">Upside participation</b> — a stake, revenue share, or longer-term partnership, when the opportunity is strong and the fit is right.',
+  },
+  {
+    q: 'What size of engagement do you take?',
+    a: 'From a focused first build to an ongoing technical-partner role. I take on a small number of things at a time so each one gets real attention.',
+  },
+  {
+    q: 'Do you work remotely?',
+    a: "Yes. I'm based in Kuala Lumpur (GMT+8) and work with founders and SMEs remotely, with occasional time in person where it helps.",
+  },
+  {
+    q: 'Will you sign an NDA?',
+    a: 'Happy to. Send yours, or I can share a simple one.',
+  },
+  {
+    q: 'What do you need from me to start?',
+    a: 'A sense of where the business is trying to go and what is getting in the way. The rest we shape together.',
+  },
+  {
+    q: "What if I'm not sure what I need yet?",
+    a: 'That is a fine place to start — figuring out what to build is part of the work.',
+  },
+];
+
+// 04 — Direct channels
+const linkedinPath = SOCIALS[0].href.replace(/^https?:\/\/(www\.)?linkedin\.com/, '').replace(/\/$/, '');
+const channels: { label: string; value: string; href?: string; external?: boolean }[] = [
+  { label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
+  { label: 'LinkedIn', value: `linkedin.com${linkedinPath}`, href: SOCIALS[0].href, external: true },
+  { label: 'Studio', value: SITE.org, href: SITE.orgUrl, external: true },
+  { label: 'Based in', value: `${SITE.location} · GMT+8` },
+];
+
+const checklistRow =
+  "relative border-b border-line py-4 pl-[34px] text-[16px] leading-[1.5] text-ink transition-all before:absolute before:left-0 before:top-4 before:font-mono before:text-[14px] before:font-bold before:text-acc before:content-['→'] hover:bg-panel hover:pl-[42px] hover:text-acc hover:before:left-2";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <header class="pt-[92px]">
+    <div class="rise d1 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acc">Contact</div>
+    <h1
+      class="rise d2 mt-[26px] max-w-[860px] text-balance font-sans text-[clamp(34px,6vw,66px)] font-extrabold leading-[1.04] tracking-[-0.035em] text-ink"
+    >
+      Tell me where you're trying to grow <span class="text-acc">next</span>.
+    </h1>
+    <p class="rise d3 mt-6 max-w-[600px] text-[17px] leading-[1.6] text-mut">
+      If your business has a real growth problem and the system matters, I'd like to hear about it. The fastest way to
+      reach me is a short, specific email — where you're trying to go, and what's getting in the way.
+    </p>
+    <div class="rise d3 mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+      <EmailButton />
+      <a
+        href={SOCIALS[0].href}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-2 font-mono text-[11.5px] font-bold uppercase tracking-[0.12em] text-mut no-underline transition-all hover:gap-3 hover:text-acc"
+        >{SOCIALS[0].label} ↗</a
+      >
+    </div>
+  </header>
+
+  <!-- 01 — Fit -->
+  <section class={secWrap}>
+    <SectionHead
+      index="01 / Fit"
+      title="When it makes sense to talk"
+      sub="You have a real growth problem, and the system matters."
+    />
+    <p class={lead}>
+      I am especially interested in founder-led businesses, SMEs, and early ventures where the opportunity is practical,
+      the constraints are real, and the technical work has to connect back to the business.
+    </p>
+    <ul class="m-0 mt-8 max-w-[760px] list-none border-t-2 border-rule p-0" data-stagger>
+      {fit.map((item) => <li class={checklistRow}>{item}</li>)}
+    </ul>
+
+    <div class="mt-11 max-w-[640px]">
+      <div class="mb-4 font-mono text-[10.5px] font-bold uppercase tracking-[0.16em] text-soft">
+        Probably not the right fit
+      </div>
+      <ul class="m-0 list-none p-0" data-stagger>
+        {
+          lessFit.map((item) => (
+            <li class="relative border-b border-line py-3 pl-[26px] text-[15px] leading-[1.5] text-soft before:absolute before:left-0 before:top-[15px] before:h-[7px] before:w-[7px] before:border before:border-soft before:content-['']">
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 02 — Next -->
+  <section class={secWrap}>
+    <SectionHead
+      index="02 / Next"
+      title="What happens after you reach out"
+      sub="No pressure, no long forms — a short path from email to a clear proposal."
+    />
+    <ol class="m-0 mt-[34px] max-w-[760px] list-none border-t-2 border-rule p-0" data-stagger>
+      {
+        next.map(([n, h, p]) => (
+          <li class="row-edge grid grid-cols-[auto_1fr] items-baseline gap-6 border-b-2 border-rule py-6 max-[520px]:gap-4">
+            <div class="w-9 font-mono text-[22px] font-extrabold leading-none tracking-[-0.02em] text-acc">{n}</div>
+            <div>
+              <div class="font-sans text-[19px] font-extrabold leading-[1.15] tracking-[-0.015em] text-ink">{h}</div>
+              <p class="mt-1.5 text-[15px] leading-[1.55] text-mut">{p}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- 03 — FAQ -->
+  <section class={secWrap}>
+    <SectionHead index="03 / FAQ" title="Questions people ask" />
+    <div class="mt-[34px] max-w-[760px] border-t-2 border-rule" data-stagger>
+      {
+        faqs.map((f) => (
+          <div class="grid grid-cols-[200px_1fr] gap-8 border-b border-line py-6 max-[640px]:grid-cols-1 max-[640px]:gap-2">
+            <div class="font-mono text-[12px] font-bold uppercase leading-[1.5] tracking-[0.06em] text-acc">{f.q}</div>
+            <p class="m-0 text-[15.5px] leading-[1.62] text-mut" set:html={f.a} />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 04 — Direct channels -->
+  <section class={secWrap}>
+    <SectionHead index="04 / Details" title="Direct channels" />
+    <div class="mt-[34px] max-w-[640px] overflow-hidden rounded-[2px] border-2 border-rule" data-stagger>
+      {
+        channels.map((c, i) => {
+          const inner = (
+            <div class="grid grid-cols-[120px_1fr] items-center gap-5 px-[22px] py-[18px] max-[520px]:grid-cols-1 max-[520px]:gap-1">
+              <span class={metaLabel}>{c.label}</span>
+              <span class="font-mono text-[14px] text-ink">
+                {c.value}
+                {c.external && <span class="text-soft"> ↗</span>}
+              </span>
+            </div>
+          );
+          const edge = i > 0 ? 'border-t-2 border-rule' : '';
+          return c.href ? (
+            <a
+              href={c.href}
+              target={c.external ? '_blank' : undefined}
+              rel={c.external ? 'noopener' : undefined}
+              class:list={['row-edge group block no-underline transition-colors hover:bg-panel', edge]}
+            >
+              {inner}
+            </a>
+          ) : (
+            <div class:list={[edge]}>{inner}</div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="reveal pt-[96px] max-[760px]:pt-[72px]">
+    <p class="max-w-[560px] text-[18px] leading-[1.6] text-ink">
+      Prefer to skip the form-fields and just write? Same here.
+    </p>
+    <div class="mt-7"><EmailButton /></div>
+  </section>
+</BaseLayout>

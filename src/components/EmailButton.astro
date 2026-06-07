@@ -1,0 +1,26 @@
+---
+import { SITE } from '../consts';
+
+// The signature Press Mono email CTA — a hard-shouldered button that slams into
+// signal red on hover. Used on the homepage closer and the contact page, so it
+// lives here once. `lg` is the broadsheet display size; `md` is a tighter pull.
+export interface Props {
+  size?: 'lg' | 'md';
+  class?: string;
+}
+const { size = 'lg', class: extra = '' } = Astro.props;
+
+const sizeCls =
+  size === 'lg' ? 'text-[clamp(26px,4.4vw,46px)]' : 'text-[clamp(20px,3vw,30px)]';
+---
+
+<a
+  href={`mailto:${SITE.email}`}
+  class:list={[
+    'inline-block rounded-[2px] border-2 border-rule px-[18px] py-2.5 font-sans font-extrabold lowercase tracking-[-0.03em] text-ink no-underline shadow-card transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-acc hover:bg-acc hover:text-on-accent hover:shadow-acc',
+    sizeCls,
+    extra,
+  ]}
+>
+  {SITE.email}
+</a>

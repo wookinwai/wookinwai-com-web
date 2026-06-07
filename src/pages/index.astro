@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/SectionHead.astro';
+import EmailButton from '../components/EmailButton.astro';
 import { getCollection } from 'astro:content';
 
 const title = 'Woo Kin Wai — software builder & technical partner';
@@ -52,14 +53,6 @@ const steps = [
   ['02', 'Shape', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
   ['03', 'Build', 'Create the smallest serious version that can be used, tested, and improved.'],
   ['04', 'Stay close', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
-];
-
-const checklist = [
-  'Your business has outgrown spreadsheets, manual work, or disconnected tools.',
-  'You are building a new product but need help shaping the first serious version.',
-  'You see an opportunity but do not yet have a technical partner.',
-  'Your current systems no longer match how the business actually works.',
-  'You need someone who can think through the business and build the system.',
 ];
 
 // shared section spacing (the masthead itself lives in <SectionHead/>)
@@ -365,20 +358,12 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
       I am especially interested in founder-led businesses, SMEs, and early ventures where the opportunity is practical,
       the constraints are real, and the technical work has to connect back to the business.
     </p>
-    <ul class="m-0 mt-8 max-w-[700px] list-none border-t-2 border-rule p-0" data-stagger>
-      {
-        checklist.map((c) => (
-          <li class="relative border-b border-line py-4 pl-[34px] text-[16px] leading-[1.5] text-ink transition-all before:absolute before:left-0 before:top-4 before:font-mono before:text-[14px] before:font-bold before:text-acc before:content-['→'] hover:bg-panel hover:pl-[42px] hover:text-acc hover:before:left-2">
-            {c}
-          </li>
-        ))
-      }
-    </ul>
     <a
-      href="mailto:hello@wookinwai.com"
-      class="mt-10 inline-block rounded-[2px] border-2 border-rule px-[18px] py-2.5 font-sans text-[clamp(26px,4.4vw,46px)] font-extrabold lowercase tracking-[-0.03em] text-ink no-underline shadow-card transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-acc hover:bg-acc hover:text-on-accent hover:shadow-acc"
-      >hello@wookinwai.com</a
+      href="/contact"
+      class="mt-7 inline-flex items-center gap-2 font-mono text-[11.5px] font-bold uppercase tracking-[0.12em] text-ink no-underline shadow-[inset_0_-2px_0_var(--color-acc)] transition-all hover:gap-3"
+      >See if it's a fit, what to expect, and FAQ → Contact</a
     >
+    <div class="mt-10"><EmailButton /></div>
   </section>
 </BaseLayout>
 
