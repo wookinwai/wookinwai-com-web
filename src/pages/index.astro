@@ -247,22 +247,32 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
               </div>
               <div class="detail">
                 <div class="pb-9 pt-1.5">
-                  {w.shot && (
+                  {(w.shot || w.screenshotUrl) && (
                     <div class="mb-6 aspect-[16/9] max-w-[660px] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
                       <div class="flex h-[30px] items-center gap-1.5 border-b-2 border-rule bg-bg px-3">
                         <i class="block h-2 w-2 bg-rule" />
                         <i class="block h-2 w-2 bg-rule" />
                         <i class="block h-2 w-2 bg-rule" />
-                        <span class="ml-[9px] font-mono text-[9.5px] font-medium text-soft">{w.shot.url}</span>
+                        <span class="ml-[9px] font-mono text-[9.5px] font-medium text-soft">{w.shot?.url}</span>
                       </div>
-                      <div
-                        class="grid h-[calc(100%-30px)] place-items-center"
-                        style="background:repeating-linear-gradient(45deg, transparent, transparent 11px, var(--color-line-2) 11px, var(--color-line-2) 12px);"
-                      >
-                        <span class="border-2 border-rule bg-panel px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-soft">
-                          {w.name} screenshot
-                        </span>
-                      </div>
+                      {w.screenshotUrl ? (
+                        <img
+                          src={w.screenshotUrl}
+                          alt={w.shot?.label || `${w.name} screenshot`}
+                          loading="lazy"
+                          decoding="async"
+                          class="h-[calc(100%-30px)] w-full object-cover object-top"
+                        />
+                      ) : (
+                        <div
+                          class="grid h-[calc(100%-30px)] place-items-center"
+                          style="background:repeating-linear-gradient(45deg, transparent, transparent 11px, var(--color-line-2) 11px, var(--color-line-2) 12px);"
+                        >
+                          <span class="border-2 border-rule bg-panel px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-soft">
+                            {w.name} screenshot
+                          </span>
+                        </div>
+                      )}
                     </div>
                   )}
                   <div class="mb-6 grid max-w-[660px] grid-cols-[auto_1fr] overflow-hidden rounded-[2px] border-2 border-rule">

@@ -82,6 +82,23 @@ const { title, description, canonical, image } = Astro.props;
     <script>
       import { animate, stagger } from 'animejs';
 
+      // Re-assert the chosen palette + motion flag after each View-Transitions swap.
+      // Astro copies the incoming page's hardcoded <html data-pal="press"> onto the
+      // live root, and the is:inline head script does NOT re-run on navigation — so
+      // without this, dark mode (and the .motion gate) would reset on every page change.
+      // astro:after-swap fires before paint, so there's no theme flash mid-transition.
+      function applyChrome() {
+        try {
+          const stored = localStorage.getItem('pal');
+          const pal = stored || (matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'press');
+          document.documentElement.dataset.pal = pal;
+          if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.classList.add('motion');
+          }
+        } catch (e) {}
+      }
+      document.addEventListener('astro:after-swap', applyChrome);
+
       // Re-runs on first load and after every client-side (View Transitions)
       // navigation, so handlers re-bind to fresh DOM.
       function init() {
