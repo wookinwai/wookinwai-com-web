@@ -185,6 +185,28 @@ html[data-pal="ink"] body::before {
   }
 }
 
+/* growth → gap → build — anime.js signal-packet relay.
+   A hard red square head travels each connector wire, trailing a fading comet
+   tail; the arrowhead lights up as the packet arrives. The JS adds `.flow-live`
+   only when it actually animates, so reduced-motion keeps the static full wire. */
+.flow-packet::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  width: 28px;
+  height: 2px;
+  transform: translateY(-50%);
+  background: linear-gradient(270deg, var(--color-acc), transparent);
+  pointer-events: none;
+}
+.flow-arrow {
+  transform-origin: center;
+}
+.flow-relay.flow-live .flow-arrow {
+  opacity: 0.5;
+}
+
 /* entrance motion */
 .rise {
   animation: rise 0.7s var(--ease-smooth) both;
@@ -223,6 +245,32 @@ html[data-pal="ink"] body::before {
   transform: none;
 }
 
+/* Staggered content reveals — children of a [data-stagger] group start hidden
+   and are cascaded in by anime.js (BaseLayout). Hidden state is gated on
+   `html.motion` so no-JS / reduced-motion render fully visible. */
+html.motion [data-stagger] > * {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+/* signal edge — a red rule wipes down the left of an interactive row on hover */
+.row-edge {
+  position: relative;
+}
+.row-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--color-acc);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.28s var(--ease-smooth);
+}
+.row-edge:hover::before {
+  transform: scaleY(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -239,6 +287,13 @@ html[data-pal="ink"] body::before {
   }
   .smark.live {
     animation: none !important;
+  }
+  [data-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .row-edge::before {
+    transition: none !important;
   }
 }
 

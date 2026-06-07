@@ -30,22 +30,25 @@ const { title, description, canonical, image } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Set the palette before first paint to avoid a flash. -->
+    <!-- Set the palette + motion flag before first paint to avoid a flash.
+         `.motion` gates the staggered-reveal hidden states in CSS, so anything
+         that starts hidden only does so when JS is on AND motion is welcome. -->
     <script is:inline>
       (function () {
         try {
           var stored = localStorage.getItem('pal');
           var pal = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'press');
           document.documentElement.dataset.pal = pal;
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.classList.add('motion');
+          }
         } catch (e) {}
       })();
     </script>
 
     <link rel="preload" as="font" type="font/woff2" href={hankenWoff2} crossorigin />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -75,6 +78,8 @@ const { title, description, canonical, image } = Astro.props;
     </div>
 
     <script>
+      import { animate, stagger } from 'animejs';
+
       // Re-runs on first load and after every client-side (View Transitions)
       // navigation, so handlers re-bind to fresh DOM.
       function init() {
@@ -99,7 +104,7 @@ const { title, description, canonical, image } = Astro.props;
           m.addEventListener('click', () => m.parentElement?.classList.toggle('open'));
         });
 
-        // Reveal sections on scroll.
+        // Reveal sections on scroll (masthead fade + the section rule drawing in).
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((e) => {
@@ -112,6 +117,36 @@ const { title, description, canonical, image } = Astro.props;
           { threshold: 0.12 }
         );
         document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+        // Staggered content reveals — the children of a [data-stagger] group
+        // cascade in (rise + fade) as it scrolls into view. Mechanical, restrained:
+        // small offset, crisp out-cubic, tight stagger. Gated on `.motion` so
+        // reduced-motion / no-JS keep everything visible (see global.css).
+        if (document.documentElement.classList.contains('motion')) {
+          const sio = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((e) => {
+                if (!e.isIntersecting) return;
+                const items = Array.from((e.target as HTMLElement).children) as HTMLElement[];
+                animate(items, {
+                  opacity: [0, 1],
+                  translateY: [14, 0],
+                  duration: 600,
+                  delay: stagger(55),
+                  ease: 'outCubic',
+                  onComplete: () => items.forEach((el) => (el.style.willChange = 'auto')),
+                });
+                sio.unobserve(e.target);
+              });
+            },
+            { threshold: 0.16, rootMargin: '0px 0px -6% 0px' }
+          );
+          document.querySelectorAll<HTMLElement>('[data-stagger]').forEach((el) => {
+            if (el.dataset.staggerBound) return;
+            el.dataset.staggerBound = 'true';
+            sio.observe(el);
+          });
+        }
       }
 
       document.addEventListener('astro:page-load', init);

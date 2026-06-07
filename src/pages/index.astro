@@ -74,16 +74,20 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
 <BaseLayout title={title} description={description}>
   <!-- Hero -->
   <header class="pt-[84px]">
-    <div class="rise d1 flex flex-wrap gap-[10px] font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acc">
-      <span>Software builder · Technical partner</span><span class="text-soft">Founder, Tiny Edges · Kuala Lumpur</span>
+    <div class="rise d1 flex flex-col gap-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acc">
+      <span>Software builder and technical partner</span><span class="text-soft">Founder of Tiny Edges · Kuala Lumpur, Malaysia</span>
     </div>
     <h1
-      class="rise d2 mt-6 max-w-[1000px] text-balance font-sans text-[clamp(40px,7vw,82px)] font-extrabold uppercase leading-[0.98] tracking-[-0.04em] text-ink"
+      class="rise d2 mt-6 max-w-[1000px] text-balance font-sans text-[clamp(32px,5.4vw,62px)] font-extrabold leading-[1.05] tracking-[-0.03em] text-ink"
     >
-      I work with businesses that know where they want to grow next, but do not yet have the
-      <span class="text-acc">system to carry them there</span>.
+      I help businesses define and build the software they need for their
+      <span class="text-acc">next stage of growth</span>.
     </h1>
     <p class="rise d3 mt-[26px] max-w-[580px] text-[17px] leading-[1.6] text-mut">
+      The work usually starts before the code: where the business is trying to go, what is getting in the way, and
+      what kind of system would actually help it move.
+    </p>
+    <p class="rise d3 mt-[18px] max-w-[580px] text-[17px] leading-[1.6] text-mut">
       Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
       Sometimes it means helping a founder shape the technical path before the first serious build.
     </p>
@@ -94,16 +98,18 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
     >
 
     <!-- growth → gap → build flow -->
-    <div class="rise d4 mt-14 flex items-stretch max-[760px]:flex-col max-[760px]:gap-3">
+    <div class="flow-relay rise d4 mt-14 flex items-stretch max-[760px]:flex-col max-[760px]:gap-3">
       {
         flow.map((f, i) => (
           <>
             <div
               class:list={[
-                'relative flex-1 overflow-hidden rounded-[2px] border-2 px-[22px] pb-6 pt-[22px] transition-all',
+                // z-10 + opaque fill so the connector packet/comet runs BEHIND the
+                // cards and tucks under their edges instead of bleeding over them.
+                'relative z-10 flex-1 overflow-hidden rounded-[2px] border-2 px-[22px] pb-6 pt-[22px] transition-all',
                 f.build
                   ? 'border-acc bg-acc text-on-accent'
-                  : 'border-rule bg-transparent hover:-translate-y-0.5 hover:bg-panel hover:shadow-sm',
+                  : 'border-rule bg-bg hover:-translate-y-0.5 hover:bg-panel hover:shadow-sm',
               ]}
             >
               <div class="flex items-baseline justify-between">
@@ -114,10 +120,12 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
               <div class:list={['text-[13.5px] leading-[1.55]', f.build ? 'text-on-accent/90' : 'text-mut']}>{f.desc}</div>
             </div>
             {i < flow.length - 1 && (
-              <div class="relative flex flex-[0_0_64px] items-center self-center px-[5px] max-[760px]:hidden">
+              <div class="flow-conn relative flex flex-[0_0_64px] items-center self-center px-[5px] max-[760px]:hidden">
                 <span class="absolute left-px top-1/2 z-[2] -mt-[3px] h-1.5 w-1.5 bg-acc" />
-                <div class="h-[2px] w-full bg-line" />
-                <svg width="11" height="11" viewBox="0 0 11 11" class="absolute -right-px text-acc" aria-hidden="true">
+                <div class="relative h-[2px] w-full bg-line">
+                  <span class="flow-packet absolute left-0 top-1/2 z-[3] -mt-[3px] h-1.5 w-1.5 bg-acc opacity-0" />
+                </div>
+                <svg width="11" height="11" viewBox="0 0 11 11" class="flow-arrow absolute -right-px text-acc" aria-hidden="true">
                   <path d="M1.5 5.5h6M5.5 2.5l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </div>
@@ -161,7 +169,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
   <section class={secWrap} id="about">
     <SectionHead index="02 / About" title="The short version" />
     <div class="mt-[38px] grid grid-cols-[1fr_230px] items-start gap-[56px] max-[760px]:grid-cols-1 max-[760px]:gap-[30px]">
-      <div class="text-[17px] leading-[1.7] text-ink">
+      <div class="text-[17px] leading-[1.7] text-ink" data-stagger>
         <p class="mb-4">I started as an engineer, then spent a decade as the person responsible for turning ideas into working systems.</p>
         <p class="mb-4">
           Over time, I moved from writing code to leading technical work, helping scale a company from a small team of
@@ -180,7 +188,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
           closer to the outcome through a <b class="font-bold text-acc">stake, revenue share, or longer-term partnership</b>.
         </p>
         <blockquote
-          class="my-[30px] border-l-4 border-acc pl-[22px] font-sans text-[clamp(24px,3.2vw,34px)] font-extrabold uppercase leading-[1.08] tracking-[-0.03em] text-ink"
+          class="my-[30px] border-l-4 border-acc pl-[22px] font-sans text-[clamp(24px,3.2vw,34px)] font-extrabold leading-[1.12] tracking-[-0.025em] text-ink"
         >
           What system does this business need in order to grow?
         </blockquote>
@@ -188,7 +196,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
           <div class="grid h-12 w-12 flex-none place-items-center rounded-[2px] border-2 border-rule bg-panel font-mono text-[13px] font-bold text-ink">
             WKW
           </div>
-          <div class="font-sans text-[18px] font-extrabold uppercase tracking-[-0.02em] text-ink">
+          <div class="font-sans text-[18px] font-extrabold tracking-[-0.015em] text-ink">
             Kin Wai<small class="mt-1 block font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-soft">Kuala Lumpur</small>
           </div>
         </div>
@@ -218,7 +226,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
       tools.
     </p>
 
-    <div class="mt-[30px] border-t-2 border-rule">
+    <div class="mt-[30px] border-t-2 border-rule" data-stagger>
       {work.length === 0 && (
         <p class="border-b-2 border-rule py-5 font-mono text-[12px] uppercase tracking-[0.12em] text-soft">
           Selected work will appear here.
@@ -230,10 +238,10 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
           const model = w.engagement ? modelMap[w.engagement] : null;
           return (
             <div class="flow border-b-2 border-rule">
-              <div class="flow-main group grid cursor-pointer grid-cols-[auto_1fr_auto] items-center gap-[18px] py-5 transition-colors hover:bg-panel max-[760px]:grid-cols-[auto_1fr]">
+              <div class="flow-main row-edge group grid cursor-pointer grid-cols-[auto_1fr_auto] items-center gap-[18px] py-5 transition-colors hover:bg-panel max-[760px]:grid-cols-[auto_1fr]">
                 <div class="w-7 font-mono text-[13px] font-bold text-acc">{String(i + 1).padStart(2, '0')}</div>
                 <div>
-                  <div class="flex items-center gap-3 font-sans text-[23px] font-extrabold uppercase tracking-[-0.02em] text-ink transition-colors group-hover:text-acc">
+                  <div class="flex items-center gap-3 font-sans text-[23px] font-extrabold tracking-[-0.015em] text-ink transition-colors group-hover:text-acc">
                     {w.name}
                     <span class="exp inline-block font-mono text-[15px] font-bold text-acc">+</span>
                   </div>
@@ -337,7 +345,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
           <div class:list={[i > 0 && 'border-l-2 border-rule max-[760px]:[&:nth-child(odd)]:border-l-0 max-[430px]:border-l-0', i >= 2 && 'max-[760px]:border-t-2 max-[760px]:border-rule', 'max-[430px]:border-t-2 max-[430px]:border-rule max-[430px]:[&:first-child]:border-t-0']}>
             <div class="group h-full bg-transparent p-[26px_22px] text-ink transition-colors hover:bg-acc hover:text-on-accent">
               <div class="font-mono text-[22px] font-extrabold tracking-[-0.02em] text-acc transition-colors group-hover:text-on-accent">{num}</div>
-              <h3 class="mb-2.5 mt-3 font-sans text-[20px] font-extrabold uppercase tracking-[-0.02em]">{h}</h3>
+              <h3 class="mb-2.5 mt-3 font-sans text-[20px] font-extrabold tracking-[-0.015em]">{h}</h3>
               <p class="m-0 text-[13.5px] leading-[1.55] text-mut transition-colors group-hover:text-on-accent">{p}</p>
             </div>
           </div>
@@ -357,7 +365,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
       I am especially interested in founder-led businesses, SMEs, and early ventures where the opportunity is practical,
       the constraints are real, and the technical work has to connect back to the business.
     </p>
-    <ul class="m-0 mt-8 max-w-[700px] list-none border-t-2 border-rule p-0">
+    <ul class="m-0 mt-8 max-w-[700px] list-none border-t-2 border-rule p-0" data-stagger>
       {
         checklist.map((c) => (
           <li class="relative border-b border-line py-4 pl-[34px] text-[16px] leading-[1.5] text-ink transition-all before:absolute before:left-0 before:top-4 before:font-mono before:text-[14px] before:font-bold before:text-acc before:content-['→'] hover:bg-panel hover:pl-[42px] hover:text-acc hover:before:left-2">
@@ -368,8 +376,86 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
     </ul>
     <a
       href="mailto:hello@wookinwai.com"
-      class="mt-10 inline-block rounded-[2px] border-2 border-rule px-[18px] py-2.5 font-sans text-[clamp(26px,4.4vw,46px)] font-extrabold uppercase tracking-[-0.03em] text-ink no-underline shadow-card transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-acc hover:bg-acc hover:text-on-accent hover:shadow-acc"
+      class="mt-10 inline-block rounded-[2px] border-2 border-rule px-[18px] py-2.5 font-sans text-[clamp(26px,4.4vw,46px)] font-extrabold lowercase tracking-[-0.03em] text-ink no-underline shadow-card transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-acc hover:bg-acc hover:text-on-accent hover:shadow-acc"
       >hello@wookinwai.com</a
     >
   </section>
 </BaseLayout>
+
+<script>
+  // growth → gap → build: an anime.js timeline relays a red signal packet down
+  // each connector wire (Growth → Gap → Build), looping with a brief dwell. Runs
+  // only while the flow is on screen, skips entirely under reduced-motion, and
+  // rebinds cleanly across View-Transition navigations.
+  import { createTimeline } from 'animejs';
+
+  let tl: ReturnType<typeof createTimeline> | null = null;
+  let io: IntersectionObserver | null = null;
+
+  function teardown() {
+    io?.disconnect();
+    io = null;
+    tl?.pause();
+    tl?.revert();
+    tl = null;
+  }
+
+  function initFlow() {
+    teardown();
+
+    const flow = document.querySelector<HTMLElement>('.flow-relay');
+    if (!flow) return;
+    const conns = [...flow.querySelectorAll<HTMLElement>('.flow-conn')];
+    if (!conns.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    flow.classList.add('flow-live');
+
+    tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
+
+    const STEP = 720; // packet travel time per wire
+    const OVERLAP = 100; // how much the next wire fires before the last lands
+    const DWELL = 660; // pause between loops
+    let at = 0;
+
+    conns.forEach((conn) => {
+      const packet = conn.querySelector<HTMLElement>('.flow-packet');
+      const arrow = conn.querySelector<SVGElement>('.flow-arrow');
+      if (!packet) return;
+
+      tl!.add(
+        packet,
+        {
+          left: ['0%', '100%'],
+          // fade in fast, ride the wire lit, snuff out on arrival
+          opacity: [{ to: 1, duration: 70 }, { to: 1, duration: 560 }, { to: 0, duration: 90 }],
+          duration: STEP,
+        },
+        at
+      );
+
+      if (arrow) {
+        tl!.add(
+          arrow,
+          { scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5], duration: 340, ease: 'outQuad' },
+          at + STEP - 190
+        );
+      }
+
+      at += STEP - OVERLAP;
+    });
+
+    // hold on the empty wire before the relay loops
+    const first = conns[0].querySelector<HTMLElement>('.flow-packet');
+    if (first) tl.add(first, { opacity: 0, duration: DWELL }, at);
+
+    io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => (e.isIntersecting ? tl?.play() : tl?.pause())),
+      { threshold: 0.25 }
+    );
+    io.observe(flow);
+  }
+
+  document.addEventListener('astro:page-load', initFlow);
+  document.addEventListener('astro:before-swap', teardown);
+</script>
