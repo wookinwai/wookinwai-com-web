@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
+import '../styles/prose.css';
 
 export interface Props {
   note: CollectionEntry<'notes'>;
@@ -13,7 +14,7 @@ const fmt = (d: Date) =>
   `${d.getUTCFullYear()} · ${String(d.getUTCMonth() + 1).padStart(2, '0')} · ${String(d.getUTCDate()).padStart(2, '0')}`;
 ---
 
-<BaseLayout title={`${title} — Woo Kin Wai`} description={description}>
+<BaseLayout title={`${title} - Woo Kin Wai`} description={description}>
   <div class="pt-[60px]">
     <header>
       <div class="font-mono text-[12px] uppercase tracking-[0.16em] text-soft">

@@ -1,0 +1,123 @@
+/* ----------------------------------------------------------------------------
+   Prose — Press Mono article body (notes). No serif: Hanken for text,
+   JetBrains Mono for code. Square frames, hard 2px rules, red links.
+
+   Loaded only by PostLayout (note/article pages) so it stays off the
+   render-blocking global stylesheet on the homepage. Depends on the design
+   tokens declared in global.css (loaded first via BaseLayout).
+---------------------------------------------------------------------------- */
+.prose-pressmono {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--color-ink);
+  max-width: 660px;
+}
+.prose-pressmono > * + * {
+  margin-top: 1.1em;
+}
+.prose-pressmono h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.16;
+  margin-top: 1.8em;
+}
+.prose-pressmono h3 {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 1.5em;
+}
+.prose-pressmono p,
+.prose-pressmono ul,
+.prose-pressmono ol {
+  color: var(--color-mut);
+}
+.prose-pressmono a {
+  color: var(--color-acc);
+  text-decoration: none;
+  box-shadow: inset 0 -2px 0 var(--color-acc-soft);
+  transition: box-shadow 0.12s var(--ease-smooth);
+}
+.prose-pressmono a:hover {
+  box-shadow: inset 0 -2px 0 var(--color-acc);
+}
+.prose-pressmono strong,
+.prose-pressmono b {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+.prose-pressmono ul,
+.prose-pressmono ol {
+  padding-left: 0;
+  list-style: none;
+}
+.prose-pressmono li {
+  position: relative;
+  padding-left: 26px;
+}
+.prose-pressmono li + li {
+  margin-top: 0.5em;
+}
+.prose-pressmono ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 7px;
+  height: 7px;
+  background: var(--color-acc);
+}
+.prose-pressmono ol {
+  counter-reset: li;
+}
+.prose-pressmono ol li::before {
+  counter-increment: li;
+  content: counter(li, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-acc);
+}
+.prose-pressmono blockquote {
+  border-left: 3px solid var(--color-acc);
+  padding-left: 20px;
+  color: var(--color-mut);
+  font-size: 18px;
+}
+.prose-pressmono code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  padding: 0.1em 0.4em;
+}
+.prose-pressmono pre {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  background: var(--color-panel);
+  border: 2px solid var(--color-rule);
+  padding: 16px 18px;
+  overflow-x: auto;
+}
+.prose-pressmono pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+.prose-pressmono hr {
+  border: none;
+  border-top: 2px solid var(--color-rule);
+  margin: 2em 0;
+}
+.prose-pressmono img {
+  border: 2px solid var(--color-rule);
+  max-width: 100%;
+  height: auto;
+}

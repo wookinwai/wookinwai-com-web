@@ -4,9 +4,9 @@ import SectionHead from '../components/SectionHead.astro';
 import EmailButton from '../components/EmailButton.astro';
 import { getCollection } from 'astro:content';
 
-const title = 'Woo Kin Wai — software builder & technical partner';
+const title = 'Woo Kin Wai: software builder & technical partner';
 const description =
-  'I work with founders and SMEs to shape and build the software their business needs next — from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
+  'I work with founders and SMEs to shape and build the software their business needs next, from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
 
 // Selected work — CMS-driven (section 03).
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
