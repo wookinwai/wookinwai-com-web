@@ -17,7 +17,7 @@
   /* text */
   --color-ink: #15130f;
   --color-mut: #57514a;
-  --color-soft: #8c8579;
+  --color-soft: #6e685d;
 
   /* accent — signal red + categorical secondaries */
   --color-acc: #c1331f;
@@ -61,7 +61,7 @@ html[data-pal="ink"] {
   --color-panel: #211e16;
   --color-ink: #f0ece1;
   --color-mut: #a39c8d;
-  --color-soft: #7c7568;
+  --color-soft: #8a8374;
   --color-acc: #e8533c;
   --color-acc-2: #c1331f;
   --color-acc-soft: #e8533c33;

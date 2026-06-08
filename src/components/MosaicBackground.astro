@@ -125,7 +125,7 @@
   }
 
   function loop(now: number) {
-    const paused = document.hidden || window.scrollY > BAND;
+    const paused = document.hidden;
     if (!paused) {
       // ease pointer + influence
       mx += (px - mx) * 0.18;

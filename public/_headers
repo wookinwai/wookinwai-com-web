@@ -6,4 +6,4 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: interest-cohort=()
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; img-src 'self' data: https://cdn.wookinwai.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; img-src 'self' data: https://cdn.wookinwai.com; script-src 'self' 'unsafe-inline' https://www.clarity.ms; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' https://*.clarity.ms https://c.bing.com; frame-ancestors 'none'; form-action 'self'

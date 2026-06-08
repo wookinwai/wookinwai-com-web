@@ -110,7 +110,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
                 <div class:list={['font-mono text-[11px] font-bold', f.build ? 'text-on-accent' : 'text-soft']}>{f.n}</div>
               </div>
               <div class:list={['mb-2.5 mt-3 font-sans text-[19px] font-extrabold leading-[1.1] tracking-[-0.02em]', f.build ? 'text-on-accent' : 'text-ink']}>{f.title}</div>
-              <div class:list={['text-[13.5px] leading-[1.55]', f.build ? 'text-on-accent/90' : 'text-mut']}>{f.desc}</div>
+              <div class:list={['text-[13.5px] leading-[1.55]', f.build ? 'text-on-accent' : 'text-mut']}>{f.desc}</div>
             </div>
             {i < flow.length - 1 && (
               <div class="flow-conn relative flex flex-[0_0_64px] items-center self-center px-[5px] max-[760px]:hidden">
