@@ -2,7 +2,7 @@
   // Cloudflare Workers — static assets deployment for a fully prerendered Astro site.
   // Docs: https://developers.cloudflare.com/workers/static-assets/
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "wookinwai-website",
+  "name": "wookinwai-com-web",
   "compatibility_date": "2026-06-06",
   // No `main` worker entry — this is a pure static-assets project.
   "assets": {
