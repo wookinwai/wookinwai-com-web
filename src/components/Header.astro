@@ -1,63 +1,55 @@
 ---
+// A title page, not chrome: monogram + wordmark left, contents + theme right.
+// Deliberately not sticky — the book doesn't follow you down the page.
 import { NAV } from '../consts';
+import Monogram from './Monogram.astro';
 
-// A route link (not a homepage anchor) is "current" when the path matches.
 const path = Astro.url.pathname;
 const isCurrent = (href: string) =>
   !href.includes('#') && href !== '/' && (path === href || path.startsWith(href + '/'));
 ---
 
-<header class="sticky top-0 z-40 bg-bg border-b-2 border-rule">
-  <nav class="mx-auto flex max-w-[1040px] items-center justify-between px-10 py-4 max-[760px]:px-[22px]">
-    <a href="/" class="font-sans font-black text-[19px] uppercase tracking-[-0.03em] text-ink no-underline">
-      Woo Kin Wai<span class="text-acc">.</span>
+<header class="pt-11">
+  <div class="mx-auto flex max-w-[1060px] items-center justify-between gap-[18px] px-7">
+    <a href="/" class="flex items-center gap-3.5 no-underline hover:text-ink">
+      <Monogram />
+      <span class="font-serif text-[21px] font-medium tracking-[0.01em]">
+        Woo Kin&nbsp;Wai<i class="italic text-ribbon">,</i> Tiny Edges
+      </span>
     </a>
-    <div class="flex items-center gap-6">
-      <ul class="flex list-none gap-[22px] max-[760px]:hidden">
-        {
-          NAV.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                aria-current={isCurrent(link.href) ? 'page' : undefined}
-                class:list={[
-                  'font-mono text-[11px] font-bold uppercase tracking-[0.1em] no-underline pb-1 transition-all hover:text-acc hover:shadow-[inset_0_-2px_0_var(--color-acc)]',
-                  isCurrent(link.href) ? 'text-acc shadow-[inset_0_-2px_0_var(--color-acc)]' : 'text-mut',
-                ]}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+    <nav class="flex items-center gap-[26px] max-[820px]:hidden" aria-label="Contents">
+      {
+        NAV.map((link) => (
+          <a
+            href={link.href}
+            aria-current={isCurrent(link.href) ? 'page' : undefined}
+            class:list={[
+              'font-sans text-[13px] font-medium no-underline hover:text-ribbon',
+              isCurrent(link.href) ? 'text-ribbon' : 'text-soft',
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
       <button
         id="theme"
-        aria-label="Toggle theme"
-        class="grid h-[34px] w-[34px] flex-none place-items-center rounded-none border-2 border-rule bg-transparent text-ink transition-colors hover:bg-ink hover:text-on-ink"
+        class="cursor-pointer rounded-full border border-hairline bg-transparent px-3.5 py-1.5 font-sans text-[12.5px] text-soft transition-colors hover:border-ribbon hover:text-ribbon"
       >
-        <svg class="sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="4.2"></circle>
-          <path
-            d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"
-            stroke-linecap="round"></path>
-        </svg>
-        <svg class="moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 14.5A8 8 0 1 1 9.5 4a6.3 6.3 0 0 0 10.5 10.5z" stroke-linejoin="round"></path>
-        </svg>
+        <span class="lamp-label">Lamplight</span><span class="day-label">Daylight</span>
       </button>
-    </div>
-  </nav>
+    </nav>
+  </div>
 </header>
 
 <style>
-  .moon {
+  .day-label {
     display: none;
   }
-  :global(html[data-pal='ink']) .sun {
+  :global(html[data-pal='lamp']) .lamp-label {
     display: none;
   }
-  :global(html[data-pal='ink']) .moon {
-    display: block;
+  :global(html[data-pal='lamp']) .day-label {
+    display: inline;
   }
 </style>

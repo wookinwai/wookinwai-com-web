@@ -2,61 +2,51 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const notes = (await getCollection('notes')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const notes = (await getCollection('notes')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const fmt = (d: Date) =>
-  `${d.getUTCFullYear()} · ${String(d.getUTCMonth() + 1).padStart(2, '0')} · ${String(d.getUTCDate()).padStart(2, '0')}`;
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+const page = 'mx-auto max-w-[1060px] px-7';
 ---
 
-<BaseLayout
-  title="Notes - Woo Kin Wai"
-  description="Notes on software, systems, and building with founders and SMEs."
->
-  <header class="pt-[92px]">
-    <div class="font-mono text-[11px] uppercase tracking-[0.16em] text-acc">NOTES</div>
-    <h1
-      class="mt-[26px] max-w-[820px] font-sans text-[clamp(36px,6vw,68px)] font-extrabold leading-[1.04] tracking-[-0.035em] text-ink"
-    >
-      Field notes
+<BaseLayout title="Notes - Woo Kin Wai" description="Notes on software, systems, and building with founders and SMEs.">
+  <header class:list={[page, 'pt-24']}>
+    <h1 class="m-0 font-serif text-[clamp(36px,4.8vw,58px)] font-[380] leading-[1.14] tracking-[-0.01em]">
+      Field <i class="italic text-ribbon">notes</i>
     </h1>
-    <p class="mt-6 max-w-[600px] text-[17px] leading-[1.6] text-mut">
+    <p class="mt-6 max-w-[56ch] text-[20px] text-soft">
       Notes on software, systems, and building with founders and SMEs.
     </p>
   </header>
 
-  {
-    notes.length === 0 ? (
-      <p class="mt-[56px] font-mono text-[13px] uppercase tracking-[0.12em] text-soft">No notes yet.</p>
-    ) : (
-      <div class="mt-[56px] border-t-2 border-rule" data-stagger>
-        {notes.map((note) => (
-          <a
-            href={`/notes/${note.data.slug}`}
-            class="row-edge group grid grid-cols-[auto_1fr] items-baseline gap-6 border-b-2 border-rule py-[22px] no-underline transition-colors hover:bg-panel max-[760px]:grid-cols-1 max-[760px]:gap-2"
-          >
-            <div class="whitespace-nowrap pt-1 font-mono text-[12px] uppercase tracking-[0.12em] text-soft">
+  <div class:list={[page, 'mt-14']}>
+    {
+      notes.length === 0 ? (
+        <p class="border-t border-hairline pt-8 font-serif italic text-faint">No notes yet.</p>
+      ) : (
+        notes.map((note, i) => (
+          <article class:list={['spread border-t border-hairline py-8', i === notes.length - 1 && 'border-b']}>
+            <aside class="margin-note">
               {fmt(note.data.pubDate)}
-            </div>
-            <div>
-              <div class="font-sans text-[22px] font-extrabold leading-[1.12] tracking-[-0.015em] text-ink transition-colors group-hover:text-acc">
-                {note.data.title}
-              </div>
-              <p class="mt-1.5 text-[14.5px] leading-[1.55] text-mut">{note.data.description}</p>
               {note.data.tags.length > 0 && (
-                <div class="mt-2.5 flex flex-wrap gap-2">
-                  {note.data.tags.map((tag) => (
-                    <span class="border border-line px-[9px] py-[3px] font-mono text-[10px] uppercase tracking-[0.06em] text-soft">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                <>
+                  <br />
+                  <em>{note.data.tags.join(' · ')}</em>
+                </>
               )}
+            </aside>
+            <div>
+              <h2 class="m-0 font-serif text-[26px] font-[480] leading-[1.2] tracking-[-0.005em]">
+                <a href={`/notes/${note.data.slug}`} class="no-underline hover:text-ribbon hover:underline">
+                  {note.data.title}
+                </a>
+              </h2>
+              <p class="mb-0 mt-2 max-w-[58ch] text-[17px] text-soft">{note.data.description}</p>
             </div>
-          </a>
-        ))}
-      </div>
-    )
-  }
+          </article>
+        ))
+      )
+    }
+  </div>
 </BaseLayout>

@@ -1,0 +1,112 @@
+---
+// The marginal ink sketch beside the hero: growth → gap → build drawn as a
+// back-of-the-napkin system diagram. Two deliberate details: the "gap" box is
+// drawn with one corner left open (it IS the gap), and the "build" box is
+// double-struck in ribbon green for emphasis. The tiled monogram signs the
+// drawing like a seal.
+//
+// anime.js draws the strokes like a pen on load, lays the seal tiles one by
+// one, then loops a drop of ink along the connectors. Without JS (or with
+// reduced motion) the sketch renders fully drawn and still.
+import { monogramTiles } from '../lib/monogram';
+
+const seal = monogramTiles(9, 2.2);
+---
+
+<figure class="m-0 max-w-[340px] pt-3.5" aria-hidden="true">
+  <svg id="sketch" viewBox="0 0 340 392" class="block h-auto w-full overflow-visible">
+    <!-- box: the growth -->
+    <path
+      class="stroke draw"
+      d="M 32 30 H 142 Q 150 31 149 39 V 74 Q 149 82 141 82 H 31 Q 24 81 25 73 V 38 Q 25 30 32 30"></path>
+    <text x="50" y="62">the growth</text>
+    <!-- connector 1 -->
+    <path class="stroke accent draw" d="M 150 70 C 205 78 232 96 236 134"></path>
+    <path class="stroke accent draw" d="M 229 124 L 236 136 L 243 125"></path>
+    <!-- box: the gap (one corner left open — the gap) -->
+    <path
+      class="stroke draw"
+      d="M 296 144 Q 304 145 303 153 V 188 Q 303 196 295 196 H 185 Q 178 195 179 187 V 152 Q 179 144 186 144 H 262"
+    ></path>
+    <text x="208" y="176">the gap</text>
+    <!-- connector 2 -->
+    <path class="stroke accent draw" d="M 178 186 C 120 196 96 220 92 256"></path>
+    <path class="stroke accent draw" d="M 85 246 L 92 258 L 99 247"></path>
+    <!-- box: the build (double-struck, emphatic) -->
+    <path
+      class="stroke draw"
+      d="M 40 268 H 174 Q 182 269 181 277 V 318 Q 181 326 173 326 H 39 Q 32 325 33 317 V 276 Q 33 268 40 268"></path>
+    <path
+      class="stroke accent draw"
+      d="M 46 274 H 168 Q 175 275 175 281 V 313 Q 175 320 168 320 H 46 Q 39 319 39 313 V 281 Q 39 275 46 274"></path>
+    <text x="64" y="302">the build</text>
+    <!-- underline flourish, like a pen resting -->
+    <path class="stroke draw" d="M 36 348 C 100 342 240 342 300 348"></path>
+    <!-- the tiled monogram: the drawing's signature seal -->
+    <g id="sketchSeal" transform="translate(252, 280)">
+      {
+        seal.tiles.map((t) => (
+          <rect
+            x={t.x}
+            y={t.y}
+            width={t.size}
+            height={t.size}
+            rx={t.rx}
+            fill={t.heart ? 'var(--color-ribbon)' : 'var(--color-ink)'}
+            opacity={t.opacity}
+          />
+        ))
+      }
+    </g>
+    <!-- the travelling ink dot -->
+    <circle class="sketch-dot" id="sketchDot" r="3.4" cx="0" cy="0"></circle>
+  </svg>
+  <figcaption class="mt-3.5 text-center font-serif text-[14px] italic text-faint">
+    the system, sketched before the code
+  </figcaption>
+</figure>
+
+<script>
+  import { animate, svg as svgUtil, stagger } from 'animejs';
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced) {
+    // strokes draw in like a pen
+    animate(svgUtil.createDrawable('#sketch .draw'), {
+      draw: ['0 0', '0 1'],
+      duration: 900,
+      delay: stagger(220, { start: 250 }),
+      ease: 'inOut(2)',
+    });
+
+    // the seal: tiles are laid one by one once the ink dries
+    animate('#sketchSeal rect', {
+      opacity: { from: 0 },
+      scale: { from: 0.4 },
+      duration: 480,
+      delay: stagger(70, { start: 2300 }),
+      ease: 'out(3)',
+    });
+
+    // a drop of ink travels the connectors, growth → build, on a slow loop
+    const heroPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    heroPath.setAttribute('d', 'M 150 70 C 205 78 232 96 236 134 C 232 170 210 190 178 188 C 120 196 96 220 92 256');
+    heroPath.setAttribute('fill', 'none');
+    document.getElementById('sketch')?.appendChild(heroPath);
+    const mp = svgUtil.createMotionPath(heroPath);
+    animate('#sketchDot', {
+      translateX: mp.translateX,
+      translateY: mp.translateY,
+      opacity: [
+        { to: 0.9, duration: 400 },
+        { to: 0.9, duration: 3400 },
+        { to: 0, duration: 500 },
+      ],
+      duration: 4300,
+      delay: 2800,
+      loop: true,
+      loopDelay: 2600,
+      ease: 'inOutSine',
+    });
+  }
+</script>

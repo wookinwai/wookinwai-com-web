@@ -1,20 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Ornament from '../components/Ornament.astro';
 ---
 
 <BaseLayout title="Page not found - Woo Kin Wai" description="That page does not exist.">
-  <section class="flex min-h-[60vh] flex-col items-center justify-center py-[120px] text-center">
-    <div class="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-acc">404</div>
-    <h1 class="mt-4 font-sans text-[clamp(32px,5vw,52px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-ink">
-      This page wandered off.
+  <section
+    class="mx-auto flex min-h-[60vh] max-w-[1060px] flex-col items-center justify-center px-7 py-[120px] text-center"
+  >
+    <Ornament />
+    <h1 class="mb-0 mt-6 font-serif text-[clamp(32px,4.4vw,48px)] font-[380] leading-[1.14]">
+      This page seems to be <i class="italic text-ribbon">missing from the book</i>.
     </h1>
-    <p class="mt-4 max-w-[460px] text-[17px] leading-[1.7] text-mut">
-      The link may be broken, or the page may have moved. Let’s get you back on track.
+    <p class="mt-4 max-w-[44ch] text-[18px] text-soft">
+      The link may be broken, or the page may have moved. The table of contents above will get you back on track.
     </p>
-    <a
-      href="/"
-      class="mt-8 inline-flex items-center gap-2 font-mono text-[11.5px] font-bold uppercase tracking-[0.12em] text-mut no-underline transition-all hover:gap-3 hover:text-acc"
-      >← Back home</a
-    >
+    <p class="mt-7">
+      <a href="/" class="font-serif text-[18px] italic underline decoration-ribbon decoration-1 underline-offset-[5px]"
+        >Back to the first page</a
+      >
+    </p>
   </section>
 </BaseLayout>

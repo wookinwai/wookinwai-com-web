@@ -1,0 +1,20 @@
+---
+// Chapter masthead: quincunx ornament beside a quiet serif title. The slot is
+// the h2's content so pages can set an italic ribbon word inline:
+//   <ChapterOpen>Selected <i>work</i></ChapterOpen>
+import Ornament from './Ornament.astro';
+
+export interface Props {
+  class?: string;
+}
+const { class: extra = '' } = Astro.props;
+---
+
+<div class:list={['mx-auto mb-10 flex max-w-[1060px] items-baseline gap-[18px] px-7', extra]}>
+  <Ornament />
+  <h2
+    class="m-0 font-serif text-[clamp(30px,4vw,44px)] font-normal leading-[1.12] tracking-[-0.005em] [&_i]:italic [&_i]:text-ribbon"
+  >
+    <slot />
+  </h2>
+</div>

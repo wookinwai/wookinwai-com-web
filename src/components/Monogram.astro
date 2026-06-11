@@ -1,0 +1,30 @@
+---
+// The site's device: the WKW mosaic as a tiled "W" (see src/lib/monogram.ts).
+// Pure static SVG — the occasional one-tile glint is added by BaseLayout's
+// script, so this renders complete without JS.
+import { monogramTiles } from '../lib/monogram';
+
+export interface Props {
+  /** Rendered square size in px. */
+  size?: number;
+  class?: string;
+}
+const { size = 34, class: extra = '' } = Astro.props;
+const { tiles, width, height } = monogramTiles();
+---
+
+<svg class:list={['monogram', extra]} width={size} height={size} viewBox={`0 0 ${width} ${height}`} aria-hidden="true">
+  {
+    tiles.map((t) => (
+      <rect
+        x={t.x}
+        y={t.y}
+        width={t.size}
+        height={t.size}
+        rx={t.rx}
+        fill={t.heart ? 'var(--color-ribbon)' : 'var(--color-ink)'}
+        opacity={t.opacity}
+      />
+    ))
+  }
+</svg>

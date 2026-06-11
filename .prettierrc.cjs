@@ -1,4 +1,5 @@
 /** @type {import('prettier').Config} */
+// CommonJS config (package.json is "type": "module", so this must be .cjs)
 module.exports = {
   printWidth: 120,
   semi: true,
