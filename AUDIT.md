@@ -10,13 +10,18 @@
 
 | # | Severity | Finding |
 |---|----------|---------|
-| W-1 | Medium | Sitemap is advertised but never generated (missing `astro.config.mjs`) |
+| W-1 | Medium | ~~Sitemap is advertised but never generated~~ — **fixed in `569fb54`** (astro.config.mjs added) |
 | W-2 | Low | CSP allows `'unsafe-inline'` for scripts |
 | W-3 | Info | `set:html` sites verified safe — trust boundary is the CMS |
 | W-4 | Info | JSON-LD injection relies on data staying static |
 | W-5 | Info | No tests, linting, or CI |
 
 ### W-1 (Medium) — Sitemap advertised but never generated
+
+> **Resolved in commit `569fb54`** (Quiet Pages redesign): `astro.config.mjs` now sets
+> `site: 'https://www.wookinwai.com'` and registers `sitemap()`. The build emits
+> `sitemap-index.xml`, and canonical URLs / RSS derive from `Astro.site`. The original
+> finding is kept below for the record.
 
 There is no `astro.config.*` file in the repo, so:
 
@@ -82,7 +87,7 @@ No upgrade constraints. `npm update astro` when convenient.
 
 ## Prioritized recommendations
 
-1. **Fix the sitemap** (W-1): add `astro.config.mjs` with `site` + `sitemap()` — small change, real SEO impact.
-2. **Add minimal CI** (W-5): build + format check on push.
+1. ~~**Fix the sitemap** (W-1)~~ — done in `569fb54` (`astro.config.mjs` with `site` + `sitemap()`).
+2. **Add minimal CI** (W-5): build + format check on push. (`npm run format` works again as of `569fb54` — the prettier config was renamed to `.cjs`.)
 3. **Tighten CSP `script-src`** (W-2) via Astro's experimental CSP hashing when convenient.
 4. Bump `astro` to 6.4.5.
