@@ -32,7 +32,6 @@
   let cols = 0;
   let rows = 0;
   let dpr = 1;
-  let palette: number[][] = [];
   let mo: MutationObserver | null = null;
 
   // pointer state (CSS px within the band) + eased influence
@@ -64,15 +63,28 @@
 
   const lighten = (c: number[], t: number): number[] => c.map((v) => Math.round(v + (255 - v) * t));
 
+  // greens carry the plan; a rare red or blue cell is the off-plan moment —
+  // not everything goes smoothly or always goes to plan. Both are channel
+  // permutations of the brand green ([r,g,b] → [g,r,b] / [r,b,g]), so they
+  // share its exact tonal weight in both palettes and never shout.
+  let greens: number[][] = [];
+  let offRed: number[] = [];
+  let offBlue: number[] = [];
+
   function readPalette() {
     const cs = getComputedStyle(document.documentElement);
     const acc = parseColor(cs.getPropertyValue('--color-acc'));
     const acc2 = parseColor(cs.getPropertyValue('--color-acc-2'));
-    const graphite = parseColor(cs.getPropertyValue('--color-mut'));
-    // mostly green wash with the occasional graphite cell — pen and pencil.
-    // Greens repeat so graphite lands roughly 1 cell in 7.
-    const light = lighten(acc, 0.2);
-    palette = [acc, acc2, light, acc, acc2, light, graphite];
+    greens = [acc, acc2, lighten(acc, 0.2)];
+    offRed = [acc[1], acc[0], acc[2]];
+    offBlue = [acc[0], acc[2], acc[1]];
+  }
+
+  function pickShade(cx: number, cy: number) {
+    const r = hash(cx + 1, cy + 11);
+    if (r < 0.05) return offRed; // ~5% off-plan red
+    if (r < 0.1) return offBlue; // ~5% off-plan blue
+    return greens[(((r - 0.1) / 0.9) * greens.length) | 0] || greens[0];
   }
 
   function resize() {
@@ -94,12 +106,22 @@
     const w = canvas!.clientWidth;
     ctx.clearRect(0, 0, w, BAND);
 
-    for (let cy = 0; cy < rows; cy++) {
+    // The canvas is viewport-fixed but the body's graph paper scrolls, so draw
+    // in PAPER space: each cell's identity (hash) is keyed to its row on the
+    // paper, and its screen position shifts up by the scroll remainder. Cells
+    // stay glued to their paper square and ride it out of the band.
+    const sy = window.scrollY || 0;
+    const rowOff = Math.floor(sy / CELL);
+    const pix = sy - rowOff * CELL;
+
+    for (let vy = 0; vy <= rows; vy++) {
+      const cy = vy + rowOff; // paper-space row — keeps shade & phase fixed
+      const yPx = vy * CELL - pix; // screen-space y
       for (let cx = 0; cx < cols; cx++) {
         const r = hash(cx, cy);
         const participates = r < 0.38; // ~38% scattered ambient cells
         const phase = hash(cx + 7, cy + 3) * Math.PI * 2;
-        const shade = palette[(hash(cx + 1, cy + 11) * palette.length) | 0] || palette[0];
+        const shade = pickShade(cx, cy);
 
         // ambient breathing (only participating cells)
         let alpha = participates ? AMBIENT_CAP * (0.45 + 0.55 * Math.sin(t * SHIMMER_SPEED + phase)) : 0;
@@ -107,7 +129,7 @@
         // cursor proximity (all cells, lightly textured per-cell)
         if (influence > 0.001) {
           const dx = cx * CELL + CELL / 2 - mx;
-          const dy = cy * CELL + CELL / 2 - my;
+          const dy = yPx + CELL / 2 - my;
           const d = Math.hypot(dx, dy);
           if (d < RADIUS) {
             const f = 1 - d / RADIUS; // 0..1
@@ -124,7 +146,7 @@
         const k = Math.min(alpha / ALPHA_CAP, 1);
         const inset = 6 - 5 * k;
         ctx.fillStyle = `rgba(${shade[0]},${shade[1]},${shade[2]},${alpha})`;
-        ctx.fillRect(cx * CELL + inset, cy * CELL + inset, CELL - inset * 2, CELL - inset * 2);
+        ctx.fillRect(cx * CELL + inset, yPx + inset, CELL - inset * 2, CELL - inset * 2);
       }
     }
   }
@@ -155,14 +177,28 @@
     resizeTimer = window.setTimeout(resize, 150);
   }
 
+  // reduced-motion mode has no rAF loop, so re-draw the static frame on scroll
+  // (throttled to one frame) to keep cells glued to the paper grid
+  let scrollRaf = 0;
+  function onScrollStatic() {
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = 0;
+      draw(0);
+    });
+  }
+
   function teardown() {
     cancelAnimationFrame(raf);
     raf = 0;
+    cancelAnimationFrame(scrollRaf);
+    scrollRaf = 0;
     clearTimeout(resizeTimer);
     clearTimeout(idleTimer);
     window.removeEventListener('pointermove', onMove);
     document.removeEventListener('pointerleave', onLeave);
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('scroll', onScrollStatic);
     mo?.disconnect();
     mo = null;
     ctx = null;
@@ -182,6 +218,7 @@
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
       draw(0);
+      window.addEventListener('scroll', onScrollStatic, { passive: true });
       return;
     }
 

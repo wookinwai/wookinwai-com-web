@@ -54,10 +54,10 @@ const mark = [
     <button
       id="theme"
       aria-label="Toggle theme"
-      class="ml-2 flex-none cursor-pointer border border-line bg-transparent px-3 py-1.5 font-mono text-[11.5px] text-mut transition-colors hover:border-rule hover:text-ink max-[760px]:ml-auto"
+      class="ml-2 grid h-[34px] w-[34px] flex-none cursor-pointer place-items-center border border-line bg-transparent font-mono text-[15px] leading-none text-mut transition-colors hover:border-rule hover:text-ink max-[760px]:ml-auto"
     >
-      <span class="lamp">lamplight ◐</span>
-      <span class="day">daylight ◑</span>
+      <span class="lamp" aria-hidden="true">◐</span>
+      <span class="day" aria-hidden="true">◑</span>
     </button>
   </nav>
   <!-- mobile nav — a slim hairline strip below the top bar; the desktop list above hides <760px -->
