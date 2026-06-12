@@ -59,6 +59,27 @@ const mark = [
       <span class="day">daylight ◑</span>
     </button>
   </nav>
+  <!-- mobile nav — a slim hairline strip below the top bar; the desktop list above hides <760px -->
+  <nav class="hidden border-t border-line max-[760px]:block">
+    <ul class="mx-auto flex max-w-[1180px] list-none items-center justify-between px-7 py-2.5 max-[560px]:px-5">
+      {
+        NAV.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={isCurrent(link.href) ? 'page' : undefined}
+              class:list={[
+                "font-mono text-[12px] lowercase tracking-[0.02em] no-underline transition-colors hover:text-acc before:content-['/_'] before:text-soft",
+                isCurrent(link.href) ? 'text-acc' : 'text-mut',
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
 </header>
 
 <style>

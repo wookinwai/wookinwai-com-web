@@ -18,7 +18,7 @@
   /* text */
   --color-ink: #2b261c;
   --color-mut: #6e6755; /* graphite */
-  --color-soft: #9a917c; /* faint */
+  --color-soft: #8a8268; /* faint */
 
   /* accent — drafting green */
   --color-acc: #2f6b4c;
@@ -33,7 +33,7 @@
   /* status */
   --color-live: #2f6b4c;
   --color-build: #2f6b4c;
-  --color-closed: #9a917c;
+  --color-closed: #8a8268;
 
   /* on-fill text */
   --color-on-accent: #f4f0e2;
@@ -60,7 +60,7 @@ html[data-pal='ink'] {
   --color-panel: #262217;
   --color-ink: #ece4d0;
   --color-mut: #b2a88e;
-  --color-soft: #847b65;
+  --color-soft: #8d8470;
   --color-acc: #6fae8c;
   --color-acc-2: #5d9d7b;
   --color-acc-soft: rgba(111, 174, 140, 0.12);

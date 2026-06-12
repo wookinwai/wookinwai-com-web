@@ -150,7 +150,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     </figcaption>
   </figure>
   <div class="pt-[26px] font-mono text-[12px] text-soft">
-    founder of <b class="font-medium text-mut">tiny edges</b> · kuala lumpur, malaysia · est. works in production: {
+    founder of <b class="font-medium text-mut">tiny edges</b> · kuala lumpur, malaysia · works in production: {
       work.filter((w) => w.data.status !== 'closed').length
     }
   </div>
@@ -267,7 +267,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                 <span class="text-[16px] italic text-mut">{w.tease}</span>
               </div>
               <div class="flex items-center gap-3.5 border-l border-line px-[22px] py-4 font-mono text-[11.5px] text-mut max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-line max-[900px]:py-2.5">
-                <span class="flex items-center gap-1.5">
+                <span class="flex items-center gap-1.5 whitespace-nowrap">
                   <span class:list={['smark', w.status]} />
                   {statusLabel[w.status]}
                 </span>
@@ -296,7 +296,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                       )}
                     </div>
                     {w.shot && (
-                      <div class="flex justify-between px-0.5 pt-3 font-mono text-[11px] text-mut">
+                      <div class="flex flex-wrap justify-between gap-x-4 gap-y-1 px-0.5 pt-3 font-mono text-[11px] text-mut">
                         <span>{w.shot.label}</span>
                         <span>{w.shot.url} ↗</span>
                       </div>
@@ -415,7 +415,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     </div>
     <p class="mt-7 text-center font-mono text-[12px] text-soft">
       <a href="/contact" class="text-soft no-underline transition-colors hover:text-acc"
-        >what to expect, fit, and faq — on the contact page →</a
+        >what to expect, fit, and faq — on the contact page&nbsp;→</a
       >
     </p>
   </section>
