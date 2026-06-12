@@ -2,18 +2,13 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const notes = (await getCollection('notes')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const notes = (await getCollection('notes')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const fmt = (d: Date) =>
   `${d.getUTCFullYear()} · ${String(d.getUTCMonth() + 1).padStart(2, '0')} · ${String(d.getUTCDate()).padStart(2, '0')}`;
 ---
 
-<BaseLayout
-  title="Notes - Woo Kin Wai"
-  description="Notes on software, systems, and building with founders and SMEs."
->
+<BaseLayout title="Notes - Woo Kin Wai" description="Notes on software, systems, and building with founders and SMEs.">
   <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
     <div class="mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">notes /</div>
     <h1

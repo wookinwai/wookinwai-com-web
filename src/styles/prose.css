@@ -61,7 +61,7 @@
   margin-top: 0.5em;
 }
 .prose-drafting ul li::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0.72em;
@@ -74,7 +74,7 @@
 }
 .prose-drafting ol li::before {
   counter-increment: li;
-  content: counter(li, decimal-leading-zero) " /";
+  content: counter(li, decimal-leading-zero) ' /';
   position: absolute;
   left: 0;
   top: 0.25em;

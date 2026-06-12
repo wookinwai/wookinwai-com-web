@@ -6,14 +6,16 @@ import Footer from '../components/Footer.astro';
 
 // Self-hosted fonts (Fontsource). The Drafting Table speaks in Source Serif 4
 // (voice + display) and IBM Plex Mono (annotations, labels, figure numbers).
-import '@fontsource-variable/source-serif-4';
-import '@fontsource-variable/source-serif-4/wght-italic.css';
+// The opsz variants carry the [opsz,wght] axes, so large headings render in
+// the sharp display optical size — same cut as Google Fonts serves.
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '@fontsource-variable/source-serif-4/opsz-italic.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
 
 // Preload the above-the-fold body/display face.
-import serifWoff2 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2?url';
+import serifWoff2 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2?url';
 
 export interface Props {
   title: string;
@@ -39,9 +41,12 @@ const { title, description, canonical, image } = Astro.props;
       (function () {
         try {
           var stored = localStorage.getItem('pal');
-          var pal = stored === 'ink' || stored === 'paper'
-            ? stored
-            : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'paper';
+          var pal =
+            stored === 'ink' || stored === 'paper'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'ink'
+                : 'paper';
           document.documentElement.dataset.pal = pal;
           if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('motion');
@@ -91,9 +96,12 @@ const { title, description, canonical, image } = Astro.props;
       function applyChrome() {
         try {
           const stored = localStorage.getItem('pal');
-          const pal = stored === 'ink' || stored === 'paper'
-            ? stored
-            : matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'paper';
+          const pal =
+            stored === 'ink' || stored === 'paper'
+              ? stored
+              : matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'ink'
+                : 'paper';
           document.documentElement.dataset.pal = pal;
           if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('motion');

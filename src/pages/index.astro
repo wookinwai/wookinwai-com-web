@@ -41,22 +41,43 @@ const flow = [
 
 // fig. 02 — four shapes the same conversation tends to take.
 const cases = [
-  ['a', 'A new product has to become real', 'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, architected, and built.'],
-  ['b', 'Operations have outgrown the workaround', 'The business runs on spreadsheets, WhatsApp, manual checks, duplicated effort, and knowledge that lives in people’s heads.'],
-  ['c', 'A platform needs technical direction', 'The idea is bigger than a simple website. It needs a backend, data model, workflows, integrations, and decisions that will hold up later.'],
-  ['d', 'The business needs a technical partner', 'Not just someone to take tickets, but someone who can understand the business, make tradeoffs, and stay close to the outcome.'],
+  [
+    'a',
+    'A new product has to become real',
+    'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, architected, and built.',
+  ],
+  [
+    'b',
+    'Operations have outgrown the workaround',
+    'The business runs on spreadsheets, WhatsApp, manual checks, duplicated effort, and knowledge that lives in people’s heads.',
+  ],
+  [
+    'c',
+    'A platform needs technical direction',
+    'The idea is bigger than a simple website. It needs a backend, data model, workflows, integrations, and decisions that will hold up later.',
+  ],
+  [
+    'd',
+    'The business needs a technical partner',
+    'Not just someone to take tickets, but someone who can understand the business, make tradeoffs, and stay close to the outcome.',
+  ],
 ];
 
 // fig. 05 — the drafted timeline.
 const steps = [
-  ['01', 'First, listen.', 'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.'],
+  [
+    '01',
+    'First, listen.',
+    'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.',
+  ],
   ['02', 'Then, shape.', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
   ['03', 'Then, build.', 'Create the smallest serious version that can be used, tested, and improved.'],
   ['04', 'And stay close.', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
 ];
 
 const secWrap = 'reveal pt-24 max-[760px]:pt-20';
-const factRow = 'grid grid-cols-[168px_1fr] gap-[18px] border-b border-line py-3 max-[560px]:grid-cols-1 max-[560px]:gap-1';
+const factRow =
+  'grid grid-cols-[168px_1fr] gap-[18px] border-b border-line py-3 max-[560px]:grid-cols-1 max-[560px]:gap-1';
 const factKey = 'pt-[3px] font-mono text-[11.5px] text-soft max-[560px]:pt-0';
 const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 ---
@@ -86,7 +107,9 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
   </header>
 
   <!-- fig. 01 — the schematic: growth → gap → build -->
-  <figure class="rise d4 relative m-0 mt-5 border border-rule bg-bg px-14 pb-12 pt-[60px] max-[900px]:px-7 max-[900px]:pt-12">
+  <figure
+    class="rise d4 relative m-0 mt-5 border border-rule bg-bg px-14 pb-12 pt-[60px] max-[900px]:px-7 max-[900px]:pt-12"
+  >
     <Ticks />
     <div class="grid grid-cols-[1fr_64px_1fr_64px_1fr] items-stretch max-[900px]:grid-cols-1 max-[900px]:gap-8">
       {
@@ -100,7 +123,12 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                 ]}
               >
                 <div class="absolute -top-[19px] left-0 font-mono text-[11px] text-soft">0{i + 1}</div>
-                <div class:list={['mb-2.5 text-[25px] italic leading-none', f.build ? 'font-semibold text-acc' : 'text-ink']}>
+                <div
+                  class:list={[
+                    'mb-2.5 text-[25px] italic leading-none',
+                    f.build ? 'font-semibold text-acc' : 'text-ink',
+                  ]}
+                >
                   {f.label}
                 </div>
                 <div class="font-mono text-[12px] leading-[1.5] text-mut">{f.ann}</div>
@@ -116,7 +144,9 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     </div>
     <figcaption class="mt-11 flex items-baseline gap-4 border-t border-line pt-4">
       <span class="font-mono text-[11.5px] text-acc">fig. 01</span>
-      <span class="font-mono text-[12.5px] not-italic text-mut">the system, sketched before the code — drawn first, then built</span>
+      <span class="font-mono text-[12.5px] not-italic text-mut"
+        >the system, sketched before the code — drawn first, then built</span
+      >
     </figcaption>
   </figure>
   <div class="pt-[26px] font-mono text-[12px] text-soft">
@@ -127,7 +157,12 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 
   <!-- fig. 02 — what this usually looks like -->
   <section class={secWrap}>
-    <SectionHead fig="02" title="What this usually" em="looks like" sub="four shapes the same conversation tends to take." />
+    <SectionHead
+      fig="02"
+      title="What this usually"
+      em="looks like"
+      sub="four shapes the same conversation tends to take."
+    />
     <div class="grid grid-cols-2 gap-x-[72px] max-[760px]:grid-cols-1" data-stagger>
       {
         cases.map(([id, h, p]) => (
@@ -146,7 +181,10 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
   <!-- fig. 03 — about -->
   <section class={secWrap} id="about">
     <SectionHead fig="03" title="The short" em="version" />
-    <div class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9" data-stagger>
+    <div
+      class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9"
+      data-stagger
+    >
       <div>
         <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
           I started as an engineer, then spent a decade as the person responsible for turning ideas into working
@@ -155,13 +193,13 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         <p class="mb-5 text-[19px] leading-[1.62] text-ink">
           Over time, I moved from writing code to leading technical work, helping scale a company from a small team of
           around ten people to about a hundred. That experience shaped how I see software: good software is not just
-          clean code. It is a system that fits the business, the people, the timing, the constraints, and the next
-          stage of growth.
+          clean code. It is a system that fits the business, the people, the timing, the constraints, and the next stage
+          of growth.
         </p>
         <p class="mb-0 text-[19px] leading-[1.62] text-ink">
           Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
-          next. Sometimes it is a straightforward build. Sometimes, when the opportunity is strong and the fit is
-          right, I work closer to the outcome through a stake, revenue share, or longer-term partnership.
+          next. Sometimes it is a straightforward build. Sometimes, when the opportunity is strong and the fit is right,
+          I work closer to the outcome through a stake, revenue share, or longer-term partnership.
         </p>
       </div>
       <aside class="relative border border-rule bg-bg p-3.5 max-[900px]:max-w-[300px]">
@@ -181,7 +219,9 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         </div>
       </aside>
     </div>
-    <div class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9">
+    <div
+      class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9"
+    >
       <Ticks />
       <span class="whitespace-nowrap font-mono text-[12px] text-acc">the working question /</span>
       <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
@@ -198,9 +238,11 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
       em="work"
       sub="as of may 2026. a few examples of growth needs turned into working systems, from founder-led products to platforms and internal tools."
     />
-    {work.length === 0 && (
-      <p class="mt-3 border-b border-line pb-5 font-mono text-[12px] text-soft">selected work will appear here.</p>
-    )}
+    {
+      work.length === 0 && (
+        <p class="mt-3 border-b border-line pb-5 font-mono text-[12px] text-soft">selected work will appear here.</p>
+      )
+    }
     {
       work.map((entry, i) => {
         const w = entry.data;
@@ -208,8 +250,15 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         const hasShot = Boolean(w.screenshotUrl || w.shot);
         const modelBits = [w.engagement && modelLabel[w.engagement], w.role?.toLowerCase()].filter(Boolean);
         return (
-          <article class:list={['mt-12 border bg-bg first-of-type:mt-3', closed ? 'border-dashed border-mut' : 'border-rule']}>
-            <div class:list={['grid grid-cols-[120px_1fr_auto] border-b max-[900px]:grid-cols-1', closed ? 'border-dashed border-line' : 'border-rule']}>
+          <article
+            class:list={['mt-12 border bg-bg first-of-type:mt-3', closed ? 'border-dashed border-mut' : 'border-rule']}
+          >
+            <div
+              class:list={[
+                'grid grid-cols-[120px_1fr_auto] border-b max-[900px]:grid-cols-1',
+                closed ? 'border-dashed border-line' : 'border-rule',
+              ]}
+            >
               <div class="flex items-center border-r border-line px-[22px] py-4 font-mono text-[11.5px] text-soft max-[900px]:border-r-0 max-[900px]:border-b max-[900px]:border-line max-[900px]:py-2.5">
                 sheet 04.{i + 1}
               </div>
@@ -261,7 +310,10 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
               </div>
               <div class="p-[30px_34px_34px] max-[900px]:p-6">
                 {hasShot && w.bodyHtml && (
-                  <p class="mb-[22px] mt-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold" set:html={w.bodyHtml} />
+                  <p
+                    class="mb-[22px] mt-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold"
+                    set:html={w.bodyHtml}
+                  />
                 )}
                 {w.stack.length > 0 && (
                   <div class="mb-5 font-mono text-[11.5px] text-mut">
@@ -303,7 +355,12 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     <div class="mx-[30px] grid grid-cols-4 max-[760px]:mx-0 max-[760px]:grid-cols-1 max-[760px]:gap-9" data-stagger>
       {
         steps.map(([id, h, p], i) => (
-          <div class:list={['tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0 max-[760px]:before:hidden', i === steps.length - 1 && 'is-last']}>
+          <div
+            class:list={[
+              'tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0 max-[760px]:before:hidden',
+              i === steps.length - 1 && 'is-last',
+            ]}
+          >
             <div class="mb-3 font-mono text-[11.5px] text-soft">step {id} /</div>
             <h3 class="mb-2 mt-0 text-[21px] font-semibold italic text-ink">{h}</h3>
             <p class="m-0 text-[15px] text-mut">{p}</p>
@@ -315,26 +372,44 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 
   <!-- contact — the title block -->
   <section class="reveal pb-12 pt-[110px] max-[760px]:pt-20" id="contact">
-    <p class="mx-auto mb-14 max-w-[760px] text-balance text-center text-[clamp(26px,3.6vw,40px)] font-semibold leading-[1.25] tracking-[-0.01em] text-ink">
+    <p
+      class="mx-auto mb-14 max-w-[760px] text-balance text-center text-[clamp(26px,3.6vw,40px)] font-semibold leading-[1.25] tracking-[-0.01em] text-ink"
+    >
       If you can describe where your business is trying to grow,
       <em class="font-medium italic text-acc">I can help you work out the system it needs.</em>
     </p>
     <div class="relative mx-auto max-w-[820px] border-[1.5px] border-rule bg-bg">
       <Ticks />
       <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
-        <div class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0">project /</div>
+        <div
+          class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
+        >
+          project /
+        </div>
         <div class="px-[22px] py-[15px] text-[16px] text-ink">the system your business needs next</div>
       </div>
       <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
-        <div class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0">drawn by /</div>
+        <div
+          class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
+        >
+          drawn by /
+        </div>
         <div class="px-[22px] py-[15px] text-[16px] text-ink">{SITE.author} — {SITE.org}</div>
       </div>
       <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
-        <div class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0">location /</div>
+        <div
+          class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
+        >
+          location /
+        </div>
         <div class="px-[22px] py-[15px] font-mono text-[13px] text-mut">kuala lumpur · gmt+8</div>
       </div>
       <div class="grid grid-cols-[200px_1fr] max-[560px]:grid-cols-1">
-        <div class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0">contact /</div>
+        <div
+          class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
+        >
+          contact /
+        </div>
         <div class="px-[22px] py-[22px]"><EmailButton /></div>
       </div>
     </div>

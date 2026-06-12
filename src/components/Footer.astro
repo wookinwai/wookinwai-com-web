@@ -10,10 +10,11 @@ const linkClass = 'text-mut no-underline transition-colors hover:text-acc';
     class="mx-auto flex h-[72px] max-w-[1180px] flex-wrap items-center gap-x-6 gap-y-1 px-14 font-mono text-[11.5px] text-soft max-[900px]:px-7 max-[560px]:h-auto max-[560px]:px-5 max-[560px]:py-5"
   >
     <span>
-      © {year} {SITE.author.toLowerCase()} ·
-      <a href={SITE.orgUrl} target="_blank" rel="noopener noreferrer" class={linkClass}
-        >{SITE.org.toLowerCase()}</a
-      > · {SITE.location.toLowerCase()}
+      © {year}
+      {SITE.author.toLowerCase()} ·
+      <a href={SITE.orgUrl} target="_blank" rel="noopener noreferrer" class={linkClass}>{SITE.org.toLowerCase()}</a> · {
+        SITE.location.toLowerCase()
+      }
     </span>
     <span class="ml-auto flex gap-6 max-[560px]:ml-0">
       {
