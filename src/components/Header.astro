@@ -6,12 +6,13 @@ const path = Astro.url.pathname;
 const isCurrent = (href: string) =>
   !href.includes('#') && href !== '/' && (path === href || path.startsWith(href + '/'));
 
-// WKW mark — a tiny pixel monogram drawn on the drafting grid (3×3-ish plot).
-// 1 = ink, 2 = green; rendered as 5px squares.
+// WKW mark — a tiny pixel monogram drawn on the drafting grid.
+// 1 = ink, 2 = green; the green ascender tip is the "next stage" pixel,
+// marking where the last stroke of the W is headed. Rendered as 5px squares.
 const mark = [
+  [1, 0, 1, 0, 2],
   [1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1],
-  [1, 1, 2, 1, 1],
+  [1, 1, 1, 1, 1],
   [0, 1, 0, 1, 0],
 ];
 ---
