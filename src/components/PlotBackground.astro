@@ -109,8 +109,11 @@
     // The canvas is viewport-fixed but the body's graph paper scrolls, so draw
     // in PAPER space: each cell's identity (hash) is keyed to its row on the
     // paper, and its screen position shifts up by the scroll remainder. Cells
-    // stay glued to their paper square and ride it out of the band.
-    const sy = window.scrollY || 0;
+    // stay glued to their paper square and ride it out of the band. Reading
+    // the document's rect (not scrollY) also tracks rubber-band overscroll
+    // where the browser exposes it to JS (Safari); compositor-level bounces
+    // (Chrome on macOS) are invisible to scripts and can't be followed.
+    const sy = -document.documentElement.getBoundingClientRect().top;
     const rowOff = Math.floor(sy / CELL);
     const pix = sy - rowOff * CELL;
 
@@ -122,9 +125,11 @@
         const participates = r < 0.38; // ~38% scattered ambient cells
         const phase = hash(cx + 7, cy + 3) * Math.PI * 2;
         const shade = pickShade(cx, cy);
+        // off-plan cells breathe a touch brighter so they read at rest
+        const boost = shade === offRed || shade === offBlue ? 1.35 : 1;
 
         // ambient breathing (only participating cells)
-        let alpha = participates ? AMBIENT_CAP * (0.45 + 0.55 * Math.sin(t * SHIMMER_SPEED + phase)) : 0;
+        let alpha = participates ? boost * AMBIENT_CAP * (0.45 + 0.55 * Math.sin(t * SHIMMER_SPEED + phase)) : 0;
 
         // cursor proximity (all cells, lightly textured per-cell)
         if (influence > 0.001) {

@@ -111,7 +111,9 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     class="rise d4 relative m-0 mt-5 border border-rule bg-bg px-14 pb-12 pt-[60px] max-[900px]:px-7 max-[900px]:pt-12"
   >
     <Ticks />
-    <div class="grid grid-cols-[1fr_64px_1fr_64px_1fr] items-stretch max-[900px]:grid-cols-1 max-[900px]:gap-8">
+    <div
+      class="flow-relay grid grid-cols-[1fr_64px_1fr_64px_1fr] items-stretch max-[900px]:grid-cols-1 max-[900px]:gap-8"
+    >
       {
         flow.map((f, i) => (
           <>
@@ -137,7 +139,12 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                 <strong class="font-semibold text-ink">{f.lead}</strong> {f.desc}
               </p>
             </div>
-            {i < flow.length - 1 && <div class="conn mt-[58px] self-start max-[900px]:hidden" />}
+            {i < flow.length - 1 && (
+              <div class="conn flow-conn mt-[58px] self-start max-[900px]:hidden">
+                <span class="conn-arrow" aria-hidden="true" />
+                <span class="conn-packet" aria-hidden="true" />
+              </div>
+            )}
           </>
         ))
       }
@@ -351,16 +358,18 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
   <!-- fig. 05 — how the work unfolds -->
   <section class={secWrap} id="process">
     <SectionHead fig="05" title="How the work" em="unfolds" sub="small, serious versions. then iteration." />
-    <div class="tl-line mx-[30px] mt-[70px] max-[760px]:hidden"></div>
-    <div class="mx-[30px] grid grid-cols-4 max-[760px]:mx-0 max-[760px]:grid-cols-1 max-[760px]:gap-9" data-stagger>
+    <div class="tl-line mx-[30px] mt-[70px] max-[760px]:hidden">
+      <span class="conn-arrow" aria-hidden="true"></span>
+      <span class="conn-packet" aria-hidden="true"></span>
+    </div>
+    <div
+      class="tl-stops mx-[30px] grid grid-cols-4 max-[760px]:mx-0 max-[760px]:grid-cols-1 max-[760px]:gap-9"
+      data-stagger
+    >
       {
         steps.map(([id, h, p], i) => (
-          <div
-            class:list={[
-              'tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0 max-[760px]:before:hidden',
-              i === steps.length - 1 && 'is-last',
-            ]}
-          >
+          <div class:list={['tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0', i === steps.length - 1 && 'is-last']}>
+            <span class="tl-mark max-[760px]:hidden" aria-hidden="true" />
             <div class="mb-3 font-mono text-[11.5px] text-soft">step {id} /</div>
             <h3 class="mb-2 mt-0 text-[21px] font-semibold italic text-ink">{h}</h3>
             <p class="m-0 text-[15px] text-mut">{p}</p>
@@ -420,3 +429,142 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     </p>
   </section>
 </BaseLayout>
+
+<script>
+  // Relays, ported from the previous design and redrawn in drafting language.
+  //
+  // fig. 01 — growth → gap → build: an anime.js timeline sends a green "pen
+  // head" down each dashed leader line in turn; the arrowhead pulses as it
+  // arrives. The packet is the work moving through the system.
+  //
+  // fig. 05 — the drafted timeline: the same pen head travels the baseline
+  // stop to stop, and each square marker pulses as the work passes through it
+  // (listen → shape → build → stay close), fading out at the arrowhead.
+  //
+  // The other sections stay still on purpose: cases, sheets, and the title
+  // block have no direction to animate — motion there would be noise. Both
+  // relays run only while on screen, skip entirely under reduced motion, and
+  // rebind cleanly across View-Transition navigations.
+  import { createTimeline } from 'animejs';
+
+  const STEP = 720; // packet travel time per segment
+  const OVERLAP = 100; // how much the next segment fires before the last lands
+  const DWELL = 660; // pause between loops
+
+  let tls: ReturnType<typeof createTimeline>[] = [];
+  let ios: IntersectionObserver[] = [];
+
+  function teardown() {
+    ios.forEach((io) => io.disconnect());
+    ios = [];
+    tls.forEach((tl) => {
+      tl.pause();
+      tl.revert();
+    });
+    tls = [];
+  }
+
+  // play/pause a timeline as its host scrolls in and out of view
+  function bind(watch: HTMLElement, tl: ReturnType<typeof createTimeline>) {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => (e.isIntersecting ? tl.play() : tl.pause())),
+      { threshold: 0.25 }
+    );
+    io.observe(watch);
+    ios.push(io);
+    tls.push(tl);
+  }
+
+  const visible = (el: HTMLElement | null): el is HTMLElement => !!el && el.getClientRects().length > 0;
+
+  function initRelays() {
+    teardown();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // fig. 01 — leader-line relay
+    const flow = document.querySelector<HTMLElement>('.flow-relay');
+    const conns = flow ? [...flow.querySelectorAll<HTMLElement>('.flow-conn')].filter(visible) : [];
+    if (flow && conns.length) {
+      flow.classList.add('flow-live');
+      const tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
+      let at = 0;
+      conns.forEach((conn) => {
+        const packet = conn.querySelector<HTMLElement>('.conn-packet');
+        const arrow = conn.querySelector<HTMLElement>('.conn-arrow');
+        if (!packet) return;
+        tl.add(
+          packet,
+          {
+            left: ['0%', '100%'],
+            // fade in fast, ride the line lit, snuff out on arrival
+            opacity: [
+              { to: 1, duration: 70 },
+              { to: 1, duration: 560 },
+              { to: 0, duration: 90 },
+            ],
+            duration: STEP,
+          },
+          at
+        );
+        if (arrow) {
+          tl.add(
+            arrow,
+            { scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55], duration: 340, ease: 'outQuad' },
+            at + STEP - 190
+          );
+        }
+        at += STEP - OVERLAP;
+      });
+      // hold on the empty line before the relay loops
+      const first = conns[0].querySelector<HTMLElement>('.conn-packet');
+      if (first) tl.add(first, { opacity: 0, duration: DWELL }, at);
+      bind(flow, tl);
+    }
+
+    // fig. 05 — baseline walk: stop to stop, pulsing each marker on arrival
+    const line = document.querySelector<HTMLElement>('.tl-line');
+    const stops = document.querySelector<HTMLElement>('.tl-stops');
+    const packet = line?.querySelector<HTMLElement>('.conn-packet');
+    const arrow = line?.querySelector<HTMLElement>('.conn-arrow');
+    const marks = stops ? [...stops.querySelectorAll<HTMLElement>('.tl-mark')] : [];
+    if (visible(line) && packet && stops && marks.length === 4) {
+      line.classList.add('flow-live');
+      const tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
+      let at = 0;
+      // set off from the first stop…
+      tl.add(marks[0], { scale: [1, 1.4, 1], duration: 300, ease: 'outQuad' }, 0);
+      tl.add(packet, { opacity: [0, 1], duration: 90 }, 0);
+      // …walk the three segments between the four stops…
+      for (let k = 0; k < 3; k++) {
+        tl.add(packet, { left: [`${k * 25}%`, `${(k + 1) * 25}%`], duration: STEP }, at);
+        tl.add(marks[k + 1], { scale: [1, 1.4, 1], duration: 320, ease: 'outQuad' }, at + STEP - 160);
+        at += STEP - OVERLAP;
+      }
+      // …then run off the end of the drawing
+      tl.add(
+        packet,
+        {
+          left: ['75%', '100%'],
+          opacity: [
+            { to: 1, duration: STEP - 90 },
+            { to: 0, duration: 90 },
+          ],
+          duration: STEP,
+        },
+        at
+      );
+      if (arrow) {
+        tl.add(
+          arrow,
+          { scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55], duration: 340, ease: 'outQuad' },
+          at + STEP - 190
+        );
+      }
+      tl.add(packet, { opacity: 0, duration: DWELL }, at + STEP);
+      bind(stops, tl);
+    }
+  }
+
+  document.addEventListener('astro:page-load', initRelays);
+  document.addEventListener('astro:before-swap', teardown);
+</script>

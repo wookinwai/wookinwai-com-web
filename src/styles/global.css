@@ -167,14 +167,15 @@ body {
   right: -6px;
 }
 
-/* schematic connector — a dashed leader line with a drawn arrowhead */
+/* schematic connector — a dashed leader line. Arrowhead and the travelling
+   pen head are real elements (not pseudos) so the anime.js relay can drive
+   them; see the relay script in index.astro. */
 .conn {
   position: relative;
   height: 0;
   border-top: 1.5px dashed var(--color-mut);
 }
-.conn::after {
-  content: '';
+.conn-arrow {
   position: absolute;
   right: -1px;
   top: -5px;
@@ -183,6 +184,33 @@ body {
   border-top: 4.5px solid transparent;
   border-bottom: 4.5px solid transparent;
   border-left: 7px solid var(--color-mut);
+  transform-origin: center;
+}
+/* the pen head — a green square riding the leader line, trailing a short
+   fading stroke (the ink it just laid down) */
+.conn-packet {
+  position: absolute;
+  top: -4.5px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  background: var(--color-acc);
+  opacity: 0;
+  pointer-events: none;
+}
+.conn-packet::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  width: 26px;
+  height: 1.5px;
+  transform: translateY(-50%);
+  background: linear-gradient(270deg, var(--color-acc), transparent);
+}
+/* while a relay is live its resting arrowheads dim, so the arrival pulse reads */
+.flow-live .conn-arrow {
+  opacity: 0.55;
 }
 
 /* hatched fill for the emphasised schematic stage (the build) */
@@ -190,24 +218,19 @@ body {
   background: repeating-linear-gradient(-45deg, var(--color-acc-soft) 0 5px, transparent 5px 11px);
 }
 
-/* drafted timeline — a solid baseline with an arrowhead, square stops above */
+/* drafted timeline — a solid baseline with an arrowhead, square stops above.
+   Markers and arrowhead are real elements so the relay can pulse them. */
 .tl-line {
   position: relative;
   border-top: 1.5px solid var(--color-rule);
 }
-.tl-line::after {
-  content: '';
-  position: absolute;
+.tl-line .conn-arrow {
   right: -2px;
   top: -5.5px;
-  width: 0;
-  height: 0;
-  border-top: 4.5px solid transparent;
-  border-bottom: 4.5px solid transparent;
-  border-left: 8px solid var(--color-rule);
+  border-left-width: 8px;
+  border-left-color: var(--color-rule);
 }
-.tl-stop::before {
-  content: '';
+.tl-mark {
   position: absolute;
   top: -6.5px;
   left: 0;
@@ -215,8 +238,9 @@ body {
   height: 11px;
   background: var(--color-bg);
   border: 1.5px solid var(--color-rule);
+  transform-origin: center;
 }
-.tl-stop.is-last::before {
+.tl-stop.is-last .tl-mark {
   background: var(--color-acc);
   border-color: var(--color-acc);
 }
