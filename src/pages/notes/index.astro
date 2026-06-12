@@ -14,42 +14,38 @@ const fmt = (d: Date) =>
   title="Notes - Woo Kin Wai"
   description="Notes on software, systems, and building with founders and SMEs."
 >
-  <header class="pt-[92px]">
-    <div class="font-mono text-[11px] uppercase tracking-[0.16em] text-acc">NOTES</div>
+  <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
+    <div class="mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">notes /</div>
     <h1
-      class="mt-[26px] max-w-[820px] font-sans text-[clamp(36px,6vw,68px)] font-extrabold leading-[1.04] tracking-[-0.035em] text-ink"
+      class="mb-[30px] font-sans text-[clamp(32px,5.4vw,58px)] font-semibold leading-[1.08] tracking-[-0.018em] text-ink"
     >
-      Field notes
+      Field <em class="font-medium italic text-acc">notes</em>
     </h1>
-    <p class="mt-6 max-w-[600px] text-[17px] leading-[1.6] text-mut">
+    <p class="max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
       Notes on software, systems, and building with founders and SMEs.
     </p>
   </header>
 
   {
     notes.length === 0 ? (
-      <p class="mt-[56px] font-mono text-[13px] uppercase tracking-[0.12em] text-soft">No notes yet.</p>
+      <p class="mt-14 font-mono text-[12.5px] text-soft">no notes yet.</p>
     ) : (
-      <div class="mt-[56px] border-t-2 border-rule" data-stagger>
+      <div class="mb-12 mt-14 border-t border-line" data-stagger>
         {notes.map((note) => (
           <a
             href={`/notes/${note.data.slug}`}
-            class="row-edge group grid grid-cols-[auto_1fr] items-baseline gap-6 border-b-2 border-rule py-[22px] no-underline transition-colors hover:bg-panel max-[760px]:grid-cols-1 max-[760px]:gap-2"
+            class="row-edge group grid grid-cols-[150px_1fr] items-baseline gap-[18px] border-b border-line py-[22px] no-underline transition-colors hover:bg-panel max-[760px]:grid-cols-1 max-[760px]:gap-2"
           >
-            <div class="whitespace-nowrap pt-1 font-mono text-[12px] uppercase tracking-[0.12em] text-soft">
-              {fmt(note.data.pubDate)}
-            </div>
+            <div class="whitespace-nowrap pt-1 font-mono text-[12px] text-soft">{fmt(note.data.pubDate)}</div>
             <div>
-              <div class="font-sans text-[22px] font-extrabold leading-[1.12] tracking-[-0.015em] text-ink transition-colors group-hover:text-acc">
+              <div class="text-[22px] font-semibold leading-[1.12] text-ink transition-colors group-hover:text-acc">
                 {note.data.title}
               </div>
               <p class="mt-1.5 text-[14.5px] leading-[1.55] text-mut">{note.data.description}</p>
               {note.data.tags.length > 0 && (
-                <div class="mt-2.5 flex flex-wrap gap-2">
+                <div class="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-soft">
                   {note.data.tags.map((tag) => (
-                    <span class="border border-line px-[9px] py-[3px] font-mono text-[10px] uppercase tracking-[0.06em] text-soft">
-                      {tag}
-                    </span>
+                    <span>/ {tag.toLowerCase()}</span>
                   ))}
                 </div>
               )}

@@ -2,155 +2,140 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/SectionHead.astro';
 import EmailButton from '../components/EmailButton.astro';
+import Ticks from '../components/Ticks.astro';
+import { SITE } from '../consts';
 import { getCollection } from 'astro:content';
 
 const title = 'Woo Kin Wai: software builder & technical partner';
 const description =
   'I work with founders and SMEs to shape and build the software their business needs next, from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
 
-// Selected work — CMS-driven (section 03).
+// Selected work — CMS-driven (fig. 04).
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 
-const statusLabel = { live: 'Live', building: 'Building', closed: 'Closed' } as const;
-// Engagement → "Model" cell. Cobalt (acc-blue) is the one sanctioned categorical
-// secondary: build engagements vs red upside participation.
-const modelMap = {
-  upside: { value: 'Upside participation', tone: 'acc' },
-  engaged: { value: 'Engaged to build', tone: 'blue' },
-} as const;
+const statusLabel = { live: 'live', building: 'in build', closed: 'closed' } as const;
+const modelLabel = { upside: 'upside participation', engaged: 'engaged to build' } as const;
 
+// fig. 01 — the schematic: growth → gap → build.
 const flow = [
   {
-    n: '01',
-    label: 'The growth',
-    title: 'Where the business wants to go',
+    label: 'the growth',
+    ann: 'where the business wants to go',
+    lead: 'Where the business wants to go.',
     desc: 'New revenue, better operations, a product idea, a platform, or a market opportunity that is starting to become real.',
   },
   {
-    n: '02',
-    label: 'The gap',
-    title: 'The system is missing',
+    label: 'the gap',
+    ann: 'the system is missing',
+    lead: 'The system is missing.',
     desc: 'The work is still manual, scattered, unclear, or technically fragile. The ambition exists, but the operating shape does not.',
   },
   {
-    n: '03',
-    label: 'The build',
-    title: 'Software that can carry it',
+    label: 'the build',
+    ann: 'software that can carry it',
+    lead: 'Software that can carry it.',
     desc: 'A product, platform, portal, internal tool, workflow, or technical foundation designed around how the business actually works.',
     build: true,
   },
 ];
 
-const scenarios = [
-  ['New product', 'A new product has to become real', 'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, architected, and built.'],
-  ['Operations', 'Operations have outgrown the workaround', 'The business runs on spreadsheets, WhatsApp, manual checks, duplicated effort, and knowledge that lives in people’s heads.'],
-  ['Platform', 'A platform needs technical direction', 'The idea is bigger than a simple website. It needs a backend, data model, workflows, integrations, and decisions that will hold up later.'],
-  ['Partnership', 'The business needs a technical partner', 'Not just someone to take tickets, but someone who can understand the business, make tradeoffs, and stay close to the outcome.'],
+// fig. 02 — four shapes the same conversation tends to take.
+const cases = [
+  ['a', 'A new product has to become real', 'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, architected, and built.'],
+  ['b', 'Operations have outgrown the workaround', 'The business runs on spreadsheets, WhatsApp, manual checks, duplicated effort, and knowledge that lives in people’s heads.'],
+  ['c', 'A platform needs technical direction', 'The idea is bigger than a simple website. It needs a backend, data model, workflows, integrations, and decisions that will hold up later.'],
+  ['d', 'The business needs a technical partner', 'Not just someone to take tickets, but someone who can understand the business, make tradeoffs, and stay close to the outcome.'],
 ];
 
+// fig. 05 — the drafted timeline.
 const steps = [
-  ['01', 'Listen', 'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.'],
-  ['02', 'Shape', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
-  ['03', 'Build', 'Create the smallest serious version that can be used, tested, and improved.'],
-  ['04', 'Stay close', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
+  ['01', 'First, listen.', 'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.'],
+  ['02', 'Then, shape.', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
+  ['03', 'Then, build.', 'Create the smallest serious version that can be used, tested, and improved.'],
+  ['04', 'And stay close.', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
 ];
 
-// shared section spacing (the masthead itself lives in <SectionHead/>)
-const secWrap = 'reveal pt-[112px] max-[760px]:pt-[84px]';
-const lead = 'mt-[26px] max-w-[660px] text-[17px] leading-[1.66] text-mut';
-
-const ndLabel = 'whitespace-nowrap border-r-2 border-rule px-4 py-[13px] font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] text-soft';
-const ndText = 'px-4 py-[13px] text-[15px] leading-[1.4] text-ink';
-const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] text-soft';
+const secWrap = 'reveal pt-24 max-[760px]:pt-20';
+const factRow = 'grid grid-cols-[168px_1fr] gap-[18px] border-b border-line py-3 max-[560px]:grid-cols-1 max-[560px]:gap-1';
+const factKey = 'pt-[3px] font-mono text-[11.5px] text-soft max-[560px]:pt-0';
+const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 ---
 
 <BaseLayout title={title} description={description}>
   <!-- Hero -->
-  <header class="pt-[84px]">
-    <div class="rise d1 flex flex-col gap-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acc">
-      <span>Software builder and technical partner</span><span class="text-soft">Founder of Tiny Edges · Kuala Lumpur, Malaysia</span>
+  <header class="max-w-[880px] pt-[92px] pb-9 max-[760px]:pt-16">
+    <div class="rise d1 mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">
+      software builder &amp; technical partner — kuala lumpur, gmt+8
     </div>
     <h1
-      class="rise d2 mt-6 max-w-[1000px] text-balance font-sans text-[clamp(32px,5.4vw,62px)] font-extrabold leading-[1.05] tracking-[-0.03em] text-ink"
+      class="rise d2 mb-[34px] text-balance font-sans text-[clamp(34px,5.4vw,64px)] font-semibold leading-[1.08] tracking-[-0.018em] text-ink"
     >
       I help businesses define and build the software they need for their
-      <span class="text-acc">next stage of growth</span>.
+      <em class="font-medium italic text-acc">next stage of growth</em>.
     </h1>
-    <p class="rise d3 mt-[26px] max-w-[580px] text-[17px] leading-[1.6] text-mut">
-      The work usually starts before the code: where the business is trying to go, what is getting in the way, and
-      what kind of system would actually help it move.
-    </p>
-    <p class="rise d3 mt-[18px] max-w-[580px] text-[17px] leading-[1.6] text-mut">
-      Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
-      Sometimes it means helping a founder shape the technical path before the first serious build.
-    </p>
-    <a
-      href="#work"
-      class="rise d3 mt-7 inline-flex items-center gap-2 pb-[3px] font-mono text-[11.5px] font-bold uppercase tracking-[0.12em] text-ink no-underline shadow-[inset_0_-2px_0_var(--color-acc)] transition-all hover:gap-3"
-      >See selected work ↓</a
-    >
+    <div class="rise d3">
+      <p class="mb-4 max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
+        The work usually starts before the code: where the business is trying to go, what is getting in the way, and
+        what kind of system would actually help it move.
+      </p>
+      <p class="max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
+        Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
+        Sometimes it means helping a founder shape the technical path before the first serious build.
+      </p>
+    </div>
+  </header>
 
-    <!-- growth → gap → build flow -->
-    <div class="flow-relay rise d4 mt-14 flex items-stretch max-[760px]:flex-col max-[760px]:gap-3">
+  <!-- fig. 01 — the schematic: growth → gap → build -->
+  <figure class="rise d4 relative m-0 mt-5 border border-rule bg-bg px-14 pb-12 pt-[60px] max-[900px]:px-7 max-[900px]:pt-12">
+    <Ticks />
+    <div class="grid grid-cols-[1fr_64px_1fr_64px_1fr] items-stretch max-[900px]:grid-cols-1 max-[900px]:gap-8">
       {
         flow.map((f, i) => (
           <>
-            <div
-              class:list={[
-                // z-10 + opaque fill so the connector packet/comet runs BEHIND the
-                // cards and tucks under their edges instead of bleeding over them.
-                'relative z-10 flex-1 overflow-hidden rounded-[2px] border-2 px-[22px] pb-6 pt-[22px] transition-all',
-                f.build
-                  ? 'border-acc bg-acc text-on-accent hover:-translate-y-0.5 hover:shadow-sm'
-                  : 'border-rule bg-bg hover:-translate-y-0.5 hover:bg-panel hover:shadow-sm',
-              ]}
-            >
-              <div class="flex items-baseline justify-between">
-                <div class:list={['font-mono text-[10px] font-bold uppercase tracking-[0.18em]', f.build ? 'text-on-accent' : 'text-acc']}>{f.label}</div>
-                <div class:list={['font-mono text-[11px] font-bold', f.build ? 'text-on-accent' : 'text-soft']}>{f.n}</div>
-              </div>
-              <div class:list={['mb-2.5 mt-3 font-sans text-[19px] font-extrabold leading-[1.1] tracking-[-0.02em]', f.build ? 'text-on-accent' : 'text-ink']}>{f.title}</div>
-              <div class:list={['text-[13.5px] leading-[1.55]', f.build ? 'text-on-accent' : 'text-mut']}>{f.desc}</div>
-            </div>
-            {i < flow.length - 1 && (
-              <div class="flow-conn relative flex flex-[0_0_64px] items-center self-center px-[5px] max-[760px]:hidden">
-                <span class="absolute left-px top-1/2 z-[2] -mt-[3px] h-1.5 w-1.5 bg-acc" />
-                <div class="relative h-[2px] w-full bg-line">
-                  <span class="flow-packet absolute left-0 top-1/2 z-[3] -mt-[3px] h-1.5 w-1.5 bg-acc opacity-0" />
+            <div class="relative">
+              <div
+                class:list={[
+                  'relative border-[1.5px] border-rule bg-bg px-7 pb-6 pt-[26px]',
+                  f.build && 'hatch border-2 border-acc',
+                ]}
+              >
+                <div class="absolute -top-[19px] left-0 font-mono text-[11px] text-soft">0{i + 1}</div>
+                <div class:list={['mb-2.5 text-[25px] italic leading-none', f.build ? 'font-semibold text-acc' : 'text-ink']}>
+                  {f.label}
                 </div>
-                <svg width="11" height="11" viewBox="0 0 11 11" class="flow-arrow absolute -right-px text-acc" aria-hidden="true">
-                  <path d="M1.5 5.5h6M5.5 2.5l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+                <div class="font-mono text-[12px] leading-[1.5] text-mut">{f.ann}</div>
               </div>
-            )}
+              <p class="mx-1 mb-0 mt-[22px] text-[15px] leading-[1.55] text-mut">
+                <strong class="font-semibold text-ink">{f.lead}</strong> {f.desc}
+              </p>
+            </div>
+            {i < flow.length - 1 && <div class="conn mt-[58px] self-start max-[900px]:hidden" />}
           </>
         ))
       }
     </div>
-  </header>
+    <figcaption class="mt-11 flex items-baseline gap-4 border-t border-line pt-4">
+      <span class="font-mono text-[11.5px] text-acc">fig. 01</span>
+      <span class="font-mono text-[12.5px] not-italic text-mut">the system, sketched before the code — drawn first, then built</span>
+    </figcaption>
+  </figure>
+  <div class="pt-[26px] font-mono text-[12px] text-soft">
+    founder of <b class="font-medium text-mut">tiny edges</b> · kuala lumpur, malaysia · est. works in production: {
+      work.filter((w) => w.data.status !== 'closed').length
+    }
+  </div>
 
-  <!-- 01 — The pattern -->
+  <!-- fig. 02 — what this usually looks like -->
   <section class={secWrap}>
-    <SectionHead
-      index="01 / The pattern"
-      title="What this usually looks like"
-      sub="Growth exposes the systems a business does not have yet."
-    />
-    <p class={lead}>
-      The work often starts before the code. The first question is not which stack to use. It is what kind of system the
-      business needs in order to move.
-    </p>
-    <div class="mt-[34px] grid grid-cols-2 overflow-hidden rounded-[2px] border-2 border-rule max-[760px]:grid-cols-1">
+    <SectionHead fig="02" title="What this usually" em="looks like" sub="four shapes the same conversation tends to take." />
+    <div class="grid grid-cols-2 gap-x-[72px] max-[760px]:grid-cols-1" data-stagger>
       {
-        scenarios.map(([cat, h, p], i) => (
-          <div class:list={[i % 2 === 1 && 'border-l-2 border-rule max-[760px]:border-l-0', i >= 2 && 'border-t-2 border-rule', 'max-[760px]:border-t-2 max-[760px]:[&:first-child]:border-t-0']}>
-            <div class="group h-full bg-transparent p-[28px_26px] text-ink transition-colors hover:bg-ink hover:text-on-ink">
-              <div class="mb-3 flex items-center gap-[9px]">
-                <span class="h-[7px] w-[7px] flex-none bg-acc" />
-                <span class="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-mut transition-colors group-hover:text-on-ink">{cat}</span>
-              </div>
-              <h3 class="mb-2.5 font-sans text-[20px] font-extrabold leading-[1.08] tracking-[-0.02em]">{h}</h3>
-              <p class="m-0 text-[14px] leading-[1.58] text-mut transition-colors group-hover:text-on-ink">{p}</p>
+        cases.map(([id, h, p]) => (
+          <div class="grid grid-cols-[78px_1fr] gap-[18px] border-b border-line py-[26px] max-[560px]:grid-cols-1 max-[560px]:gap-2">
+            <div class="pt-1.5 font-mono text-[12px] text-soft max-[560px]:pt-0">case {id} /</div>
+            <div>
+              <h3 class="mb-2 mt-0 text-[21.5px] font-semibold leading-[1.3] text-ink">{h}</h3>
+              <p class="m-0 text-[15.5px] text-mut">{p}</p>
             </div>
           </div>
         ))
@@ -158,298 +143,205 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
     </div>
   </section>
 
-  <!-- 02 — About -->
+  <!-- fig. 03 — about -->
   <section class={secWrap} id="about">
-    <SectionHead index="02 / About" title="The short version" />
-    <div class="mt-[38px] grid grid-cols-[1fr_230px] items-start gap-[56px] max-[760px]:grid-cols-1 max-[760px]:gap-[30px]">
-      <div class="text-[17px] leading-[1.7] text-ink" data-stagger>
-        <p class="mb-4">I started as an engineer, then spent a decade as the person responsible for turning ideas into working systems.</p>
-        <p class="mb-4">
+    <SectionHead fig="03" title="The short" em="version" />
+    <div class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9" data-stagger>
+      <div>
+        <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
+          I started as an engineer, then spent a decade as the person responsible for turning ideas into working
+          systems.
+        </p>
+        <p class="mb-5 text-[19px] leading-[1.62] text-ink">
           Over time, I moved from writing code to leading technical work, helping scale a company from a small team of
-          around <b class="font-bold">10 people to about 100</b>. That experience shaped how I see software.
+          around ten people to about a hundred. That experience shaped how I see software: good software is not just
+          clean code. It is a system that fits the business, the people, the timing, the constraints, and the next
+          stage of growth.
         </p>
-        <p class="mb-4">
-          Good software is not just clean code. It is a system that fits the business, the people, the timing, the
-          constraints, and the next stage of growth.
+        <p class="mb-0 text-[19px] leading-[1.62] text-ink">
+          Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
+          next. Sometimes it is a straightforward build. Sometimes, when the opportunity is strong and the fit is
+          right, I work closer to the outcome through a stake, revenue share, or longer-term partnership.
         </p>
-        <p class="mb-4">
-          Today I run <b class="font-bold">Tiny Edges</b>. I work with founders and SMEs to shape and build the
-          software their business needs next.
-        </p>
-        <p class="mb-4">
-          Sometimes it is a straightforward build. Sometimes, when the opportunity is strong and the fit is right, I work
-          closer to the outcome through a <b class="font-bold text-acc">stake, revenue share, or longer-term partnership</b>.
-        </p>
-        <blockquote
-          class="my-[30px] border-l-4 border-acc pl-[22px] font-sans text-[clamp(24px,3.2vw,34px)] font-extrabold leading-[1.12] tracking-[-0.025em] text-ink"
-        >
-          What system does this business need in order to grow?
-        </blockquote>
-        <div class="mt-[26px] flex items-center gap-[14px]">
-          <div class="grid h-12 w-12 flex-none place-items-center rounded-[2px] border-2 border-rule bg-panel font-mono text-[13px] font-bold text-ink">
-            WKW
-          </div>
-          <div class="font-sans text-[18px] font-extrabold tracking-[-0.015em] text-ink">
-            Kin Wai<small class="mt-1 block font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-soft">Kuala Lumpur</small>
-          </div>
-        </div>
       </div>
-      <aside class="sticky top-[92px] max-[760px]:static max-[760px]:order-[-1] max-[760px]:max-w-[230px]">
-        <div class="aspect-[4/5] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
-          <img
-            src="/woo-kin-wai-software-builder.avif"
-            alt="Woo Kin Wai, software builder and technical partner"
-            width="1500"
-            height="1497"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
-          />
+      <aside class="relative border border-rule bg-bg p-3.5 max-[900px]:max-w-[300px]">
+        <Ticks />
+        <img
+          src="/woo-kin-wai-software-builder.avif"
+          alt="Woo Kin Wai, software builder and technical partner"
+          width="1500"
+          height="1497"
+          loading="lazy"
+          decoding="async"
+          class="block w-full saturate-[.9] contrast-[1.02]"
+        />
+        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-[11px] text-mut">
+          <span>woo kin wai</span>
+          <span>kuala lumpur</span>
         </div>
       </aside>
     </div>
+    <div class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9">
+      <Ticks />
+      <span class="whitespace-nowrap font-mono text-[12px] text-acc">the working question /</span>
+      <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
+        What system does this business need in order to grow?
+      </blockquote>
+    </div>
   </section>
 
-  <!-- 03 — Selected work -->
+  <!-- fig. 04 — selected work: the build sheets -->
   <section class={secWrap} id="work">
-    <SectionHead index="03 / Selected work" title="Selected work" sub="As of May 2026" />
-    <p class={lead}>
-      A few examples of growth needs turned into working systems, from founder-led products to platforms and internal
-      tools.
-    </p>
-
-    <div class="mt-[30px] border-t-2 border-rule" data-stagger>
-      {work.length === 0 && (
-        <p class="border-b-2 border-rule py-5 font-mono text-[12px] uppercase tracking-[0.12em] text-soft">
-          Selected work will appear here.
-        </p>
-      )}
-      {
-        work.map((entry, i) => {
-          const w = entry.data;
-          const model = w.engagement ? modelMap[w.engagement] : null;
-          return (
-            <div class="flow border-b-2 border-rule">
-              <div class="flow-main row-edge group grid cursor-pointer grid-cols-[auto_1fr_auto] items-center gap-[18px] py-5 transition-colors hover:bg-panel max-[760px]:grid-cols-[auto_1fr]">
-                <div class="w-7 font-mono text-[13px] font-bold text-acc">{String(i + 1).padStart(2, '0')}</div>
-                <div>
-                  <div class="flex items-center gap-3 font-sans text-[23px] font-extrabold tracking-[-0.015em] text-ink transition-colors group-hover:text-acc">
-                    {w.name}
-                    <span class="exp inline-block font-mono text-[15px] font-bold text-acc">+</span>
-                  </div>
-                  <div class="mt-1 text-[14px] text-mut">{w.tease}</div>
-                </div>
-                <div class:list={['flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] font-bold uppercase tracking-[0.16em] max-[760px]:col-span-2 max-[760px]:pl-[34px]', `text-${w.status}`]}>
+    <SectionHead
+      fig="04"
+      title="Selected"
+      em="work"
+      sub="as of may 2026. a few examples of growth needs turned into working systems, from founder-led products to platforms and internal tools."
+    />
+    {work.length === 0 && (
+      <p class="mt-3 border-b border-line pb-5 font-mono text-[12px] text-soft">selected work will appear here.</p>
+    )}
+    {
+      work.map((entry, i) => {
+        const w = entry.data;
+        const closed = w.status === 'closed';
+        const hasShot = Boolean(w.screenshotUrl || w.shot);
+        const modelBits = [w.engagement && modelLabel[w.engagement], w.role?.toLowerCase()].filter(Boolean);
+        return (
+          <article class:list={['mt-12 border bg-bg first-of-type:mt-3', closed ? 'border-dashed border-mut' : 'border-rule']}>
+            <div class:list={['grid grid-cols-[120px_1fr_auto] border-b max-[900px]:grid-cols-1', closed ? 'border-dashed border-line' : 'border-rule']}>
+              <div class="flex items-center border-r border-line px-[22px] py-4 font-mono text-[11.5px] text-soft max-[900px]:border-r-0 max-[900px]:border-b max-[900px]:border-line max-[900px]:py-2.5">
+                sheet 04.{i + 1}
+              </div>
+              <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-[22px] py-4">
+                <h3 class="m-0 whitespace-nowrap text-[27px] font-semibold text-ink">{w.name}</h3>
+                <span class="text-[16px] italic text-mut">{w.tease}</span>
+              </div>
+              <div class="flex items-center gap-3.5 border-l border-line px-[22px] py-4 font-mono text-[11.5px] text-mut max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-line max-[900px]:py-2.5">
+                <span class="flex items-center gap-1.5">
                   <span class:list={['smark', w.status]} />
                   {statusLabel[w.status]}
-                </div>
+                </span>
+                {modelBits.length > 0 && <span class="text-acc">{modelBits.join(' · ')}</span>}
               </div>
-              <div class="detail">
-                <div class="pb-9 pt-1.5">
-                  {(w.shot || w.screenshotUrl) && (
-                    <div class="mb-6 aspect-[16/9] max-w-[660px] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
-                      <div class="flex h-[30px] items-center gap-1.5 border-b-2 border-rule bg-bg px-3">
-                        <i class="block h-2 w-2 bg-rule" />
-                        <i class="block h-2 w-2 bg-rule" />
-                        <i class="block h-2 w-2 bg-rule" />
-                        <span class="ml-[9px] font-mono text-[9.5px] font-medium text-soft">{w.shot?.url}</span>
-                      </div>
+            </div>
+            <div class:list={['grid max-[900px]:grid-cols-1', hasShot ? 'grid-cols-[1.15fr_1fr]' : 'grid-cols-2']}>
+              <div class="border-r border-line p-[30px_34px_34px] max-[900px]:border-r-0 max-[900px]:border-b max-[900px]:border-line max-[900px]:p-6">
+                {hasShot ? (
+                  <div>
+                    <div class="border border-rule">
                       {w.screenshotUrl ? (
                         <img
                           src={w.screenshotUrl}
                           alt={w.shot?.label || `${w.name} screenshot`}
                           loading="lazy"
                           decoding="async"
-                          class="h-[calc(100%-30px)] w-full object-cover object-top"
+                          class="block aspect-[16/10] w-full object-cover object-top"
                         />
                       ) : (
-                        <div
-                          class="grid h-[calc(100%-30px)] place-items-center"
-                          style="background:repeating-linear-gradient(45deg, transparent, transparent 11px, var(--color-line-2) 11px, var(--color-line-2) 12px);"
-                        >
-                          <span class="border-2 border-rule bg-panel px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-soft">
-                            {w.name} screenshot
+                        <div class="grid aspect-[16/10] place-items-center bg-[repeating-linear-gradient(-45deg,var(--color-acc-soft)_0_5px,transparent_5px_11px)]">
+                          <span class="border border-line bg-bg px-3 py-1.5 font-mono text-[10.5px] text-soft">
+                            {w.name.toLowerCase()} — drawing to follow
                           </span>
                         </div>
                       )}
                     </div>
-                  )}
-                  <div class="mb-6 grid max-w-[660px] grid-cols-[auto_1fr] overflow-hidden rounded-[2px] border-2 border-rule">
-                    {w.nd.map((n, j) => (
-                      <>
-                        <span class:list={[ndLabel, j > 0 && 'border-t border-line']}>{n.label}</span>
-                        <span class:list={[ndText, j > 0 && 'border-t border-line']}>{n.text}</span>
-                      </>
-                    ))}
+                    {w.shot && (
+                      <div class="flex justify-between px-0.5 pt-3 font-mono text-[11px] text-mut">
+                        <span>{w.shot.label}</span>
+                        <span>{w.shot.url} ↗</span>
+                      </div>
+                    )}
                   </div>
-                  {(w.role || model) && (
-                    <div class="mb-5 flex w-fit flex-wrap overflow-hidden rounded-[2px] border-2 border-rule">
-                      {w.role && (
-                        <div class="flex flex-col gap-1 px-[18px] py-3">
-                          <span class={metaLabel}>Role</span>
-                          <span class="font-mono text-[13px] font-medium text-ink">{w.role}</span>
-                        </div>
-                      )}
-                      {model && (
-                        <div class="flex flex-col gap-1 border-l-2 border-rule px-[18px] py-3">
-                          <span class={metaLabel}>Model</span>
-                          <span class:list={['inline-flex items-center gap-[7px] font-mono text-[13px] font-medium', model.tone === 'acc' ? 'text-acc' : 'text-acc-blue']}>
-                            <span class:list={['h-1.5 w-1.5 flex-none', model.tone === 'acc' ? 'bg-acc' : 'bg-acc-blue']} />
-                            {model.value}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  {w.bodyHtml && (
-                    <p class="mb-[18px] max-w-[660px] text-[16px] leading-[1.66] text-mut [&_b]:font-bold [&_b]:text-ink" set:html={w.bodyHtml} />
-                  )}
-                  {w.stack.length > 0 && (
-                    <div class="flex flex-wrap gap-2">
-                      {w.stack.map((s) => (
-                        <span class="border-2 border-rule px-[10px] py-[5px] font-mono text-[10.5px] uppercase leading-none tracking-[0.08em] text-mut">{s}</span>
-                      ))}
-                    </div>
-                  )}
-                  {w.visit && (
-                    <a
-                      href={w.visit.href}
-                      target="_blank"
-                      rel="noopener"
-                      class="mt-5 inline-flex items-center rounded-[2px] border-2 border-acc px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-acc no-underline transition-all hover:-translate-x-px hover:-translate-y-px hover:bg-acc hover:text-on-accent hover:shadow-acc"
-                    >
-                      {w.visit.label}
-                    </a>
-                  )}
-                </div>
+                ) : (
+                  w.bodyHtml && (
+                    <p class="m-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold" set:html={w.bodyHtml} />
+                  )
+                )}
+              </div>
+              <div class="p-[30px_34px_34px] max-[900px]:p-6">
+                {hasShot && w.bodyHtml && (
+                  <p class="mb-[22px] mt-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold" set:html={w.bodyHtml} />
+                )}
+                {w.stack.length > 0 && (
+                  <div class="mb-5 font-mono text-[11.5px] text-mut">
+                    <span class="text-soft">stack /</span> {w.stack.map((s) => s.toLowerCase()).join(' · ')}
+                  </div>
+                )}
+                {w.nd.length > 0 && (
+                  <dl class="m-0 border-t border-line">
+                    {w.nd.map((n) => (
+                      <div class={factRow}>
+                        <dt class={factKey}>{n.label.toLowerCase()}</dt>
+                        <dd class={factVal}>{n.text}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+                {w.visit && (
+                  <a
+                    href={w.visit.href}
+                    target="_blank"
+                    rel="noopener"
+                    class="mt-6 inline-block border-b border-acc pb-0.5 font-mono text-[12.5px] text-acc no-underline transition-colors hover:border-acc-2 hover:text-acc-2"
+                  >
+                    {w.visit.label.toLowerCase()} →
+                  </a>
+                )}
               </div>
             </div>
-          );
-        })
-      }
-    </div>
+          </article>
+        );
+      })
+    }
   </section>
 
-  <!-- 04 — Process -->
+  <!-- fig. 05 — how the work unfolds -->
   <section class={secWrap} id="process">
-    <SectionHead
-      index="04 / Process"
-      title="How the work happens"
-      sub="The same loop, adjusted to the business."
-    />
-    <p class={lead}>
-      The process is deliberately simple. Understand the growth problem, shape the system, build the smallest serious
-      version, and keep learning from real use.
-    </p>
-    <div class="mt-[34px] grid grid-cols-4 overflow-hidden rounded-[2px] border-2 border-rule max-[760px]:grid-cols-2 max-[430px]:grid-cols-1">
+    <SectionHead fig="05" title="How the work" em="unfolds" sub="small, serious versions. then iteration." />
+    <div class="tl-line mx-[30px] mt-[70px] max-[760px]:hidden"></div>
+    <div class="mx-[30px] grid grid-cols-4 max-[760px]:mx-0 max-[760px]:grid-cols-1 max-[760px]:gap-9" data-stagger>
       {
-        steps.map(([num, h, p], i) => (
-          <div class:list={[i > 0 && 'border-l-2 border-rule max-[760px]:[&:nth-child(odd)]:border-l-0 max-[430px]:border-l-0', i >= 2 && 'max-[760px]:border-t-2 max-[760px]:border-rule', 'max-[430px]:border-t-2 max-[430px]:border-rule max-[430px]:[&:first-child]:border-t-0']}>
-            <div class="group h-full bg-transparent p-[26px_22px] text-ink transition-colors hover:bg-acc hover:text-on-accent">
-              <div class="font-mono text-[22px] font-extrabold tracking-[-0.02em] text-acc transition-colors group-hover:text-on-accent">{num}</div>
-              <h3 class="mb-2.5 mt-3 font-sans text-[20px] font-extrabold tracking-[-0.015em]">{h}</h3>
-              <p class="m-0 text-[13.5px] leading-[1.55] text-mut transition-colors group-hover:text-on-accent">{p}</p>
-            </div>
+        steps.map(([id, h, p], i) => (
+          <div class:list={['tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0 max-[760px]:before:hidden', i === steps.length - 1 && 'is-last']}>
+            <div class="mb-3 font-mono text-[11.5px] text-soft">step {id} /</div>
+            <h3 class="mb-2 mt-0 text-[21px] font-semibold italic text-ink">{h}</h3>
+            <p class="m-0 text-[15px] text-mut">{p}</p>
           </div>
         ))
       }
     </div>
   </section>
 
-  <!-- 05 — Contact -->
-  <section class={secWrap} id="contact">
-    <SectionHead
-      index="05 / Contact"
-      title="When it makes sense to talk"
-      sub="You have a real growth problem, and the system matters."
-    />
-    <p class={lead}>
-      I am especially interested in founder-led businesses, SMEs, and early ventures where the opportunity is practical,
-      the constraints are real, and the technical work has to connect back to the business.
+  <!-- contact — the title block -->
+  <section class="reveal pb-12 pt-[110px] max-[760px]:pt-20" id="contact">
+    <p class="mx-auto mb-14 max-w-[760px] text-balance text-center text-[clamp(26px,3.6vw,40px)] font-semibold leading-[1.25] tracking-[-0.01em] text-ink">
+      If you can describe where your business is trying to grow,
+      <em class="font-medium italic text-acc">I can help you work out the system it needs.</em>
     </p>
-    <a
-      href="/contact"
-      class="mt-7 inline-flex items-center gap-2 font-mono text-[11.5px] font-bold uppercase tracking-[0.12em] text-ink no-underline shadow-[inset_0_-2px_0_var(--color-acc)] transition-all hover:gap-3"
-      >See if it's a fit, what to expect, and FAQ → Contact</a
-    >
-    <div class="mt-10"><EmailButton /></div>
+    <div class="relative mx-auto max-w-[820px] border-[1.5px] border-rule bg-bg">
+      <Ticks />
+      <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
+        <div class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0">project /</div>
+        <div class="px-[22px] py-[15px] text-[16px] text-ink">the system your business needs next</div>
+      </div>
+      <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
+        <div class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0">drawn by /</div>
+        <div class="px-[22px] py-[15px] text-[16px] text-ink">{SITE.author} — {SITE.org}</div>
+      </div>
+      <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
+        <div class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0">location /</div>
+        <div class="px-[22px] py-[15px] font-mono text-[13px] text-mut">kuala lumpur · gmt+8</div>
+      </div>
+      <div class="grid grid-cols-[200px_1fr] max-[560px]:grid-cols-1">
+        <div class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0">contact /</div>
+        <div class="px-[22px] py-[22px]"><EmailButton /></div>
+      </div>
+    </div>
+    <p class="mt-7 text-center font-mono text-[12px] text-soft">
+      <a href="/contact" class="text-soft no-underline transition-colors hover:text-acc"
+        >what to expect, fit, and faq — on the contact page →</a
+      >
+    </p>
   </section>
 </BaseLayout>
-
-<script>
-  // growth → gap → build: an anime.js timeline relays a red signal packet down
-  // each connector wire (Growth → Gap → Build), looping with a brief dwell. Runs
-  // only while the flow is on screen, skips entirely under reduced-motion, and
-  // rebinds cleanly across View-Transition navigations.
-  import { createTimeline } from 'animejs';
-
-  let tl: ReturnType<typeof createTimeline> | null = null;
-  let io: IntersectionObserver | null = null;
-
-  function teardown() {
-    io?.disconnect();
-    io = null;
-    tl?.pause();
-    tl?.revert();
-    tl = null;
-  }
-
-  function initFlow() {
-    teardown();
-
-    const flow = document.querySelector<HTMLElement>('.flow-relay');
-    if (!flow) return;
-    const conns = [...flow.querySelectorAll<HTMLElement>('.flow-conn')];
-    if (!conns.length) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    flow.classList.add('flow-live');
-
-    tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
-
-    const STEP = 720; // packet travel time per wire
-    const OVERLAP = 100; // how much the next wire fires before the last lands
-    const DWELL = 660; // pause between loops
-    let at = 0;
-
-    conns.forEach((conn) => {
-      const packet = conn.querySelector<HTMLElement>('.flow-packet');
-      const arrow = conn.querySelector<SVGElement>('.flow-arrow');
-      if (!packet) return;
-
-      tl!.add(
-        packet,
-        {
-          left: ['0%', '100%'],
-          // fade in fast, ride the wire lit, snuff out on arrival
-          opacity: [{ to: 1, duration: 70 }, { to: 1, duration: 560 }, { to: 0, duration: 90 }],
-          duration: STEP,
-        },
-        at
-      );
-
-      if (arrow) {
-        tl!.add(
-          arrow,
-          { scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5], duration: 340, ease: 'outQuad' },
-          at + STEP - 190
-        );
-      }
-
-      at += STEP - OVERLAP;
-    });
-
-    // hold on the empty wire before the relay loops
-    const first = conns[0].querySelector<HTMLElement>('.flow-packet');
-    if (first) tl.add(first, { opacity: 0, duration: DWELL }, at);
-
-    io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => (e.isIntersecting ? tl?.play() : tl?.pause())),
-      { threshold: 0.25 }
-    );
-    io.observe(flow);
-  }
-
-  document.addEventListener('astro:page-load', initFlow);
-  document.addEventListener('astro:before-swap', teardown);
-</script>
