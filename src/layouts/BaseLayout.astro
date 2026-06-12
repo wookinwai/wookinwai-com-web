@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PlotBackground from '../components/PlotBackground.astro';
 
 // Self-hosted fonts (Fontsource). The Drafting Table speaks in Source Serif 4
 // (voice + display) and IBM Plex Mono (annotations, labels, figure numbers).
@@ -77,9 +78,11 @@ const { title, description, canonical, image } = Astro.props;
       >Skip to content</a
     >
 
+    <PlotBackground />
+
     <Header transition:persist />
 
-    <div class="mx-auto max-w-[1180px] px-14 max-[900px]:px-7 max-[560px]:px-5">
+    <div class="relative z-[2] mx-auto max-w-[1180px] px-14 max-[900px]:px-7 max-[560px]:px-5">
       <main id="main"><slot /></main>
     </div>
 

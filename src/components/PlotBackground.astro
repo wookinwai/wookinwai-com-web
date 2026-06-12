@@ -1,0 +1,226 @@
+---
+// Interactive plot backdrop — the drafting-table adaptation of the old mosaic
+// band. Aligns to the same 36px cell grid as the body's graph paper and shades
+// a scattered subset of cells with low-alpha drafting-green and graphite
+// washes, as if someone were pencilling in cells on the plot. Hybrid
+// behaviour: a faint always-on ambient breathing plus cursor-proximity
+// shading — the pointer acts like a pencil hovering over the paper. Subtle by
+// design (low alpha cap, hard squares, no blur) so it never fights the
+// drafting restraint.
+//
+// Theme-aware (paper⇄lamplight), reduced-motion-safe (one static frame, no
+// loop), touch-safe (ambient runs regardless), and View-Transitions-safe
+// (clean teardown).
+---
+
+<canvas class="plot-bg" aria-hidden="true"></canvas>
+
+<script>
+  const CELL = 36; // matches the body graph-paper cell size
+  const BAND = 620; // height of the shaded top band
+  const AMBIENT_CAP = 0.08; // max alpha for the idle breathing (faint, but legibly green)
+  const PROX_CAP = 0.24; // max alpha added by the cursor "pencil"
+  const ALPHA_CAP = 0.3; // hard ceiling on combined alpha (restraint)
+  const RADIUS = CELL * 3.4; // cursor influence reach
+  const SHIMMER_SPEED = 0.55; // ambient breathing rate
+
+  let canvas: HTMLCanvasElement | null = null;
+  let ctx: CanvasRenderingContext2D | null = null;
+  let raf = 0;
+  let resizeTimer = 0;
+  let idleTimer = 0;
+  let cols = 0;
+  let rows = 0;
+  let dpr = 1;
+  let palette: number[][] = [];
+  let mo: MutationObserver | null = null;
+
+  // pointer state (CSS px within the band) + eased influence
+  let px = -9999,
+    py = -9999;
+  let mx = -9999,
+    my = -9999;
+  let influence = 0,
+    influenceTarget = 0;
+
+  // ---- helpers -------------------------------------------------------------
+  // stable per-cell pseudo-random in [0,1) — keeps each cell's shade & phase fixed
+  function hash(x: number, y: number) {
+    let h = (x * 374761393 + y * 668265263) | 0;
+    h = (h ^ (h >>> 13)) * 1274126177;
+    h = h ^ (h >>> 16);
+    return (h >>> 0) / 4294967295;
+  }
+
+  function parseColor(v: string): [number, number, number] {
+    v = v.trim();
+    if (v.startsWith('#')) {
+      const n = parseInt(v.slice(1), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+    const m = v.match(/\d+/g);
+    return m ? [+m[0], +m[1], +m[2]] : [47, 107, 76];
+  }
+
+  const lighten = (c: number[], t: number): number[] => c.map((v) => Math.round(v + (255 - v) * t));
+
+  function readPalette() {
+    const cs = getComputedStyle(document.documentElement);
+    const acc = parseColor(cs.getPropertyValue('--color-acc'));
+    const acc2 = parseColor(cs.getPropertyValue('--color-acc-2'));
+    const graphite = parseColor(cs.getPropertyValue('--color-mut'));
+    // mostly green wash with the occasional graphite cell — pen and pencil.
+    // Greens repeat so graphite lands roughly 1 cell in 7.
+    const light = lighten(acc, 0.2);
+    palette = [acc, acc2, light, acc, acc2, light, graphite];
+  }
+
+  function resize() {
+    if (!canvas) return;
+    const w = window.innerWidth;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.ceil(w * dpr);
+    canvas.height = Math.ceil(BAND * dpr);
+    canvas.style.width = w + 'px';
+    canvas.style.height = BAND + 'px';
+    ctx = canvas.getContext('2d');
+    ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cols = Math.ceil(w / CELL) + 1;
+    rows = Math.ceil(BAND / CELL) + 1;
+  }
+
+  function draw(t: number) {
+    if (!ctx) return;
+    const w = canvas!.clientWidth;
+    ctx.clearRect(0, 0, w, BAND);
+
+    for (let cy = 0; cy < rows; cy++) {
+      for (let cx = 0; cx < cols; cx++) {
+        const r = hash(cx, cy);
+        const participates = r < 0.38; // ~38% scattered ambient cells
+        const phase = hash(cx + 7, cy + 3) * Math.PI * 2;
+        const shade = palette[(hash(cx + 1, cy + 11) * palette.length) | 0] || palette[0];
+
+        // ambient breathing (only participating cells)
+        let alpha = participates ? AMBIENT_CAP * (0.45 + 0.55 * Math.sin(t * SHIMMER_SPEED + phase)) : 0;
+
+        // cursor proximity (all cells, lightly textured per-cell)
+        if (influence > 0.001) {
+          const dx = cx * CELL + CELL / 2 - mx;
+          const dy = cy * CELL + CELL / 2 - my;
+          const d = Math.hypot(dx, dy);
+          if (d < RADIUS) {
+            const f = 1 - d / RADIUS; // 0..1
+            const texture = 0.55 + 0.45 * hash(cx + 5, cy + 9);
+            alpha += PROX_CAP * f * f * texture * influence;
+          }
+        }
+
+        if (alpha < 0.004) continue;
+        if (alpha > ALPHA_CAP) alpha = ALPHA_CAP;
+
+        // cells fill from a 1px inset so the graph-paper hairlines stay visible
+        // around each shaded cell — pencil staying inside the lines
+        const k = Math.min(alpha / ALPHA_CAP, 1);
+        const inset = 6 - 5 * k;
+        ctx.fillStyle = `rgba(${shade[0]},${shade[1]},${shade[2]},${alpha})`;
+        ctx.fillRect(cx * CELL + inset, cy * CELL + inset, CELL - inset * 2, CELL - inset * 2);
+      }
+    }
+  }
+
+  function loop(now: number) {
+    const paused = document.hidden;
+    if (!paused) {
+      // ease pointer + influence
+      mx += (px - mx) * 0.18;
+      my += (py - my) * 0.18;
+      influence += (influenceTarget - influence) * 0.08;
+      draw(now / 1000);
+    }
+    raf = requestAnimationFrame(loop);
+  }
+
+  // ---- lifecycle -----------------------------------------------------------
+  function onMove(e: PointerEvent) {
+    px = e.clientX;
+    py = e.clientY;
+    influenceTarget = 1;
+    clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(() => (influenceTarget = 0), 600);
+  }
+  const onLeave = () => (influenceTarget = 0);
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(resize, 150);
+  }
+
+  function teardown() {
+    cancelAnimationFrame(raf);
+    raf = 0;
+    clearTimeout(resizeTimer);
+    clearTimeout(idleTimer);
+    window.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerleave', onLeave);
+    window.removeEventListener('resize', onResize);
+    mo?.disconnect();
+    mo = null;
+    ctx = null;
+    canvas = null;
+  }
+
+  function init() {
+    teardown();
+    canvas = document.querySelector<HTMLCanvasElement>('.plot-bg');
+    if (!canvas) return;
+    readPalette();
+    resize();
+
+    // reduced-motion / no-JS-motion: paint one static frame, no loop, no cursor
+    const reduced =
+      !document.documentElement.classList.contains('motion') ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      draw(0);
+      return;
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true });
+    document.addEventListener('pointerleave', onLeave);
+    window.addEventListener('resize', onResize);
+
+    // re-read shades when the palette toggles (paper ⇄ lamplight)
+    mo = new MutationObserver(readPalette);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-pal'] });
+
+    raf = requestAnimationFrame(loop);
+  }
+
+  // Defer init until the main thread is idle so the canvas setup + rAF loop
+  // never competes with first paint / LCP. Falls back to a short timeout, and
+  // a pending callback is cancelled on view-transition swap.
+  let idleHandle = 0;
+  let usedRIC = false;
+  function scheduleInit() {
+    cancelInit();
+    if ('requestIdleCallback' in window) {
+      usedRIC = true;
+      idleHandle = (window as any).requestIdleCallback(init, { timeout: 800 });
+    } else {
+      usedRIC = false;
+      idleHandle = window.setTimeout(init, 200);
+    }
+  }
+  function cancelInit() {
+    if (!idleHandle) return;
+    if (usedRIC && 'cancelIdleCallback' in window) (window as any).cancelIdleCallback(idleHandle);
+    else clearTimeout(idleHandle);
+    idleHandle = 0;
+  }
+
+  document.addEventListener('astro:page-load', scheduleInit);
+  document.addEventListener('astro:before-swap', () => {
+    cancelInit();
+    teardown();
+  });
+</script>
