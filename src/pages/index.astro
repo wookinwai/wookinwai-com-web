@@ -117,7 +117,9 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
       {
         flow.map((f, i) => (
           <>
-            <div class="relative">
+            {/* z-10 + opaque card fill so the pen head and its ink tail run
+                BEHIND the cards and tuck under their edges */}
+            <div class="relative z-10">
               <div
                 class:list={[
                   'relative border-[1.5px] border-rule bg-bg px-7 pb-6 pt-[26px]',
@@ -447,7 +449,8 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
   // rebind cleanly across View-Transition navigations.
   import { createTimeline } from 'animejs';
 
-  const STEP = 720; // packet travel time per segment
+  const STEP = 720; // fig. 01 — travel time per leader line
+  const WALK = 1400; // fig. 05 — travel time per baseline segment (a slower, surveying pace)
   const OVERLAP = 100; // how much the next segment fires before the last lands
   const DWELL = 660; // pause between loops
 
@@ -536,9 +539,9 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
       tl.add(packet, { opacity: [0, 1], duration: 90 }, 0);
       // …walk the three segments between the four stops…
       for (let k = 0; k < 3; k++) {
-        tl.add(packet, { left: [`${k * 25}%`, `${(k + 1) * 25}%`], duration: STEP }, at);
-        tl.add(marks[k + 1], { scale: [1, 1.4, 1], duration: 320, ease: 'outQuad' }, at + STEP - 160);
-        at += STEP - OVERLAP;
+        tl.add(packet, { left: [`${k * 25}%`, `${(k + 1) * 25}%`], duration: WALK }, at);
+        tl.add(marks[k + 1], { scale: [1, 1.4, 1], duration: 360, ease: 'outQuad' }, at + WALK - 200);
+        at += WALK - OVERLAP;
       }
       // …then run off the end of the drawing
       tl.add(
@@ -546,21 +549,21 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         {
           left: ['75%', '100%'],
           opacity: [
-            { to: 1, duration: STEP - 90 },
-            { to: 0, duration: 90 },
+            { to: 1, duration: WALK - 120 },
+            { to: 0, duration: 120 },
           ],
-          duration: STEP,
+          duration: WALK,
         },
         at
       );
       if (arrow) {
         tl.add(
           arrow,
-          { scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55], duration: 340, ease: 'outQuad' },
-          at + STEP - 190
+          { scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55], duration: 380, ease: 'outQuad' },
+          at + WALK - 230
         );
       }
-      tl.add(packet, { opacity: 0, duration: DWELL }, at + STEP);
+      tl.add(packet, { opacity: 0, duration: DWELL }, at + WALK);
       bind(stops, tl);
     }
   }

@@ -213,9 +213,11 @@ body {
   opacity: 0.55;
 }
 
-/* hatched fill for the emphasised schematic stage (the build) */
+/* hatched fill for the emphasised schematic stage (the build) — opaque paper
+   base so content behind it (the relay pen head) can't show through */
 .hatch {
-  background: repeating-linear-gradient(-45deg, var(--color-acc-soft) 0 5px, transparent 5px 11px);
+  background-color: var(--color-bg);
+  background-image: repeating-linear-gradient(-45deg, var(--color-acc-soft) 0 5px, transparent 5px 11px);
 }
 
 /* drafted timeline — a solid baseline with an arrowhead, square stops above.
