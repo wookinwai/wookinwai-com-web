@@ -1,21 +1,18 @@
 ---
-// Drafting-table figure head — every section opens like a numbered figure:
-//   • mono green figure number (fig. 02) on the baseline
-//   • serif sentence-case headline beside it, with an optional italic-green
-//     emphasis (`em`) closing the phrase
-//   • one hard 1px ink rule under the cluster (draws in on scroll reveal)
+// Drafting-table section head:
+//   • serif sentence-case headline, with an optional italic-green emphasis
+//     (`em`) closing the phrase
+//   • one hard 1px ink rule under the headline (draws in on scroll reveal)
 //   • an optional mono annotation (`sub`) hanging below the rule
 export interface Props {
-  fig: string;
   title: string;
   em?: string;
   sub?: string;
 }
-const { fig, title, em, sub } = Astro.props;
+const { title, em, sub } = Astro.props;
 ---
 
 <header class="relative flex flex-wrap items-baseline gap-x-6 gap-y-2 pb-[22px]">
-  <div class="whitespace-nowrap font-mono text-[12.5px] text-acc">fig. {fig}</div>
   <h2 class="m-0 font-sans text-[clamp(28px,4vw,42px)] font-semibold leading-[1.1] tracking-[-0.015em] text-ink">
     {title}{
       em && (
