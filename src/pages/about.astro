@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import EmailButton from '../components/EmailButton.astro';
+import Ticks from '../components/Ticks.astro';
+
+const title = 'About - Woo Kin Wai';
+const description =
+  'The longer version: how Woo Kin Wai went from engineer to technical partner, how he chooses the work, and the four lines he comes back to when a build gets hard.';
+
+// Shared spacing — same scale as the homepage sections.
+const secWrap = 'reveal pt-24 max-[760px]:pt-20';
+
+// The mantra — a declaration, not a list. The first three lines hold; the last
+// one is the point, so it lands in the green italic emphasis.
+const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.'];
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
+    <div class="rise d1 mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">
+      the person behind the work — kuala lumpur, gmt+8
+    </div>
+    <h1
+      class="rise d2 mb-[30px] text-balance font-sans text-[clamp(32px,5.4vw,58px)] font-semibold leading-[1.08] tracking-[-0.018em] text-ink"
+    >
+      The longer <em class="font-medium italic text-acc">version</em>.
+    </h1>
+    <p class="rise d3 max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
+      The short version lives on the homepage. This is the longer one — how I got here, how I decide what to build, and
+      what keeps me going when a build gets hard.
+    </p>
+  </header>
+
+  <!-- The path -->
+  <section class={secWrap}>
+    <SectionHead title="The path" em="so far" />
+    <div
+      class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9"
+      data-stagger
+    >
+      <div>
+        <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
+          I started as an engineer. For about a decade after that, I was the person responsible for turning ideas into
+          working systems — first writing the code, then leading the people who did.
+        </p>
+        <p class="mb-5 text-[19px] leading-[1.62] text-ink">
+          Along the way I helped scale a company from a small team of around ten people to about a hundred. Watching a
+          system grow under real load — more users, more people, more edge cases — taught me that good software is never
+          just clean code. It is a system that fits the business, the people, the timing, the constraints, and the next
+          stage of growth.
+        </p>
+        <p class="mb-0 text-[19px] leading-[1.62] text-ink">
+          Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
+          next. Sometimes that is a straightforward build. Sometimes, when the opportunity is strong and the fit is
+          right, I work closer to the outcome through a stake, revenue share, or longer-term partnership.
+        </p>
+      </div>
+      <aside class="relative border border-rule bg-bg p-3.5 max-[900px]:max-w-[300px]">
+        <Ticks />
+        <img
+          src="/woo-kin-wai-software-builder.avif"
+          alt="Woo Kin Wai, software builder and technical partner"
+          width="1500"
+          height="1497"
+          loading="lazy"
+          decoding="async"
+          class="block w-full saturate-[.9] contrast-[1.02]"
+        />
+        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-[11px] text-mut">
+          <span>woo kin wai</span>
+          <span>kuala lumpur</span>
+        </div>
+      </aside>
+    </div>
+    <div
+      class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9"
+    >
+      <Ticks />
+      <span class="whitespace-nowrap font-mono text-[12px] text-acc">the working question /</span>
+      <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
+        What system does this business need in order to grow?
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Away from the desk -->
+  <section class={secWrap}>
+    <SectionHead title="Away from the" em="desk" sub="the part that keeps everything else in proportion." />
+    <div class="max-w-[700px]" data-stagger>
+      <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
+        Away from the screen, I am a husband and a father. That is the part that puts the rest in proportion — and,
+        honestly, the reason I do not get to quit when the work gets hard.
+      </p>
+      <p class="mb-0 text-[19px] leading-[1.62] text-ink">
+        I have had things not work out. A first venture that never became a business. Builds that taught me more in
+        failing than they would have in succeeding. I keep those close, because pretending the path was smooth would
+        make the rest less honest.
+      </p>
+    </div>
+  </section>
+
+  <!-- The mantra -->
+  <section class={secWrap}>
+    <SectionHead title="What I come back" em="to" sub="four lines, in order. the last one is the point." />
+    <div class="relative mt-2.5 max-w-[760px] border-[1.5px] border-rule bg-bg" data-stagger>
+      <Ticks />
+      {
+        mantra.map((line, i) => {
+          const last = i === mantra.length - 1;
+          return (
+            <div class:list={[!last && 'border-b border-line', 'px-[36px] py-7 max-[560px]:px-7 max-[560px]:py-5']}>
+              <span
+                class:list={[
+                  'font-sans text-[clamp(24px,3.6vw,36px)] leading-[1.15] tracking-[-0.01em]',
+                  last ? 'font-medium italic text-acc' : 'font-semibold text-ink',
+                ]}
+              >
+                {line}
+              </span>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="reveal pb-12 pt-24 max-[760px]:pt-[72px]">
+    <p class="max-w-[640px] text-[19px] leading-[1.62] text-ink">
+      If that sounds like the kind of person you want building your next system,
+      <em class="italic text-acc">let's talk.</em>
+    </p>
+    <div class="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+      <EmailButton />
+      <a href="/contact" class="font-mono text-[12.5px] text-mut no-underline transition-colors hover:text-acc"
+        >what to expect →</a
+      >
+    </div>
+  </section>
+</BaseLayout>
