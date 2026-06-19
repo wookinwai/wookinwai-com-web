@@ -27,6 +27,7 @@
   "devDependencies": {
     "prettier": "^3.4.2",
     "prettier-plugin-astro": "^0.14.1",
+    "qrcode": "^1.5.4",
     "wrangler": "^4.45.0"
   },
   "engines": {

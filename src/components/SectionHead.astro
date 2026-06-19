@@ -1,10 +1,11 @@
 ---
-// Press Mono section masthead — stacked broadsheet composition:
-//   • red mono kicker (index) tight above the headline (they belong together)
-//   • heavy sentence-case headline, full body width
-//   • the dek (sub) sits BELOW the headline as a caption — top-and-bottom, not
-//     left-and-right — so the whole cluster reads as one full-width band
-//   • one hard 3px ink rule under the whole cluster (draws in on scroll reveal)
+// Press Mono section masthead — left-label-rail editorial grid:
+//   • a narrow LEFT rail holds the red mono kicker (index) + the dek (sub) as
+//     marginalia (and, via the `rail` slot, extra margin content e.g. a portrait)
+//   • the MAIN column holds the heavy sentence-case headline, the hard 3px rule
+//     (draws in on scroll reveal), and the section body (default slot)
+//   • everything in the main column shares one comfortable measure; the rail is
+//     intentional labeled whitespace. Collapses to a single stacked column < 760px.
 export interface Props {
   index: string;
   title: string;
@@ -13,17 +14,15 @@ export interface Props {
 const { index, title, sub } = Astro.props;
 ---
 
-<div class="relative pb-[18px]">
-  <div class="mb-[14px] font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-acc">{index}</div>
-  <h2 class="m-0 font-sans text-[clamp(30px,4.4vw,52px)] font-extrabold leading-[1.02] tracking-[-0.03em] text-ink">
-    {title}
-  </h2>
-  {
-    sub && (
-      <p class="mt-[18px] w-full font-mono text-[12px] leading-[1.55] text-mut">
-        {sub}
-      </p>
-    )
-  }
-  <div class="sec-rule absolute inset-x-0 bottom-0 h-[3px] bg-rule"></div>
+<div class="sec-grid">
+  <div class="sec-rail">
+    <div class="sec-kicker">{index}</div>
+    {sub && <p class="sec-dek">{sub}</p>}
+    <slot name="rail" />
+  </div>
+  <div class="sec-main">
+    <h2 class="sec-title">{title}</h2>
+    <div class="sec-rule"></div>
+    <slot />
+  </div>
 </div>

@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Woo;Kin Wai;;;
+FN:Woo Kin Wai
+ORG:Tiny Edges
+TITLE:Software builder & technical partner
+EMAIL;TYPE=INTERNET,PREF:hello@wookinwai.com
+URL;TYPE=WORK:https://www.wookinwai.com
+URL;TYPE=Studio:https://www.tinyedges.com/
+X-SOCIALPROFILE;TYPE=linkedin:https://linkedin.com/in/wookinwai
+X-SOCIALPROFILE;TYPE=twitter:https://twitter.com/wookinwai
+ADR;TYPE=WORK:;;;Kuala Lumpur;;;Malaysia
+NOTE:I help businesses define and build the software they need for their next stage of growth.
+END:VCARD

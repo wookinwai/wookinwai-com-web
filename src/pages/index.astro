@@ -11,7 +11,10 @@ const description =
 // Selected work — CMS-driven (section 03).
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 
-const statusLabel = { live: 'Live', building: 'Building', closed: 'Closed' } as const;
+const statusLabel = { live: 'Live', building: 'Building', ongoing: 'Ongoing', closed: 'Closed' } as const;
+// Literal class strings (not `text-${status}`) so Tailwind actually generates
+// these utilities. Note: 'building' maps to text-build (the --color-build token).
+const statusColor = { live: 'text-live', building: 'text-build', ongoing: 'text-ongoing', closed: 'text-closed' } as const;
 // Engagement → "Model" cell. Cobalt (acc-blue) is the one sanctioned categorical
 // secondary: build engagements vs red upside participation.
 const modelMap = {
@@ -49,15 +52,16 @@ const scenarios = [
 ];
 
 const steps = [
-  ['01', 'Listen', 'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.'],
-  ['02', 'Shape', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
-  ['03', 'Build', 'Create the smallest serious version that can be used, tested, and improved.'],
-  ['04', 'Stay close', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
+  ['01', 'Listen', 'Understand where the business wants to grow, what is blocking it, and what cannot be ignored. Get this wrong and everything built on top of it is wrong too.'],
+  ['02', 'Shape', 'Turn the ambition into a clear product, workflow, platform, or system design. Decide what to build before deciding how to build it.'],
+  ['03', 'Build', 'Create the smallest serious version that can be used and improved. AI moves fast on the routine parts so the time goes where judgement is needed.'],
+  ['04', 'Improve', 'Work with my team at Tiny Edges to build on it, using what real use reveals. The first version is the start of the work, not the end of it.'],
+  ['05', 'Stay close', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
 ];
 
 // shared section spacing (the masthead itself lives in <SectionHead/>)
 const secWrap = 'reveal pt-[112px] max-[760px]:pt-[84px]';
-const lead = 'mt-[26px] max-w-[660px] text-[17px] leading-[1.66] text-mut';
+const lead = 'mt-[26px] text-[17px] leading-[1.66] text-mut';
 
 const ndLabel = 'whitespace-nowrap border-r-2 border-rule px-4 py-[13px] font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] text-soft';
 const ndText = 'px-4 py-[13px] text-[15px] leading-[1.4] text-ink';
@@ -76,11 +80,11 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
       I help businesses define and build the software they need for their
       <span class="text-acc">next stage of growth</span>.
     </h1>
-    <p class="rise d3 mt-[26px] max-w-[580px] text-[17px] leading-[1.6] text-mut">
+    <p class="rise d3 mt-[26px] max-w-[620px] text-[17px] leading-[1.6] text-mut">
       The work usually starts before the code: where the business is trying to go, what is getting in the way, and
       what kind of system would actually help it move.
     </p>
-    <p class="rise d3 mt-[18px] max-w-[580px] text-[17px] leading-[1.6] text-mut">
+    <p class="rise d3 mt-[18px] max-w-[620px] text-[17px] leading-[1.6] text-mut">
       Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
       Sometimes it means helping a founder shape the technical path before the first serious build.
     </p>
@@ -135,7 +139,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
       index="01 / The pattern"
       title="What this usually looks like"
       sub="Growth exposes the systems a business does not have yet."
-    />
+    >
     <p class={lead}>
       The work often starts before the code. The first question is not which stack to use. It is what kind of system the
       business needs in order to move.
@@ -156,29 +160,46 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
         ))
       }
     </div>
+    </SectionHead>
   </section>
 
   <!-- 02 — About -->
   <section class={secWrap} id="about">
-    <SectionHead index="02 / About" title="The short version" />
-    <div class="mt-[38px] grid grid-cols-[1fr_230px] items-start gap-[56px] max-[760px]:grid-cols-1 max-[760px]:gap-[30px]">
-      <div class="text-[17px] leading-[1.7] text-ink" data-stagger>
-        <p class="mb-4">I started as an engineer, then spent a decade as the person responsible for turning ideas into working systems.</p>
+    <SectionHead index="02 / About" title="The short version">
+      <aside slot="rail" class="mt-5 max-[760px]:max-w-[200px]">
+        <div class="aspect-[4/5] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
+          <img
+            src="/woo-kin-wai-software-builder.avif"
+            alt="Woo Kin Wai, software builder and technical partner"
+            width="1500"
+            height="1497"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+      </aside>
+      <div class="mt-[30px] text-[17px] leading-[1.7] text-ink" data-stagger>
         <p class="mb-4">
-          Over time, I moved from writing code to leading technical work, helping scale a company from a small team of
-          around <b class="font-bold">10 people to about 100</b>. That experience shaped how I see software.
+          I trained as an engineer, then spent about a decade building software, mostly client work at an agency and some
+          outsourced projects. Over that time I moved into technical leadership and helped grow the company from around
+          <b class="font-bold">10 people to about 100</b>. That experience shaped how I see software.
         </p>
         <p class="mb-4">
           Good software is not just clean code. It is a system that fits the business, the people, the timing, the
           constraints, and the next stage of growth.
         </p>
         <p class="mb-4">
-          Today I run <b class="font-bold">Tiny Edges</b>. I work with founders and SMEs to shape and build the
+          AI changes how fast software gets built, not what makes it worth building. The hard part is still deciding
+          what the business actually needs.
+        </p>
+        <p class="mb-4">
+          Today I run <a href="https://www.tinyedges.com/" target="_blank" rel="noopener" class="font-bold text-ink underline decoration-acc decoration-2 underline-offset-[3px] transition-colors hover:text-acc">Tiny Edges</a>. I work with founders and SMEs to shape and build the
           software their business needs next.
         </p>
         <p class="mb-4">
-          Sometimes it is a straightforward build. Sometimes, when the opportunity is strong and the fit is right, I work
-          closer to the outcome through a <b class="font-bold text-acc">stake, revenue share, or longer-term partnership</b>.
+          Most of the work is a direct build on a fee. Sometimes, when the opportunity is strong and the fit is right, I
+          work closer to the outcome through a <b class="font-bold text-acc">stake, revenue share, or a longer-term partnership</b>.
         </p>
         <blockquote
           class="my-[30px] border-l-4 border-acc pl-[22px] font-sans text-[clamp(24px,3.2vw,34px)] font-extrabold leading-[1.12] tracking-[-0.025em] text-ink"
@@ -194,25 +215,12 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
           </div>
         </div>
       </div>
-      <aside class="sticky top-[92px] max-[760px]:static max-[760px]:order-[-1] max-[760px]:max-w-[230px]">
-        <div class="aspect-[4/5] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
-          <img
-            src="/woo-kin-wai-software-builder.avif"
-            alt="Woo Kin Wai, software builder and technical partner"
-            width="1500"
-            height="1497"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
-          />
-        </div>
-      </aside>
-    </div>
+    </SectionHead>
   </section>
 
   <!-- 03 — Selected work -->
   <section class={secWrap} id="work">
-    <SectionHead index="03 / Selected work" title="Selected work" sub="As of May 2026" />
+    <SectionHead index="03 / Selected work" title="Selected work" sub="As of May 2026">
     <p class={lead}>
       A few examples of growth needs turned into working systems, from founder-led products to platforms and internal
       tools.
@@ -239,7 +247,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
                   </div>
                   <div class="mt-1 text-[14px] text-mut">{w.tease}</div>
                 </div>
-                <div class:list={['flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] font-bold uppercase tracking-[0.16em] max-[760px]:col-span-2 max-[760px]:pl-[34px]', `text-${w.status}`]}>
+                <div class:list={['flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] font-bold uppercase tracking-[0.16em] max-[760px]:col-span-2 max-[760px]:pl-[34px]', statusColor[w.status]]}>
                   <span class:list={['smark', w.status]} />
                   {statusLabel[w.status]}
                 </div>
@@ -247,7 +255,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
               <div class="detail">
                 <div class="pb-9 pt-1.5">
                   {(w.shot || w.screenshotUrl) && (
-                    <div class="mb-6 aspect-[16/9] max-w-[660px] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
+                    <div class="mb-6 aspect-[16/9] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
                       <div class="flex h-[30px] items-center gap-1.5 border-b-2 border-rule bg-bg px-3">
                         <i class="block h-2 w-2 bg-rule" />
                         <i class="block h-2 w-2 bg-rule" />
@@ -274,7 +282,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
                       )}
                     </div>
                   )}
-                  <div class="mb-6 grid max-w-[660px] grid-cols-[auto_1fr] overflow-hidden rounded-[2px] border-2 border-rule">
+                  <div class="mb-6 grid grid-cols-[auto_1fr] overflow-hidden rounded-[2px] border-2 border-rule">
                     {w.nd.map((n, j) => (
                       <>
                         <span class:list={[ndLabel, j > 0 && 'border-t border-line']}>{n.label}</span>
@@ -302,7 +310,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
                     </div>
                   )}
                   {w.bodyHtml && (
-                    <p class="mb-[18px] max-w-[660px] text-[16px] leading-[1.66] text-mut [&_b]:font-bold [&_b]:text-ink" set:html={w.bodyHtml} />
+                    <p class="mb-[18px] text-[16px] leading-[1.66] text-mut [&_b]:font-bold [&_b]:text-ink" set:html={w.bodyHtml} />
                   )}
                   {w.stack.length > 0 && (
                     <div class="flex flex-wrap gap-2">
@@ -328,6 +336,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
         })
       }
     </div>
+    </SectionHead>
   </section>
 
   <!-- 04 — Process -->
@@ -336,24 +345,29 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
       index="04 / Process"
       title="How the work happens"
       sub="The same loop, adjusted to the business."
-    />
+    >
     <p class={lead}>
-      The process is deliberately simple. Understand the growth problem, shape the system, build the smallest serious
-      version, and keep learning from real use.
+      The process is deliberately simple. Get the problem right, build the smallest serious version that works, then keep
+      improving it with my team as real use shows what matters.
     </p>
-    <div class="mt-[34px] grid grid-cols-4 overflow-hidden rounded-[2px] border-2 border-rule max-[760px]:grid-cols-2 max-[430px]:grid-cols-1">
+    <ol class="proc mt-[42px]" data-proc>
       {
         steps.map(([num, h, p], i) => (
-          <div class:list={[i > 0 && 'border-l-2 border-rule max-[760px]:[&:nth-child(odd)]:border-l-0 max-[430px]:border-l-0', i >= 2 && 'max-[760px]:border-t-2 max-[760px]:border-rule', 'max-[430px]:border-t-2 max-[430px]:border-rule max-[430px]:[&:first-child]:border-t-0']}>
-            <div class="group h-full bg-transparent p-[26px_22px] text-ink transition-colors hover:bg-acc hover:text-on-accent">
-              <div class="font-mono text-[22px] font-extrabold tracking-[-0.02em] text-acc transition-colors group-hover:text-on-accent">{num}</div>
-              <h3 class="mb-2.5 mt-3 font-sans text-[20px] font-extrabold tracking-[-0.015em]">{h}</h3>
-              <p class="m-0 text-[13.5px] leading-[1.55] text-mut transition-colors group-hover:text-on-accent">{p}</p>
+          <li class="proc-step group" style={`--i:${i}`}>
+            <div class="proc-rail">
+              <span class="proc-num">{num}</span>
+              <span class="proc-node" />
+              {i < steps.length - 1 && <span class="proc-line" />}
             </div>
-          </div>
+            <div class="proc-body">
+              <h3 class="proc-title">{h}</h3>
+              <p class="proc-desc">{p}</p>
+            </div>
+          </li>
         ))
       }
-    </div>
+    </ol>
+    </SectionHead>
   </section>
 
   <!-- 05 — Contact -->
@@ -362,7 +376,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
       index="05 / Contact"
       title="When it makes sense to talk"
       sub="You have a real growth problem, and the system matters."
-    />
+    >
     <p class={lead}>
       I am especially interested in founder-led businesses, SMEs, and early ventures where the opportunity is practical,
       the constraints are real, and the technical work has to connect back to the business.
@@ -373,6 +387,7 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
       >See if it's a fit, what to expect, and FAQ → Contact</a
     >
     <div class="mt-10"><EmailButton /></div>
+    </SectionHead>
   </section>
 </BaseLayout>
 
@@ -452,4 +467,146 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
 
   document.addEventListener('astro:page-load', initFlow);
   document.addEventListener('astro:before-swap', teardown);
+</script>
+
+<script>
+  // process timeline: rows fade up once on scroll-in, then a glowing accent
+  // "spark" rides the rail node → node (lighting each as it arrives), holds at
+  // the end, resets, and loops while the section is on screen. Node y-positions
+  // are measured from layout, so the loop is rebuilt on a debounced resize.
+  // Skips entirely when motion is off (no-JS / reduced-motion) and rebinds
+  // cleanly across View-Transition navigations.
+  import { animate, stagger, createTimeline } from 'animejs';
+
+  let entranceIo: IntersectionObserver | null = null;
+  let playIo: IntersectionObserver | null = null;
+  let tl: ReturnType<typeof createTimeline> | null = null;
+  let spark: HTMLElement | null = null;
+  let onResize: (() => void) | null = null;
+  let resizeTimer = 0;
+
+  function teardownProc() {
+    entranceIo?.disconnect();
+    entranceIo = null;
+    playIo?.disconnect();
+    playIo = null;
+    tl?.pause();
+    tl?.revert();
+    tl = null;
+    if (onResize) {
+      window.removeEventListener('resize', onResize);
+      onResize = null;
+    }
+    spark?.remove();
+    spark = null;
+    document
+      .querySelectorAll<HTMLElement>('.proc-node.is-active')
+      .forEach((n) => n.classList.remove('is-active'));
+  }
+
+  // (re)build the looping spark against the current layout — also what the
+  // debounced resize handler calls, since node centres are pixel-based.
+  function buildSpark(proc: HTMLElement, nodes: HTMLElement[]) {
+    playIo?.disconnect();
+    playIo = null;
+    tl?.pause();
+    tl?.revert();
+    tl = null;
+    spark?.remove();
+    nodes.forEach((n) => n.classList.remove('is-active'));
+
+    spark = document.createElement('span');
+    spark.className = 'proc-spark';
+    proc.appendChild(spark);
+
+    const base = proc.getBoundingClientRect();
+    const first = nodes[0].getBoundingClientRect();
+    const x = first.left - base.left + first.width / 2;
+    const ys = nodes.map((n) => {
+      const r = n.getBoundingClientRect();
+      return r.top - base.top + r.height / 2;
+    });
+    spark.style.left = `${x}px`;
+    spark.style.top = `${ys[0]}px`;
+
+    const STEP = 520; // travel time between adjacent nodes
+    const DWELL = 150; // pause on each node
+    const HOLD = 700; // pause at the end before the reset
+
+    tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
+
+    // light the first node as the spark fades in
+    tl.add(
+      spark,
+      { opacity: [0, 1], duration: 220, ease: 'outQuad', onBegin: () => nodes[0].classList.add('is-active') },
+      0
+    );
+    let at = DWELL;
+    for (let i = 0; i < nodes.length - 1; i++) {
+      const next = nodes[i + 1];
+      tl.add(spark, { top: [ys[i], ys[i + 1]], duration: STEP, onComplete: () => next.classList.add('is-active') }, at);
+      at += STEP + DWELL;
+    }
+    // hold on the full rail, then snuff spark + nodes and drop back to the top
+    tl.add(spark, { opacity: [1, 0], duration: 260, ease: 'outQuad' }, at + HOLD);
+    tl.add(
+      spark,
+      { top: ys[0], duration: 1, onBegin: () => nodes.forEach((n) => n.classList.remove('is-active')) },
+      at + HOLD + 260
+    );
+
+    playIo = new IntersectionObserver(
+      (entries) => entries.forEach((e) => (e.isIntersecting ? tl?.play() : tl?.pause())),
+      { threshold: 0.25 }
+    );
+    playIo.observe(proc);
+  }
+
+  function initProc() {
+    teardownProc();
+
+    if (!document.documentElement.classList.contains('motion')) return;
+
+    const proc = document.querySelector<HTMLElement>('.proc');
+    if (!proc) return;
+
+    const steps = [...proc.querySelectorAll<HTMLElement>('.proc-step')];
+    const nodes = [...proc.querySelectorAll<HTMLElement>('.proc-node')];
+    if (!steps.length || !nodes.length) return;
+
+    entranceIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          entranceIo?.unobserve(e.target);
+
+          // rows fade up once; build the spark only after they settle, so node
+          // y-positions are measured at rest (the rows translateY during this).
+          animate(steps, {
+            opacity: [0, 1],
+            translateY: [12, 0],
+            duration: 560,
+            delay: stagger(90),
+            ease: 'outCubic',
+            onComplete: () => {
+              steps.forEach((el) => (el.style.willChange = 'auto'));
+              buildSpark(proc, nodes);
+            },
+          });
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -8% 0px' }
+    );
+    entranceIo.observe(proc);
+
+    onResize = () => {
+      if (!spark) return; // only after the first build
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => buildSpark(proc, nodes), 160);
+    };
+    window.addEventListener('resize', onResize);
+  }
+
+  document.addEventListener('astro:page-load', initProc);
+  document.addEventListener('astro:before-swap', teardownProc);
 </script>
