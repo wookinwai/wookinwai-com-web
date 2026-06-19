@@ -1,0 +1,129 @@
+---
+import QRCode from 'qrcode';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SocialIcon from '../components/SocialIcon.astro';
+import Ticks from '../components/Ticks.astro';
+import { SITE, PROFILE_LINKS } from '../consts';
+
+const title = 'Digital card - Woo Kin Wai';
+const description = `${SITE.author}, ${SITE.role}. Save my contact, scan the code, or reach me on any channel.`;
+
+const cardUrl = `${SITE.url}/card`;
+
+// Build-time QR generation — `qrcode` runs in Node during the build and the SVG
+// is inlined, so nothing ships to the client. Recolor it to inherit the palette:
+// foreground → currentColor (text-ink), background → transparent.
+const rawQr = await QRCode.toString(cardUrl, { type: 'svg', margin: 0, errorCorrectionLevel: 'M' });
+const qrSvg = rawQr
+  .replace('#ffffff', 'transparent')
+  .replace('#000000', 'currentColor')
+  .replace('<svg ', '<svg class="h-full w-full" ');
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="mx-auto max-w-[520px] pb-20 pt-[72px] max-[760px]:pt-12">
+    <!-- Identity -->
+    <header class="flex items-center gap-5 max-[420px]:flex-col max-[420px]:items-start max-[420px]:gap-4">
+      <img
+        src="/woo-kin-wai-software-builder.avif"
+        width="104"
+        height="104"
+        alt={`Portrait of ${SITE.author}`}
+        class="rise d1 h-[104px] w-[104px] flex-none border-[1.5px] border-rule object-cover"
+      />
+      <div>
+        <div class="rise d1 font-mono text-[12.5px] tracking-[0.04em] text-acc">digital card</div>
+        <h1
+          class="rise d2 mt-2.5 font-sans text-[clamp(28px,7vw,40px)] font-semibold leading-[1.05] tracking-[-0.018em] text-ink"
+        >
+          {SITE.author}
+        </h1>
+        <p class="rise d2 mt-2 text-[16px] leading-[1.4] text-mut">{SITE.role}</p>
+        <p class="rise d3 mt-1.5 font-mono text-[11.5px] text-soft">{SITE.location.toLowerCase()} · gmt+8</p>
+      </div>
+    </header>
+
+    <!-- Primary actions -->
+    <div class="rise d3 mt-9 flex flex-wrap gap-3">
+      <a
+        href="/woo-kin-wai.vcf"
+        download
+        class="inline-flex items-center gap-2 border-[1.5px] border-acc bg-acc px-[18px] py-3 font-mono text-[12.5px] text-on-accent no-underline transition-colors hover:border-acc-2 hover:bg-acc-2"
+      >
+        save contact ↓
+      </a>
+      <button
+        id="copy-email"
+        type="button"
+        data-email={SITE.email}
+        data-label="copy email"
+        class="inline-flex items-center gap-2 border-[1.5px] border-rule bg-transparent px-[18px] py-3 font-mono text-[12.5px] text-ink transition-colors hover:border-acc hover:text-acc"
+      >
+        <span data-copy-label>copy email</span>
+      </button>
+    </div>
+
+    <!-- Channels (the title block) -->
+    <nav class="relative mt-9 border-[1.5px] border-rule bg-bg" data-stagger aria-label="Contact channels">
+      <Ticks />
+      {
+        PROFILE_LINKS.map((c, i) => (
+          <a
+            href={c.href}
+            target={c.external ? '_blank' : undefined}
+            rel={c.external ? 'noopener noreferrer' : undefined}
+            class:list={[
+              'row-edge block no-underline transition-colors hover:bg-panel',
+              i > 0 ? 'border-t border-line' : '',
+            ]}
+          >
+            <div class="grid grid-cols-[150px_1fr] items-center max-[520px]:grid-cols-1">
+              <span class="flex h-full items-center gap-2.5 border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[520px]:border-r-0 max-[520px]:pb-0">
+                <SocialIcon name={c.icon} class="h-[15px] w-[15px] flex-none text-mut" />
+                {c.label.toLowerCase()} /
+              </span>
+              <span class="flex items-center px-[22px] py-[15px] font-mono text-[13.5px] text-ink">
+                {c.value}
+                {c.external && <span class="ml-1 text-soft">↗</span>}
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- QR -->
+    <section class="reveal mt-14 flex flex-col items-center border-t border-rule pt-12">
+      <div class="h-[150px] w-[150px] border-[1.5px] border-rule bg-panel p-3 text-ink">
+        <Fragment set:html={qrSvg} />
+      </div>
+      <p class="mt-4 font-mono text-[11px] tracking-[0.04em] text-soft">scan to open · share</p>
+    </section>
+  </div>
+
+  <script>
+    // Copy-email affordance. Re-binds on every View-Transitions navigation
+    // (astro:page-load), same pattern as the chrome handlers in BaseLayout.
+    function initCardCopy() {
+      const btn = document.getElementById('copy-email');
+      if (!btn || btn.dataset.bound) return;
+      btn.dataset.bound = 'true';
+      const label = btn.querySelector('[data-copy-label]') as HTMLElement | null;
+      const email = btn.dataset.email || '';
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(email);
+        } catch (e) {
+          return;
+        }
+        if (!label) return;
+        const original = btn.dataset.label || label.textContent || '';
+        label.textContent = 'copied ✓';
+        window.setTimeout(() => {
+          label.textContent = original;
+        }, 1500);
+      });
+    }
+    document.addEventListener('astro:page-load', initCardCopy);
+  </script>
+</BaseLayout>

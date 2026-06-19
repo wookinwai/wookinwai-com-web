@@ -33,6 +33,7 @@
   /* status */
   --color-live: #2f6b4c;
   --color-build: #2f6b4c;
+  --color-ongoing: #2f6b4c;
   --color-closed: #8a8268;
 
   /* on-fill text */
@@ -69,6 +70,7 @@ html[data-pal='ink'] {
   --color-line-2: rgba(236, 228, 208, 0.07);
   --color-live: #6fae8c;
   --color-build: #6fae8c;
+  --color-ongoing: #6fae8c;
   --color-closed: #847b65;
   --color-on-accent: #201c13;
   --color-on-ink: #201c13;
@@ -260,6 +262,10 @@ body {
 }
 .smark.building {
   background: var(--color-build);
+}
+.smark.ongoing {
+  background: transparent;
+  border: 1.5px solid var(--color-ongoing);
 }
 .smark.closed {
   background: transparent;

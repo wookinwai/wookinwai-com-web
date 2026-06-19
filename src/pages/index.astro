@@ -13,7 +13,7 @@ const description =
 // Selected work — CMS-driven (fig. 04).
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 
-const statusLabel = { live: 'live', building: 'in build', closed: 'closed' } as const;
+const statusLabel = { live: 'live', building: 'in build', ongoing: 'ongoing', closed: 'closed' } as const;
 const modelLabel = { upside: 'upside participation', engaged: 'engaged to build' } as const;
 
 // fig. 01 — the schematic: growth → gap → build.
