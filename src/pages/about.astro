@@ -6,7 +6,7 @@ import Ticks from '../components/Ticks.astro';
 
 const title = 'About - Woo Kin Wai';
 const description =
-  'The longer version: how Woo Kin Wai went from engineer to technical partner, how he chooses the work, and the four lines he comes back to when a build gets hard.';
+  'Who you would be working with: how Woo Kin Wai thinks about software, how he decides what to build, how he works with the businesses he partners with, and the four lines he comes back to when a build gets hard.';
 
 // Shared spacing — same scale as the homepage sections.
 const secWrap = 'reveal pt-24 max-[760px]:pt-20';
@@ -20,41 +20,44 @@ const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.
   <!-- Hero -->
   <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
     <div class="rise d1 mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">
-      the person behind the work — kuala lumpur, gmt+8
+      the person behind the work · kuala lumpur, gmt+8
     </div>
     <h1
       class="rise d2 mb-[30px] text-balance font-sans text-[clamp(32px,5.4vw,58px)] font-semibold leading-[1.08] tracking-[-0.018em] text-ink"
     >
-      The longer <em class="font-medium italic text-acc">version</em>.
+      Who you'd be <em class="font-medium italic text-acc">working with</em>.
     </h1>
     <p class="rise d3 max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
-      The short version lives on the homepage. This is the longer one — how I got here, how I decide what to build, and
-      what keeps me going when a build gets hard.
+      Before you hand someone your next build, it helps to know how they think. This is how I decide what to build, how
+      I work with the businesses I partner with, and what keeps me steady when the work gets hard.
     </p>
   </header>
 
-  <!-- The path -->
+  <!-- How I think about the work -->
   <section class={secWrap}>
-    <SectionHead title="The path" em="so far" />
+    <SectionHead title="How I think about the" em="work" sub="what to build, what to leave, and why it fits." />
     <div
       class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9"
       data-stagger
     >
       <div>
         <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
-          I started as an engineer. For about a decade after that, I was the person responsible for turning ideas into
-          working systems — first writing the code, then leading the people who did.
+          When a business brings me a problem, the first thing I reach for is not code. I want to understand where the
+          business is trying to go, what is actually blocking it, and what kind of system would carry it there. The
+          right build is the one that fits the business, its people, its timing, and its constraints. The wrong one is
+          technically impressive and quietly useless.
         </p>
         <p class="mb-5 text-[19px] leading-[1.62] text-ink">
-          Along the way I helped scale a company from a small team of around ten people to about a hundred. Watching a
-          system grow under real load — more users, more people, more edge cases — taught me that good software is never
-          just clean code. It is a system that fits the business, the people, the timing, the constraints, and the next
-          stage of growth.
+          I think this way because of where I have sat. A decade of turning ideas into working systems, then leading the
+          people who built them, and helping scale one company from around ten people to about a hundred, showed me how
+          often good code still fails the business it was written for. The systems that held up were shaped around how
+          the business really worked, not around the cleanest architecture.
         </p>
         <p class="mb-0 text-[19px] leading-[1.62] text-ink">
-          Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
-          next. Sometimes that is a straightforward build. Sometimes, when the opportunity is strong and the fit is
-          right, I work closer to the outcome through a stake, revenue share, or longer-term partnership.
+          So I stay close to the outcome. Most of the time that means building the system a founder or SME needs next.
+          Sometimes, when the opportunity is strong and the fit is right, it means working as a real partner through a
+          stake, revenue share, or a longer-term arrangement, where my own upside depends on the build actually working.
+          Either way I take on a small number of things at a time, so each one gets real attention.
         </p>
       </div>
       <aside class="relative border border-rule bg-bg p-3.5 max-[900px]:max-w-[300px]">
@@ -74,15 +77,6 @@ const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.
         </div>
       </aside>
     </div>
-    <div
-      class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9"
-    >
-      <Ticks />
-      <span class="whitespace-nowrap font-mono text-[12px] text-acc">the working question /</span>
-      <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
-        What system does this business need in order to grow?
-      </blockquote>
-    </div>
   </section>
 
   <!-- Away from the desk -->
@@ -90,7 +84,7 @@ const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.
     <SectionHead title="Away from the" em="desk" sub="the part that keeps everything else in proportion." />
     <div class="max-w-[700px]" data-stagger>
       <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
-        Away from the screen, I am a husband and a father. That is the part that puts the rest in proportion — and,
+        Away from the screen, I am a husband and a father. That is the part that puts the rest in proportion, and,
         honestly, the reason I do not get to quit when the work gets hard.
       </p>
       <p class="mb-0 text-[19px] leading-[1.62] text-ink">
