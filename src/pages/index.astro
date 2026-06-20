@@ -336,9 +336,16 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                     href={w.visit.href}
                     target="_blank"
                     rel="noopener"
-                    class="mt-6 inline-block border-b border-acc pb-0.5 font-mono text-[12.5px] text-acc no-underline transition-colors hover:border-acc-2 hover:text-acc-2"
+                    class="group mt-6 inline-flex items-baseline gap-2 font-mono text-[12.5px] no-underline"
                   >
-                    {w.visit.label.toLowerCase()} →
+                    <span
+                      class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+                      >{w.visit.label.toLowerCase()}</span
+                    >
+                    <span
+                      class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
+                      aria-hidden="true">→</span
+                    >
                   </a>
                 )}
               </div>
@@ -420,7 +427,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
       <a href="/contact" class="group inline-flex items-baseline gap-2 no-underline">
         <span
           class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
-          >the contact page covers what to expect, fit, and faq</span
+          >see the contact page to check fit, first steps, and common questions.</span
         >
         <span
           class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"

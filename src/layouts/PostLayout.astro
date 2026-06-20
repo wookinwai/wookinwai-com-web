@@ -39,10 +39,14 @@ const fmt = (d: Date) =>
 
     <article class="prose-drafting"><slot /></article>
 
-    <a
-      href="/notes"
-      class="mt-12 inline-block font-mono text-[12px] text-mut no-underline transition-colors hover:text-acc"
-      >← all notes</a
-    >
+    <a href="/notes" class="group mt-12 inline-flex items-baseline gap-2 font-mono text-[12px] no-underline">
+      <span
+        class="text-acc transition-transform group-hover:-translate-x-1 group-hover:text-acc-2"
+        aria-hidden="true">←</span
+      >
+      <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+        >all notes</span
+      >
+    </a>
   </div>
 </BaseLayout>

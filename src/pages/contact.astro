@@ -100,8 +100,17 @@ const checklistRow =
         href={SOCIALS[0].href}
         target="_blank"
         rel="noopener"
-        class="font-mono text-[12.5px] text-mut no-underline transition-colors hover:text-acc">linkedin ↗</a
+        class="group inline-flex items-baseline gap-1.5 font-mono text-[12.5px] no-underline"
       >
+        <span
+          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+          >linkedin</span
+        >
+        <span
+          class="text-acc transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acc-2"
+          aria-hidden="true">↗</span
+        >
+      </a>
     </div>
   </header>
 
