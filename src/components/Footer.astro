@@ -2,12 +2,16 @@
 import { SITE, SOCIALS } from '../consts';
 
 const year = new Date().getFullYear();
-const linkClass = 'text-mut no-underline transition-colors hover:text-acc';
+// Underlined so links are distinguishable without relying on colour, and
+// text-mut so they clear AA contrast on the paper background.
+const linkClass = 'text-mut underline decoration-1 underline-offset-2 transition-colors hover:text-acc';
+// Standalone nav links also need a 24px-tall tap target (WCAG 2.5.8).
+const navLinkClass = `${linkClass} inline-flex min-h-[24px] items-center`;
 ---
 
 <footer class="mt-5 border-t border-rule bg-bg">
   <div
-    class="mx-auto flex h-[72px] max-w-[1180px] flex-wrap items-center gap-x-6 gap-y-1 px-14 font-mono text-[11.5px] text-soft max-[900px]:px-7 max-[560px]:h-auto max-[560px]:px-5 max-[560px]:py-5"
+    class="mx-auto flex h-[72px] max-w-[1180px] flex-wrap items-center gap-x-6 gap-y-1 px-14 font-mono text-[11.5px] text-mut max-[900px]:px-7 max-[560px]:h-auto max-[560px]:px-5 max-[560px]:py-5"
   >
     <span>
       © {year}
@@ -19,13 +23,13 @@ const linkClass = 'text-mut no-underline transition-colors hover:text-acc';
     <span class="ml-auto flex gap-6 max-[560px]:ml-0">
       {
         SOCIALS.map((s) => (
-          <a href={s.href} target="_blank" rel="noopener noreferrer" class={linkClass}>
+          <a href={s.href} target="_blank" rel="noopener noreferrer" class={navLinkClass}>
             {s.label.toLowerCase()}
           </a>
         ))
       }
-      <a href="/card" class={linkClass}>card</a>
-      <a href="#top" class={linkClass}>back to the top</a>
+      <a href="/card" class={navLinkClass}>card</a>
+      <a href="#top" class={navLinkClass}>back to the top</a>
     </span>
   </div>
 </footer>

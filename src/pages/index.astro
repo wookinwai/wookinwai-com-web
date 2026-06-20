@@ -67,7 +67,7 @@ const steps = [
     'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.',
   ],
   ['02', 'Then, shape.', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
-  ['03', 'Then, build.', 'Create the smallest serious version that can be used, tested, and improved.'],
+  ['03', 'Next, build.', 'Create the smallest serious version that can be used, tested, and improved.'],
   ['04', 'And stay close.', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
 ];
 
@@ -91,11 +91,11 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
       <em class="font-medium italic text-acc">next stage of growth</em>.
     </h1>
     <div class="rise d3">
-      <p class="mb-4 max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
+      <p class="mb-4 max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
         The work usually starts before the code: where the business is trying to go, what is getting in the way, and
         what kind of system would carry it forward.
       </p>
-      <p class="max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
+      <p class="max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
         Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
         Sometimes it means helping a founder shape the technical path before the first serious build.
       </p>
@@ -214,11 +214,17 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         What system does this business need in order to grow?
       </blockquote>
     </div>
-    <a
-      href="/about"
-      class="mt-7 inline-block font-mono text-[12.5px] text-mut no-underline transition-colors hover:text-acc"
-      >how i think about the work, and what keeps me going →</a
-    >
+    <a href="/about" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-[12.5px] no-underline">
+      <span class="text-soft">more /</span>
+      <span
+        class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+        >how i think about the work, and what keeps me going</span
+      >
+      <span
+        class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
+        aria-hidden="true">→</span
+      >
+    </a>
   </section>
 
   <!-- fig. 04 — selected work: the build sheets -->
@@ -410,10 +416,17 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         <div class="px-[22px] py-[22px]"><EmailButton /></div>
       </div>
     </div>
-    <p class="mt-7 text-center font-mono text-[12px] text-soft">
-      <a href="/contact" class="text-soft no-underline transition-colors hover:text-acc"
-        >the contact page covers what to expect, fit, and faq&nbsp;→</a
-      >
+    <p class="mt-7 text-center font-mono text-[12px]">
+      <a href="/contact" class="group inline-flex items-baseline gap-2 no-underline">
+        <span
+          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+          >the contact page covers what to expect, fit, and faq</span
+        >
+        <span
+          class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
+          aria-hidden="true">→</span
+        >
+      </a>
     </p>
   </section>
 </BaseLayout>

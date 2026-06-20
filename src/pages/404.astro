@@ -8,11 +8,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <h1 class="mt-4 font-sans text-[clamp(30px,5vw,48px)] font-semibold leading-[1.1] tracking-[-0.015em] text-ink">
       This page wandered <em class="font-medium italic text-acc">off the table</em>.
     </h1>
-    <p class="mt-4 max-w-[460px] text-[17px] leading-[1.7] text-mut">
+    <p class="mt-4 max-w-[460px] text-[17px] leading-[1.7] text-ink">
       The link may be broken, or the page may have moved. Let’s get you back on track.
     </p>
-    <a href="/" class="mt-8 inline-block font-mono text-[12.5px] text-mut no-underline transition-colors hover:text-acc"
-      >← back home</a
-    >
+    <a href="/" class="group mt-8 inline-flex items-baseline gap-2 font-mono text-[12.5px] no-underline">
+      <span
+        class="text-acc transition-transform group-hover:-translate-x-1 group-hover:text-acc-2"
+        aria-hidden="true">←</span
+      >
+      <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+        >back home</span
+      >
+    </a>
   </section>
 </BaseLayout>

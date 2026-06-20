@@ -18,7 +18,7 @@
   /* text */
   --color-ink: #2b261c;
   --color-mut: #6e6755; /* graphite */
-  --color-soft: #8a8268; /* faint */
+  --color-soft: #746c56; /* faint — darkened to clear AA (4.5:1) on paper bg */
 
   /* accent — drafting green */
   --color-acc: #2f6b4c;
@@ -28,7 +28,7 @@
   /* rules & hairlines */
   --color-rule: #2b261c;
   --color-line: rgba(43, 38, 28, 0.16); /* hair */
-  --color-line-2: rgba(43, 38, 28, 0.09); /* hair 2 */
+  --color-line-2: rgba(43, 38, 28, 0.045); /* hair 2 — background grid */
 
   /* status */
   --color-live: #2f6b4c;
@@ -67,7 +67,7 @@ html[data-pal='ink'] {
   --color-acc-soft: rgba(111, 174, 140, 0.12);
   --color-rule: #ece4d0;
   --color-line: rgba(236, 228, 208, 0.18);
-  --color-line-2: rgba(236, 228, 208, 0.07);
+  --color-line-2: rgba(236, 228, 208, 0.035);
   --color-live: #6fae8c;
   --color-build: #6fae8c;
   --color-ongoing: #6fae8c;

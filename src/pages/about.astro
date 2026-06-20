@@ -27,7 +27,7 @@ const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.
     >
       Who you'd be <em class="font-medium italic text-acc">working with</em>.
     </h1>
-    <p class="rise d3 max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
+    <p class="rise d3 max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
       Before you hand someone your next build, it helps to know how they think. This is how I decide what to build, how
       I work with the businesses I partner with, and what I come back to when the work gets hard.
     </p>
@@ -128,9 +128,16 @@ const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.
     </p>
     <div class="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
       <EmailButton />
-      <a href="/contact" class="font-mono text-[12.5px] text-mut no-underline transition-colors hover:text-acc"
-        >what to expect →</a
-      >
+      <a href="/contact" class="group inline-flex items-baseline gap-2 font-mono text-[12.5px] no-underline">
+        <span
+          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+          >what to expect</span
+        >
+        <span
+          class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
+          aria-hidden="true">→</span
+        >
+      </a>
     </div>
   </section>
 </BaseLayout>
