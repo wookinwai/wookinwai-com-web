@@ -23,7 +23,10 @@ const fmt = (d: Date) =>
 
   {
     notes.length === 0 ? (
-      <p class="mt-14 font-mono text-[12.5px] text-soft">no notes yet.</p>
+      <p class="mt-14 max-w-[640px] font-mono text-[12.5px] leading-[1.6] text-soft">
+        No notes published yet. This will become a place for short writing on software, systems, and the work behind
+        useful builds.
+      </p>
     ) : (
       <div class="mb-12 mt-14 border-t border-line" data-stagger>
         {notes.map((note) => (

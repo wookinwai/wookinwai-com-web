@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/SectionHead.astro';
 import EmailButton from '../components/EmailButton.astro';
 import Ticks from '../components/Ticks.astro';
-import { SITE } from '../consts';
 import { getCollection } from 'astro:content';
 
 const title = 'Woo Kin Wai: software builder & technical partner';
@@ -25,7 +24,7 @@ const flow = [
   },
   {
     label: 'the gap',
-    ann: 'the system is missing',
+    ann: 'what is getting in the way',
     desc: 'The work is still manual, scattered, unclear, or technically fragile. The ambition exists, but the operating shape does not.',
   },
   {
@@ -36,7 +35,7 @@ const flow = [
   },
 ];
 
-// fig. 02 — four shapes the same conversation tends to take.
+// fig. 02 — a few common forms the work tends to take.
 const cases = [
   [
     'a',
@@ -94,7 +93,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     <div class="rise d3">
       <p class="mb-4 max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
         The work usually starts before the code: where the business is trying to go, what is getting in the way, and
-        what kind of system would actually help it move.
+        what kind of system would carry it forward.
       </p>
       <p class="max-w-[700px] text-[18.5px] leading-[1.6] text-mut">
         Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
@@ -152,7 +151,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 
   <!-- fig. 02 — what this usually looks like -->
   <section class={secWrap}>
-    <SectionHead title="What this usually" em="looks like" sub="four shapes the same conversation tends to take." />
+    <SectionHead title="What this usually" em="looks like" sub="a few common forms the work tends to take." />
     <div class="grid grid-cols-2 gap-x-[72px] max-[760px]:grid-cols-1" data-stagger>
       {
         cases.map(([, h, p]) => (
@@ -346,7 +345,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 
   <!-- fig. 05 — how the work unfolds -->
   <section class={secWrap} id="process">
-    <SectionHead title="How the work" em="unfolds" sub="small, serious versions. then iteration." />
+    <SectionHead title="How the work" em="unfolds" sub="start small enough to learn, serious enough to matter." />
     <div class="tl-line mx-[30px] mt-[70px] max-[760px]:hidden">
       <span class="conn-arrow" aria-hidden="true"></span>
       <span class="conn-packet" aria-hidden="true"></span>
@@ -382,7 +381,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         <div
           class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
         >
-          project /
+          next /
         </div>
         <div class="px-[22px] py-[15px] text-[16px] text-ink">the system your business needs next</div>
       </div>
@@ -390,15 +389,15 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         <div
           class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
         >
-          drawn by /
+          start with /
         </div>
-        <div class="px-[22px] py-[15px] text-[16px] text-ink">{SITE.author}, {SITE.org}</div>
+        <div class="px-[22px] py-[15px] text-[16px] text-ink">where the business is trying to grow</div>
       </div>
       <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
         <div
           class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
         >
-          location /
+          based in /
         </div>
         <div class="px-[22px] py-[15px] font-mono text-[13px] text-mut">kuala lumpur · gmt+8</div>
       </div>
@@ -406,7 +405,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         <div
           class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
         >
-          contact /
+          write /
         </div>
         <div class="px-[22px] py-[22px]"><EmailButton /></div>
       </div>
