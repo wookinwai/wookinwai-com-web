@@ -21,19 +21,16 @@ const flow = [
   {
     label: 'the growth',
     ann: 'where the business wants to go',
-    lead: 'Where the business wants to go.',
     desc: 'New revenue, better operations, a product idea, a platform, or a market opportunity that is starting to become real.',
   },
   {
     label: 'the gap',
     ann: 'the system is missing',
-    lead: 'The system is missing.',
     desc: 'The work is still manual, scattered, unclear, or technically fragile. The ambition exists, but the operating shape does not.',
   },
   {
     label: 'the build',
     ann: 'software that can carry it',
-    lead: 'Software that can carry it.',
     desc: 'A product, platform, portal, internal tool, workflow, or technical foundation designed around how the business actually works.',
     build: true,
   },
@@ -135,7 +132,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                 <div class="font-mono text-[12px] leading-[1.5] text-mut">{f.ann}</div>
               </div>
               <p class="mx-1 mb-0 mt-[22px] text-[15px] leading-[1.55] text-mut">
-                <strong class="font-semibold text-ink">{f.lead}</strong> {f.desc}
+                {f.desc}
               </p>
             </div>
             {i < flow.length - 1 && (
@@ -149,14 +146,9 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
       }
     </div>
     <figcaption class="mt-11 border-t border-line pt-4 font-mono text-[12.5px] text-mut">
-      the system, sketched before the code · drawn first, then built
+      from business need · to working system
     </figcaption>
   </figure>
-  <div class="pt-[26px] font-mono text-[12px] text-soft">
-    founder of <b class="font-medium text-mut">tiny edges</b> · kuala lumpur, malaysia · works in production: {
-      work.filter((w) => w.data.status !== 'closed').length
-    }
-  </div>
 
   <!-- fig. 02 — what this usually looks like -->
   <section class={secWrap}>
@@ -275,6 +267,17 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                 {hasShot ? (
                   <div>
                     <div class="border border-rule">
+                      <div class="flex items-center gap-2.5 border-b border-rule bg-panel px-3 py-[9px]">
+                        <span class="flex gap-1.5" aria-hidden="true">
+                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+                        </span>
+                        <span class="flex min-w-0 flex-1 items-center gap-1.5 rounded-[5px] border border-line bg-bg px-2.5 py-1 font-mono text-[10.5px] text-mut">
+                          <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-acc" />
+                          <span class="truncate">{w.shot?.url ?? w.name.toLowerCase()}</span>
+                        </span>
+                      </div>
                       {w.screenshotUrl ? (
                         <img
                           src={w.screenshotUrl}
@@ -291,11 +294,8 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                         </div>
                       )}
                     </div>
-                    {w.shot && (
-                      <div class="flex flex-wrap justify-between gap-x-4 gap-y-1 px-0.5 pt-3 font-mono text-[11px] text-mut">
-                        <span>{w.shot.label}</span>
-                        <span>{w.shot.url} ↗</span>
-                      </div>
+                    {w.shot?.label && (
+                      <div class="px-0.5 pt-3 font-mono text-[11px] text-mut">{w.shot.label}</div>
                     )}
                   </div>
                 ) : (
