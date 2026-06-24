@@ -28,7 +28,7 @@ export const SOCIALS: { label: string; href: string }[] = [
 
 // Source of truth for the digital business card (/card). Kept separate from
 // SOCIALS so the footer chip set stays untouched. `icon` keys map to SocialIcon.
-export type IconName = 'email' | 'linkedin' | 'x' | 'facebook' | 'instagram' | 'studio';
+export type IconName = 'email' | 'linkedin' | 'x' | 'facebook' | 'instagram' | 'work';
 export const PROFILE_LINKS: {
   label: string;
   value: string;
@@ -59,5 +59,5 @@ export const PROFILE_LINKS: {
     icon: 'instagram',
     external: true,
   },
-  { label: 'Tiny Edges', value: 'tinyedges.com', href: SITE.orgUrl, icon: 'studio', external: true },
+  { label: 'Work', value: 'tinyedges.com', href: SITE.orgUrl, icon: 'work', external: true },
 ];

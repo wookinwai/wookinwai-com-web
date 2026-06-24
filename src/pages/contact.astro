@@ -71,7 +71,7 @@ const linkedinPath = SOCIALS[0].href.replace(/^https?:\/\/(www\.)?linkedin\.com/
 const channels: { label: string; value: string; href?: string; external?: boolean }[] = [
   { label: 'email', value: SITE.email, href: `mailto:${SITE.email}` },
   { label: 'linkedin', value: `linkedin.com${linkedinPath}`, href: SOCIALS[0].href, external: true },
-  { label: 'studio', value: SITE.org.toLowerCase(), href: SITE.orgUrl, external: true },
+  { label: 'work', value: SITE.org.toLowerCase(), href: SITE.orgUrl, external: true },
   { label: 'based in', value: 'kuala lumpur · gmt+8' },
 ];
 
@@ -116,11 +116,7 @@ const checklistRow =
 
   <!-- fig. 01 — Fit -->
   <section class={secWrap}>
-    <SectionHead
-      title="When it makes sense"
-      em="to talk"
-      sub="when the system behind the business starts to matter."
-    />
+    <SectionHead title="When it makes sense" em="to talk" sub="when the system behind the business starts to matter." />
     <p class="max-w-[700px] text-[17px] leading-[1.66] text-ink">
       I am especially interested in founder-led businesses, SMEs, and early ventures where the opportunity is practical,
       the constraints are real, and the technical work has to connect back to the business.
@@ -177,6 +173,21 @@ const checklistRow =
           </div>
         ))
       }
+    </div>
+  </section>
+
+  <!-- If you want to build together -->
+  <section class={secWrap}>
+    <SectionHead title="Thoughtful builders are" em="welcome." sub="if you want to build together." />
+    <div class="max-w-[700px]" data-stagger>
+      <p class="mb-5 mt-0 text-[17px] leading-[1.66] text-ink">
+        I am not always looking for more people, but I am always glad to hear from thoughtful builders, designers,
+        operators, and technical people who care about useful work.
+      </p>
+      <p class="mb-0 text-[17px] leading-[1.66] text-ink">
+        Send a short note with what you are good at, what kind of work you want to do more of, and one thing you have
+        built or learned from.
+      </p>
     </div>
   </section>
 

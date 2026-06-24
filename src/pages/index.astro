@@ -40,7 +40,7 @@ const cases = [
   [
     'a',
     'A new product has to become real',
-    'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, architected, and built.',
+    'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, and built properly.',
   ],
   [
     'b',
@@ -130,9 +130,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                 </div>
                 <div class="font-mono text-[12px] leading-[1.5] text-mut">{f.ann}</div>
               </div>
-              <p class="mx-1 mb-0 mt-[22px] text-[15px] leading-[1.55] text-mut">
-                {f.desc}
-              </p>
+              <p class="mx-1 mb-0 mt-[22px] text-[15px] leading-[1.55] text-mut">{f.desc}</p>
             </div>
             {i < flow.length - 1 && (
               <div class="conn flow-conn mt-[58px] self-start max-[900px]:hidden">
@@ -173,14 +171,12 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     >
       <div>
         <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
-          I started as an engineer, then spent a decade as the person responsible for turning ideas into working
-          systems.
+          I studied engineering, but I found my work in software, products, and systems.
         </p>
         <p class="mb-5 text-[19px] leading-[1.62] text-ink">
           Over time, I moved from writing code to leading technical work, helping scale a company from a small team of
-          around ten people to about a hundred. That experience shaped how I see software: good software is not just
-          clean code. It is a system that fits the business, the people, the timing, the constraints, and the next stage
-          of growth.
+          around ten people to about a hundred. That shaped how I see software: not just as clean code, but as a system
+          that has to fit the business, the people, the timing, the constraints, and the next stage of growth.
         </p>
         <p class="mb-0 text-[19px] leading-[1.62] text-ink">
           Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
@@ -220,9 +216,8 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
         >how i think about the work, and what keeps me going</span
       >
-      <span
-        class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
-        aria-hidden="true">→</span
+      <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+        >→</span
       >
     </a>
   </section>
@@ -299,9 +294,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                         </div>
                       )}
                     </div>
-                    {w.shot?.label && (
-                      <div class="px-0.5 pt-3 font-mono text-[11px] text-mut">{w.shot.label}</div>
-                    )}
+                    {w.shot?.label && <div class="px-0.5 pt-3 font-mono text-[11px] text-mut">{w.shot.label}</div>}
                   </div>
                 ) : (
                   w.bodyHtml && (
@@ -338,14 +331,15 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                     rel="noopener"
                     class="group mt-6 inline-flex items-baseline gap-2 font-mono text-[12.5px] no-underline"
                   >
-                    <span
-                      class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
-                      >{w.visit.label.toLowerCase()}</span
-                    >
+                    <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
+                      {w.visit.label.toLowerCase()}
+                    </span>
                     <span
                       class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
-                      aria-hidden="true">→</span
+                      aria-hidden="true"
                     >
+                      →
+                    </span>
                   </a>
                 )}
               </div>
@@ -378,6 +372,10 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         ))
       }
     </div>
+    <p class="mt-12 max-w-[680px] text-[16px] leading-[1.62] text-mut max-[760px]:mt-9">
+      The same applies when I work with others: understand the business, think clearly, build carefully, and stay close
+      to what happens after shipping.
+    </p>
   </section>
 
   <!-- contact — the title block -->
@@ -429,9 +427,8 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
           class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
           >see the contact page to check fit, first steps, and common questions.</span
         >
-        <span
-          class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
-          aria-hidden="true">→</span
+        <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+          >→</span
         >
       </a>
     </p>
