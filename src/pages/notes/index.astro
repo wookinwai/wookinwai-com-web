@@ -36,7 +36,7 @@ const graph = pageGraph({ url: Astro.url, title, description });
       <div class="mb-12 mt-14 border-t border-line" data-stagger>
         {notes.map((note) => (
           <a
-            href={`/notes/${note.data.slug}`}
+            href={`/notes/${note.data.slug}/`}
             class="row-edge group grid grid-cols-[150px_1fr] items-baseline gap-[18px] border-b border-line py-[22px] no-underline transition-colors hover:bg-panel max-[760px]:grid-cols-1 max-[760px]:gap-2"
           >
             <div class="whitespace-nowrap pt-1 font-mono text-[12px] text-soft">{fmt(note.data.pubDate)}</div>
