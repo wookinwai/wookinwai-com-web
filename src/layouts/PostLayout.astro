@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
+import { articleGraph } from '../lib/seo';
 import '../styles/prose.css';
 
 export interface Props {
@@ -8,13 +9,33 @@ export interface Props {
 }
 
 const { note } = Astro.props;
-const { title, description, tags, heroUrl, heroAlt, pubDate } = note.data;
+const { title, description, tags, heroUrl, heroAlt, pubDate, updatedDate, seoTitle, seoDescription } = note.data;
 
 const fmt = (d: Date) =>
   `${d.getUTCFullYear()} · ${String(d.getUTCMonth() + 1).padStart(2, '0')} · ${String(d.getUTCDate()).padStart(2, '0')}`;
+
+const graph = articleGraph(note, Astro.url);
+
+// <title>/meta description only — the on-page H1/subtitle below always use
+// the raw title/description. Append the site suffix for consistency with
+// every other page, unless the override already reads as a complete title.
+const pageTitle = seoTitle
+  ? seoTitle.includes('Woo Kin Wai')
+    ? seoTitle
+    : `${seoTitle} - Woo Kin Wai`
+  : `${title} - Woo Kin Wai`;
+const pageDescription = seoDescription ?? description;
 ---
 
-<BaseLayout title={`${title} - Woo Kin Wai`} description={description}>
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  ogType="article"
+  ogImage={`/og/${note.data.slug}.jpg`}
+  ogImageAlt={`${title}, a note on wookinwai.com`}
+  article={{ publishedTime: pubDate, modifiedTime: updatedDate ?? pubDate, tags }}
+  graph={graph}
+>
   <div class="pb-12 pt-[60px]">
     <header>
       <div class="font-mono text-[12px] text-soft">note · {fmt(pubDate)}</div>
@@ -40,11 +61,11 @@ const fmt = (d: Date) =>
     <article class="prose-drafting"><slot /></article>
 
     <a href="/notes" class="group mt-12 inline-flex items-baseline gap-2 font-mono text-[12px] no-underline">
-      <span
-        class="text-acc transition-transform group-hover:-translate-x-1 group-hover:text-acc-2"
-        aria-hidden="true">←</span
+      <span class="text-acc transition-transform group-hover:-translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+        >←</span
       >
-      <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+      <span
+        class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
         >all notes</span
       >
     </a>

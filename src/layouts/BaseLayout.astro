@@ -1,9 +1,11 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import SEO from '../components/SEO.astro';
+import Seo from '@jdevalk/astro-seo-graph/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PlotBackground from '../components/PlotBackground.astro';
+import { SITE } from '../consts';
+import { siteGraph } from '../lib/seo';
 
 // Self-hosted fonts (Fontsource). The Drafting Table speaks in Source Serif 4
 // (voice + display) and IBM Plex Mono (annotations, labels, figure numbers).
@@ -22,10 +24,34 @@ export interface Props {
   title: string;
   description: string;
   canonical?: string;
-  image?: string;
+  /** Open Graph share image. Root-relative or absolute. Defaults to the Seo component's own default. */
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article' | 'profile' | 'book';
+  article?: {
+    publishedTime?: Date | string;
+    modifiedTime?: Date | string;
+    tags?: readonly string[];
+  };
+  /** JSON-LD @graph to emit. Defaults to the site-wide linked graph (WebSite + Person + Organization). */
+  graph?: Record<string, unknown> | null;
+  noindex?: boolean;
 }
 
-const { title, description, canonical, image } = Astro.props;
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og.png',
+  ogImageAlt = 'Woo Kin Wai: software builder & technical partner',
+  ogType = 'website',
+  article,
+  graph = siteGraph(),
+  noindex,
+} = Astro.props;
+
+const site = Astro.site ?? new URL(SITE.url);
+const ogImageURL = new URL(ogImage, site).href;
 ---
 
 <!doctype html>
@@ -66,7 +92,22 @@ const { title, description, canonical, image } = Astro.props;
     <meta name="theme-color" content="#f4f0e2" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#201c13" media="(prefers-color-scheme: dark)" />
 
-    <SEO title={title} description={description} canonical={canonical} image={image} />
+    <Seo
+      title={title}
+      description={description}
+      canonical={canonical}
+      ogType={ogType}
+      ogImage={ogImageURL}
+      ogImageAlt={ogImageAlt}
+      ogImageWidth={1200}
+      ogImageHeight={630}
+      siteName={SITE.author}
+      locale="en_US"
+      article={article}
+      noindex={noindex}
+      author={SITE.author}
+      graph={graph}
+    />
 
     <ClientRouter />
   </head>

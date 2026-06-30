@@ -4,10 +4,13 @@ import SectionHead from '../components/SectionHead.astro';
 import EmailButton from '../components/EmailButton.astro';
 import Ticks from '../components/Ticks.astro';
 import { SITE, SOCIALS } from '../consts';
+import { pageGraph } from '../lib/seo';
 
-const title = 'Contact - Woo Kin Wai';
+const title = 'Contact - Woo Kin Wai, Software Builder';
 const description =
   "Tell me where your business is trying to grow and what's getting in the way. Direct email, what to expect, and answers to common questions.";
+
+const graph = pageGraph({ url: Astro.url, title, description });
 
 // Shared spacing — same scale as the homepage sections.
 const secWrap = 'reveal pt-24 max-[760px]:pt-20';
@@ -79,7 +82,7 @@ const checklistRow =
   "relative border-b border-line py-4 pl-[34px] text-[16px] leading-[1.5] text-ink transition-all before:absolute before:left-0 before:top-4 before:font-mono before:text-[14px] before:text-acc before:content-['→'] hover:pl-[42px] hover:text-acc hover:before:left-2";
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} graph={graph}>
   <!-- Hero -->
   <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
     <div class="rise d1 mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">

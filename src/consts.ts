@@ -17,9 +17,9 @@ export const SITE = {
 export const NAV: { label: string; href: string }[] = [
   { label: 'Work', href: '/#work' },
   { label: 'Process', href: '/#process' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'Notes', href: '/notes' },
+  { label: 'About', href: '/about/' },
+  { label: 'Contact', href: '/contact/' },
+  { label: 'Notes', href: '/notes/' },
 ];
 
 export const SOCIALS: { label: string; href: string }[] = [

@@ -13,6 +13,10 @@ export async function GET(context: APIContext) {
       description: note.data.description,
       pubDate: note.data.pubDate,
       link: `/notes/${note.data.slug}/`,
+      // Full-content feed: ship the rendered body, not just the teaser
+      // description, so readers/aggregators don't need a round-trip to the
+      // site to read a note.
+      content: note.data.bodyHtml,
     })),
   });
 }

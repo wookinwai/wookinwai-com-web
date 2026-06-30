@@ -4,11 +4,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SocialIcon from '../components/SocialIcon.astro';
 import Ticks from '../components/Ticks.astro';
 import { SITE, PROFILE_LINKS } from '../consts';
+import { pageGraph } from '../lib/seo';
 
-const title = 'Digital card - Woo Kin Wai';
+const title = 'Digital card - Woo Kin Wai, Software Builder';
 const description = `${SITE.author}, ${SITE.role}. Save my contact, scan the code, or reach me on any channel.`;
 
 const cardUrl = `${SITE.url}/card`;
+
+const graph = pageGraph({ url: Astro.url, title, description });
 
 // Build-time QR generation — `qrcode` runs in Node during the build and the SVG
 // is inlined, so nothing ships to the client. Recolor it to inherit the palette:
@@ -20,7 +23,7 @@ const qrSvg = rawQr
   .replace('<svg ', '<svg class="h-full w-full" ');
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} graph={graph}>
   <div class="mx-auto max-w-[520px] pb-20 pt-[72px] max-[760px]:pt-12">
     <!-- Identity -->
     <header class="flex items-center gap-5 max-[420px]:flex-col max-[420px]:items-start max-[420px]:gap-4">

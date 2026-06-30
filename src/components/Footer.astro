@@ -13,12 +13,14 @@ const navLinkClass = `${linkClass} inline-flex min-h-[24px] items-center`;
   <div
     class="mx-auto flex h-[72px] max-w-[1180px] flex-wrap items-center gap-x-6 gap-y-1 px-14 font-mono text-[11.5px] text-mut max-[900px]:px-7 max-[560px]:h-auto max-[560px]:px-5 max-[560px]:py-5"
   >
+    {/* Explicit {' '} at each seam: compressHTML:'jsx' drops spaces that fall across a newline. */}
     <span>
-      © {year}
-      {SITE.author.toLowerCase()} ·
-      <a href={SITE.orgUrl} target="_blank" rel="noopener noreferrer" class={linkClass}>{SITE.org.toLowerCase()}</a> · {
-        SITE.location.toLowerCase()
+      © {year}{' '}
+      {SITE.author.toLowerCase()} ·{' '}
+      <a href={SITE.orgUrl} target="_blank" rel="noopener noreferrer" class={linkClass}>{SITE.org.toLowerCase()}</a> ·{
+        ' '
       }
+      {SITE.location.toLowerCase()}
     </span>
     <span class="ml-auto flex gap-6 max-[560px]:ml-0">
       {
@@ -28,7 +30,7 @@ const navLinkClass = `${linkClass} inline-flex min-h-[24px] items-center`;
           </a>
         ))
       }
-      <a href="/card" class={navLinkClass}>card</a>
+      <a href="/card/" class={navLinkClass}>card</a>
       <a href="#top" class={navLinkClass}>back to the top</a>
     </span>
   </div>
