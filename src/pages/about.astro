@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import EmailButton from '../components/EmailButton.astro';
+import Ticks from '../components/Ticks.astro';
+import { pageGraph } from '../lib/seo';
+
+const title = 'About - Woo Kin Wai, Software Builder';
+const description =
+  'Who you would be working with: how Woo Kin Wai thinks about software, how he decides what to build, how he works with people, and the four lines he comes back to when a build gets hard.';
+
+const graph = pageGraph({ url: Astro.url, title, description });
+
+// Shared spacing — same scale as the homepage sections.
+const secWrap = 'reveal pt-24 max-[760px]:pt-20';
+
+// The mantra — a declaration, not a list. The first three lines hold; the last
+// one is the point, so it lands in the green italic emphasis.
+const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.'];
+---
+
+<BaseLayout title={title} description={description} graph={graph}>
+  <!-- Hero -->
+  <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
+    <div class="rise d1 mb-[30px] kicker">the person behind the work · kuala lumpur, gmt+8</div>
+    <h1
+      class="rise d2 mb-[30px] text-balance font-sans text-[clamp(32px,5.4vw,58px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
+    >
+      Who you'd be <em class="em-acc">working with</em>.
+    </h1>
+    <p class="rise d3 max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
+      Before you hand someone your next build, it helps to know how they think. This is how I decide what to build, how
+      I work with people, and what I come back to when the work gets hard.
+    </p>
+  </header>
+
+  <!-- How I think about the work -->
+  <section class={secWrap}>
+    <SectionHead title="How I think about the" em="work" sub="what to build, what to leave, and why it fits." />
+    <div
+      class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9"
+      data-stagger
+    >
+      <div>
+        <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
+          When a business brings me a problem, the first thing I reach for is not code. I want to understand where the
+          business is trying to go, what is actually blocking it, and what kind of system would carry it there. The
+          right build is the one that fits the business, its people, its timing, and its constraints. The wrong one is
+          technically impressive and quietly useless.
+        </p>
+        <p class="mb-5 text-[19px] leading-[1.62] text-ink">
+          I think this way because of where I have sat. A decade of turning ideas into working systems, then leading the
+          people who built them, and helping scale one company from around ten people to about a hundred, showed me how
+          often good code still fails the business it was written for. The systems that held up were shaped around how
+          the business really worked, not around the cleanest architecture.
+        </p>
+        <p class="mb-0 text-[19px] leading-[1.62] text-ink">
+          So I stay close to the outcome. Most of the time that means building the system a founder or SME needs next.
+          Sometimes, when the opportunity is strong and the fit is right, it means working as a real partner through a
+          stake, revenue share, or a longer-term arrangement, where my own upside depends on the build actually working.
+          Either way I take on a small number of things at a time, so each one gets real attention.
+        </p>
+      </div>
+      <aside class="relative border border-rule bg-bg p-3.5 max-[900px]:max-w-[300px]">
+        <Ticks />
+        <img
+          src="/woo-kin-wai-software-builder.avif"
+          alt="Woo Kin Wai, software builder and technical partner"
+          width="1500"
+          height="1497"
+          loading="lazy"
+          decoding="async"
+          class="block w-full saturate-[.9] contrast-[1.02]"
+        />
+        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-anno-sm text-mut">
+          <span>woo kin wai</span>
+          <span>kuala lumpur</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- How I try to work with people -->
+  <section class={secWrap}>
+    <SectionHead
+      title="Small teams, clear thinking,"
+      em="honest ownership"
+      sub="how I try to work with the people I build with."
+    />
+    <div class="max-w-[700px]" data-stagger>
+      <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
+        I have led technical work long enough to know that good teams are not built by pressure alone. People need
+        context, standards, trust, and room to think.
+      </p>
+      <p class="mb-5 text-[19px] leading-[1.62] text-ink">
+        I like working with people who care about the business problem, not only the task in front of them. The best
+        builders I know ask why something matters, explain tradeoffs clearly, take ownership of the details, and stay
+        honest when something is unclear.
+      </p>
+      <p class="mb-0 text-[19px] leading-[1.62] text-ink">
+        My job is to give the work enough shape that people are not guessing, and enough trust that they can bring their
+        own judgment to it.
+      </p>
+    </div>
+  </section>
+
+  <!-- Away from the desk -->
+  <section class={secWrap}>
+    <SectionHead title="Away from the" em="desk" sub="the part that keeps everything else in proportion." />
+    <div class="max-w-[700px]" data-stagger>
+      <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
+        Away from the screen, I am a husband and a father. That is the part that puts the rest in proportion, and,
+        honestly, the reason the work has to mean something.
+      </p>
+      <p class="mb-0 text-[19px] leading-[1.62] text-ink">
+        I have had things not work out. A first venture that never became a business. Builds that taught me more in
+        failing than they would have in succeeding. I keep those close, because pretending the path was smooth would
+        make the rest less honest.
+      </p>
+    </div>
+  </section>
+
+  <!-- The mantra -->
+  <section class={secWrap}>
+    <SectionHead title="What I come back" em="to" sub="four lines, in order. the last one is the point." />
+    <div class="relative mt-2.5 max-w-[760px] border-[1.5px] border-rule bg-bg" data-stagger>
+      <Ticks />
+      {
+        mantra.map((line, i) => {
+          const last = i === mantra.length - 1;
+          return (
+            <div class:list={[!last && 'border-b border-line', 'px-[36px] py-7 max-[560px]:px-7 max-[560px]:py-5']}>
+              <span
+                class:list={[
+                  'font-sans text-[clamp(24px,3.6vw,36px)] leading-[1.15] tracking-[-0.01em]',
+                  last ? 'font-medium italic text-acc' : 'font-semibold text-ink',
+                ]}
+              >
+                {line}
+              </span>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="reveal pb-12 pt-24 max-[760px]:pt-[72px]">
+    <p class="max-w-[640px] text-[19px] leading-[1.62] text-ink">
+      If that sounds like the kind of person you want building your next system, or the kind of person you would want to
+      build with, <em class="italic text-acc">let's talk.</em>
+    </p>
+    <div class="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+      <EmailButton />
+      <a href="/contact/" class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline">
+        <span
+          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+          >what to expect</span
+        >
+        <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+          >→</span
+        >
+      </a>
+    </div>
+  </section>
+</BaseLayout>

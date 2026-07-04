@@ -7,6 +7,6 @@
   // No `main` worker entry — this is a pure static-assets project.
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
-  }
+    "not_found_handling": "404-page",
+  },
 }

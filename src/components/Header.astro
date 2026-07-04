@@ -5,59 +5,92 @@ import { NAV } from '../consts';
 const path = Astro.url.pathname;
 const isCurrent = (href: string) =>
   !href.includes('#') && href !== '/' && (path === href || path.startsWith(href + '/'));
+
+// WKW mark — a tiny pixel monogram drawn on the drafting grid.
+// 1 = ink, 2 = green; the green ascender tip is the "next stage" pixel,
+// marking where the last stroke of the W is headed. Rendered as 5px squares.
+const mark = [
+  [1, 0, 1, 0, 2],
+  [1, 0, 1, 0, 1],
+  [1, 1, 1, 1, 1],
+  [0, 1, 0, 1, 0],
+];
 ---
 
-<header class="sticky top-0 z-40 bg-bg border-b-2 border-rule">
-  <nav class="mx-auto flex max-w-[1020px] items-center justify-between px-10 py-4 max-[760px]:px-[22px]">
-    <a href="/" class="font-sans font-black text-[19px] uppercase tracking-[-0.03em] text-ink no-underline">
-      Woo Kin Wai<span class="text-acc">.</span>
-    </a>
-    <div class="flex items-center gap-6">
-      <ul class="flex list-none gap-[22px] max-[760px]:hidden">
+<header class="sticky top-0 z-40 border-b border-rule bg-bg">
+  <nav class="mx-auto flex h-[72px] max-w-[1180px] items-center gap-3.5 px-14 max-[900px]:px-7 max-[560px]:px-5">
+    <a href="/" class="flex items-center gap-3.5 no-underline">
+      <span class="grid grid-cols-5 gap-px" aria-label="Woo Kin Wai mark">
         {
-          NAV.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                aria-current={isCurrent(link.href) ? 'page' : undefined}
-                class:list={[
-                  'font-mono text-[11px] font-bold uppercase tracking-[0.1em] no-underline pb-1 transition-all hover:text-acc hover:shadow-[inset_0_-2px_0_var(--color-acc)]',
-                  isCurrent(link.href) ? 'text-acc shadow-[inset_0_-2px_0_var(--color-acc)]' : 'text-mut',
-                ]}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
+          mark
+            .flat()
+            .map((cell) => (
+              <span class:list={['block h-[5px] w-[5px]', cell === 1 && 'bg-ink', cell === 2 && 'bg-acc']} />
+            ))
         }
-      </ul>
-      <button
-        id="theme"
-        aria-label="Toggle theme"
-        class="grid h-[34px] w-[34px] flex-none place-items-center rounded-none border-2 border-rule bg-transparent text-ink transition-colors hover:bg-ink hover:text-on-ink"
-      >
-        <svg class="sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="4.2"></circle>
-          <path
-            d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"
-            stroke-linecap="round"></path>
-        </svg>
-        <svg class="moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 14.5A8 8 0 1 1 9.5 4a6.3 6.3 0 0 0 10.5 10.5z" stroke-linejoin="round"></path>
-        </svg>
-      </button>
-    </div>
+      </span>
+      <span class="whitespace-nowrap font-mono text-anno-lg tracking-[0.02em] text-ink">
+        woo kin wai <span class="text-mut">/ tiny edges</span>
+      </span>
+    </a>
+    <ul class="ml-auto flex list-none items-center gap-7 max-[760px]:hidden">
+      {
+        NAV.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={isCurrent(link.href) ? 'page' : undefined}
+              class:list={[
+                "font-mono text-anno-md lowercase tracking-[0.02em] no-underline transition-colors hover:text-acc before:content-['/_'] before:text-soft",
+                isCurrent(link.href) ? 'text-acc' : 'text-mut',
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <button
+      id="theme"
+      aria-label="Toggle theme"
+      class="ml-2 grid h-[34px] w-[34px] flex-none cursor-pointer place-items-center border border-line bg-transparent font-mono text-[26px] leading-none text-mut transition-colors hover:border-rule hover:text-ink max-[760px]:ml-auto"
+    >
+      <span class="lamp" aria-hidden="true">◐</span>
+      <span class="day" aria-hidden="true">◑</span>
+    </button>
+  </nav>
+  <!-- mobile nav — a slim hairline strip below the top bar; the desktop list above hides <760px -->
+  <nav class="hidden border-t border-line max-[760px]:block">
+    <ul class="mx-auto flex max-w-[1180px] list-none items-center justify-between px-7 py-2.5 max-[560px]:px-5">
+      {
+        NAV.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={isCurrent(link.href) ? 'page' : undefined}
+              class:list={[
+                "font-mono text-anno lowercase tracking-[0.02em] no-underline transition-colors hover:text-acc before:content-['/_'] before:text-soft",
+                isCurrent(link.href) ? 'text-acc' : 'text-mut',
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </nav>
 </header>
 
 <style>
-  .moon {
+  .day {
     display: none;
   }
-  :global(html[data-pal='ink']) .sun {
+  :global(html[data-pal='ink']) .lamp {
     display: none;
   }
-  :global(html[data-pal='ink']) .moon {
-    display: block;
+  :global(html[data-pal='ink']) .day {
+    display: inline;
   }
 </style>

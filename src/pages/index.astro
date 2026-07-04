@@ -1,161 +1,172 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/SectionHead.astro';
-import EmailButton from '../components/EmailButton.astro';
+import Ticks from '../components/Ticks.astro';
+import SocialIcon from '../components/SocialIcon.astro';
 import { getCollection } from 'astro:content';
+import { SITE, type IconName } from '../consts';
 
 const title = 'Woo Kin Wai: software builder & technical partner';
 const description =
   'I work with founders and SMEs to shape and build the software their business needs next, from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
 
-// Selected work — CMS-driven (section 03).
+// Selected work — CMS-driven (fig. 04).
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 
-const statusLabel = { live: 'Live', building: 'Building', ongoing: 'Ongoing', closed: 'Closed' } as const;
-// Literal class strings (not `text-${status}`) so Tailwind actually generates
-// these utilities. Note: 'building' maps to text-build (the --color-build token).
-const statusColor = { live: 'text-live', building: 'text-build', ongoing: 'text-ongoing', closed: 'text-closed' } as const;
-// Engagement → "Model" cell. Cobalt (acc-blue) is the one sanctioned categorical
-// secondary: build engagements vs red upside participation.
-const modelMap = {
-  upside: { value: 'Upside participation', tone: 'acc' },
-  engaged: { value: 'Engaged to build', tone: 'blue' },
-} as const;
+const statusLabel = { live: 'live', building: 'in build', ongoing: 'ongoing', closed: 'closed' } as const;
+const modelLabel = { upside: 'upside participation', engaged: 'engaged to build' } as const;
 
+// fig. 01 — the schematic: growth → gap → build.
 const flow = [
   {
-    n: '01',
-    label: 'The growth',
-    title: 'Where the business wants to go',
+    label: 'the growth',
+    ann: 'where the business wants to go',
     desc: 'New revenue, better operations, a product idea, a platform, or a market opportunity that is starting to become real.',
   },
   {
-    n: '02',
-    label: 'The gap',
-    title: 'The system is missing',
+    label: 'the gap',
+    ann: 'what is getting in the way',
     desc: 'The work is still manual, scattered, unclear, or technically fragile. The ambition exists, but the operating shape does not.',
   },
   {
-    n: '03',
-    label: 'The build',
-    title: 'Software that can carry it',
+    label: 'the build',
+    ann: 'software that can carry it',
     desc: 'A product, platform, portal, internal tool, workflow, or technical foundation designed around how the business actually works.',
     build: true,
   },
 ];
 
-const scenarios = [
-  ['New product', 'A new product has to become real', 'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, architected, and built.'],
-  ['Operations', 'Operations have outgrown the workaround', 'The business runs on spreadsheets, WhatsApp, manual checks, duplicated effort, and knowledge that lives in people’s heads.'],
-  ['Platform', 'A platform needs technical direction', 'The idea is bigger than a simple website. It needs a backend, data model, workflows, integrations, and decisions that will hold up later.'],
-  ['Partnership', 'The business needs a technical partner', 'Not just someone to take tickets, but someone who can understand the business, make tradeoffs, and stay close to the outcome.'],
+// fig. 02 — a few common forms the work tends to take.
+const cases = [
+  [
+    'a',
+    'A new product has to become real',
+    'A founder sees the opportunity, but the first serious version still needs to be shaped, scoped, and built properly.',
+  ],
+  [
+    'b',
+    'Operations have outgrown the workaround',
+    'The business runs on spreadsheets, WhatsApp, manual checks, duplicated effort, and knowledge that lives in people’s heads.',
+  ],
+  [
+    'c',
+    'A platform needs technical direction',
+    'The idea is bigger than a simple website. It needs a backend, data model, workflows, integrations, and decisions that will hold up later.',
+  ],
+  [
+    'd',
+    'The business needs a technical partner',
+    'Not just someone to take tickets, but someone who can understand the business, make tradeoffs, and stay close to the outcome.',
+  ],
 ];
 
+// fig. 05 — the drafted timeline.
 const steps = [
-  ['01', 'Listen', 'Understand where the business wants to grow, what is blocking it, and what cannot be ignored. Get this wrong and everything built on top of it is wrong too.'],
-  ['02', 'Shape', 'Turn the ambition into a clear product, workflow, platform, or system design. Decide what to build before deciding how to build it.'],
-  ['03', 'Build', 'Create the smallest serious version that can be used and improved. AI moves fast on the routine parts so the time goes where judgement is needed.'],
-  ['04', 'Improve', 'Work with my team at Tiny Edges to build on it, using what real use reveals. The first version is the start of the work, not the end of it.'],
-  ['05', 'Stay close', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
+  [
+    '01',
+    'First, listen.',
+    'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.',
+  ],
+  ['02', 'Then, shape.', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
+  ['03', 'Next, build.', 'Create the smallest serious version that can be used, tested, and improved.'],
+  ['04', 'And stay close.', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
 ];
 
-// shared section spacing (the masthead itself lives in <SectionHead/>)
-const secWrap = 'reveal pt-[112px] max-[760px]:pt-[84px]';
-const lead = 'mt-[26px] text-[17px] leading-[1.66] text-mut';
+const secWrap = 'reveal pt-24 max-[760px]:pt-20';
+const factRow =
+  'grid grid-cols-[168px_1fr] gap-[18px] border-b border-line py-3 max-[560px]:grid-cols-1 max-[560px]:gap-1';
+const factKey = 'pt-[3px] font-mono text-anno text-soft max-[560px]:pt-0';
+const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 
-const ndLabel = 'whitespace-nowrap border-r-2 border-rule px-4 py-[13px] font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] text-soft';
-const ndText = 'px-4 py-[13px] text-[15px] leading-[1.4] text-ink';
-const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] text-soft';
+// contact — the title block (mirrors the contact page's Direct channels).
+const ctaRows: { label: string; value: string; href?: string; icon: IconName }[] = [
+  { label: 'next', value: 'the system your business needs next', icon: 'system' },
+  { label: 'start with', value: 'where the business is trying to grow', icon: 'growth' },
+  { label: 'based in', value: 'kuala lumpur · gmt+8', icon: 'location' },
+  { label: 'write', value: SITE.email, href: `mailto:${SITE.email}`, icon: 'email' },
+];
+const ctaLabel =
+  'flex h-full items-center gap-2.5 border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[560px]:border-r-0 max-[560px]:pb-0';
+const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
+// Linkable values read as links: green text + green underline, deepening on hover.
+const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2';
 ---
 
 <BaseLayout title={title} description={description}>
   <!-- Hero -->
-  <header class="pt-[84px]">
-    <div class="rise d1 flex flex-col gap-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acc">
-      <span>Software builder and technical partner</span><span class="text-soft">Founder of Tiny Edges · Kuala Lumpur, Malaysia</span>
-    </div>
+  <header class="max-w-[880px] pt-[92px] pb-9 max-[760px]:pt-16">
+    <div class="rise d1 mb-[30px] kicker">software builder &amp; technical partner · kuala lumpur, gmt+8</div>
     <h1
-      class="rise d2 mt-6 max-w-[1000px] text-balance font-sans text-[clamp(32px,5.4vw,62px)] font-extrabold leading-[1.05] tracking-[-0.03em] text-ink"
+      class="rise d2 mb-[34px] text-balance font-sans text-[clamp(34px,5.4vw,64px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
     >
-      I help businesses define and build the software they need for their
-      <span class="text-acc">next stage of growth</span>.
+      I help businesses define and build the software they need for their{' '}
+      <em class="em-acc">next stage of growth</em>.
     </h1>
-    <p class="rise d3 mt-[26px] max-w-[620px] text-[17px] leading-[1.6] text-mut">
-      The work usually starts before the code: where the business is trying to go, what is getting in the way, and
-      what kind of system would actually help it move.
-    </p>
-    <p class="rise d3 mt-[18px] max-w-[620px] text-[17px] leading-[1.6] text-mut">
-      Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
-      Sometimes it means helping a founder shape the technical path before the first serious build.
-    </p>
-    <a
-      href="#work"
-      class="rise d3 mt-7 inline-flex items-center gap-2 pb-[3px] font-mono text-[11.5px] font-bold uppercase tracking-[0.12em] text-ink no-underline shadow-[inset_0_-2px_0_var(--color-acc)] transition-all hover:gap-3"
-      >See selected work ↓</a
-    >
+    <div class="rise d3">
+      <p class="mb-4 max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
+        The work usually starts before the code: where the business is trying to go, what is getting in the way, and
+        what kind of system would carry it forward.
+      </p>
+      <p class="max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
+        Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
+        Sometimes it means helping a founder shape the technical path before the first serious build.
+      </p>
+    </div>
+  </header>
 
-    <!-- growth → gap → build flow -->
-    <div class="flow-relay rise d4 mt-14 flex items-stretch max-[760px]:flex-col max-[760px]:gap-3">
+  <!-- fig. 01 — the schematic: growth → gap → build -->
+  <figure class="rise d4 relative m-0 mt-5 border border-rule bg-bg px-14 pb-12 pt-12 max-[900px]:px-7">
+    <Ticks />
+    <div
+      class="flow-relay grid grid-cols-[1fr_64px_1fr_64px_1fr] items-stretch max-[900px]:grid-cols-1 max-[900px]:gap-8"
+    >
       {
         flow.map((f, i) => (
           <>
-            <div
-              class:list={[
-                // z-10 + opaque fill so the connector packet/comet runs BEHIND the
-                // cards and tucks under their edges instead of bleeding over them.
-                'relative z-10 flex-1 overflow-hidden rounded-[2px] border-2 px-[22px] pb-6 pt-[22px] transition-all',
-                f.build
-                  ? 'border-acc bg-acc text-on-accent hover:-translate-y-0.5 hover:shadow-sm'
-                  : 'border-rule bg-bg hover:-translate-y-0.5 hover:bg-panel hover:shadow-sm',
-              ]}
-            >
-              <div class="flex items-baseline justify-between">
-                <div class:list={['font-mono text-[10px] font-bold uppercase tracking-[0.18em]', f.build ? 'text-on-accent' : 'text-acc']}>{f.label}</div>
-                <div class:list={['font-mono text-[11px] font-bold', f.build ? 'text-on-accent' : 'text-soft']}>{f.n}</div>
+            {/* z-10 + opaque card fill so the pen head and its ink tail run
+                BEHIND the cards and tuck under their edges */}
+            <div class="relative z-10">
+              <div
+                class:list={[
+                  'relative border-[1.5px] border-rule bg-bg px-7 pb-6 pt-[26px]',
+                  f.build && 'hatch border-2 border-acc',
+                ]}
+              >
+                <div
+                  class:list={['mb-2.5 text-[25px] font-bold italic leading-none', f.build ? 'text-acc' : 'text-ink']}
+                >
+                  {f.label}
+                </div>
+                <div class="font-mono text-anno leading-[1.5] text-mut">{f.ann}</div>
               </div>
-              <div class:list={['mb-2.5 mt-3 font-sans text-[19px] font-extrabold leading-[1.1] tracking-[-0.02em]', f.build ? 'text-on-accent' : 'text-ink']}>{f.title}</div>
-              <div class:list={['text-[13.5px] leading-[1.55]', f.build ? 'text-on-accent' : 'text-mut']}>{f.desc}</div>
+              <p class="mx-1 mb-0 mt-[22px] text-[15px] leading-[1.55] text-mut">{f.desc}</p>
             </div>
             {i < flow.length - 1 && (
-              <div class="flow-conn relative flex flex-[0_0_64px] items-center self-center px-[5px] max-[760px]:hidden">
-                <span class="absolute left-px top-1/2 z-[2] -mt-[3px] h-1.5 w-1.5 bg-acc" />
-                <div class="relative h-[2px] w-full bg-line">
-                  <span class="flow-packet absolute left-0 top-1/2 z-[3] -mt-[3px] h-1.5 w-1.5 bg-acc opacity-0" />
-                </div>
-                <svg width="11" height="11" viewBox="0 0 11 11" class="flow-arrow absolute -right-px text-acc" aria-hidden="true">
-                  <path d="M1.5 5.5h6M5.5 2.5l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+              <div class="conn flow-conn mt-[58px] self-start max-[900px]:hidden">
+                {/* packet before arrow so the arrowhead paints on top and the
+                    pen head tucks behind it on arrival */}
+                <span class="conn-packet" aria-hidden="true" />
+                <span class="conn-arrow" aria-hidden="true" />
               </div>
             )}
           </>
         ))
       }
     </div>
-  </header>
+    <figcaption class="mt-11 border-t border-line pt-4 font-mono text-anno-md text-mut">
+      from business need · to working system
+    </figcaption>
+  </figure>
 
-  <!-- 01 — The pattern -->
+  <!-- fig. 02 — what this usually looks like -->
   <section class={secWrap}>
-    <SectionHead
-      index="01 / The pattern"
-      title="What this usually looks like"
-      sub="Growth exposes the systems a business does not have yet."
-    >
-    <p class={lead}>
-      The work often starts before the code. The first question is not which stack to use. It is what kind of system the
-      business needs in order to move.
-    </p>
-    <div class="mt-[34px] grid grid-cols-2 overflow-hidden rounded-[2px] border-2 border-rule max-[760px]:grid-cols-1">
+    <SectionHead title="What this usually" em="looks like" sub="a few common forms the work tends to take." />
+    <div class="grid grid-cols-2 gap-x-[72px] max-[760px]:grid-cols-1" data-stagger>
       {
-        scenarios.map(([cat, h, p], i) => (
-          <div class:list={[i % 2 === 1 && 'border-l-2 border-rule max-[760px]:border-l-0', i >= 2 && 'border-t-2 border-rule', 'max-[760px]:border-t-2 max-[760px]:[&:first-child]:border-t-0']}>
-            <div class="group h-full bg-transparent p-[28px_26px] text-ink transition-colors hover:bg-ink hover:text-on-ink">
-              <div class="mb-3 flex items-center gap-[9px]">
-                <span class="h-[7px] w-[7px] flex-none bg-acc" />
-                <span class="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-mut transition-colors group-hover:text-on-ink">{cat}</span>
-              </div>
-              <h3 class="mb-2.5 font-sans text-[20px] font-extrabold leading-[1.08] tracking-[-0.02em]">{h}</h3>
-              <p class="m-0 text-[14px] leading-[1.58] text-mut transition-colors group-hover:text-on-ink">{p}</p>
-            </div>
+        cases.map(([, h, p]) => (
+          <div class="border-b border-line py-[26px]">
+            <h3 class="mb-2 mt-0 text-[21.5px] font-semibold leading-[1.3] text-ink">{h}</h3>
+            <p class="m-0 text-[15.5px] text-mut">{p}</p>
           </div>
         ))
       }
@@ -163,309 +174,422 @@ const metaLabel = 'font-mono text-[9.5px] font-bold uppercase tracking-[0.13em] 
     </SectionHead>
   </section>
 
-  <!-- 02 — About -->
+  <!-- fig. 03 — about -->
   <section class={secWrap} id="about">
-    <SectionHead index="02 / About" title="The short version">
-      <aside slot="rail" class="mt-5 max-[760px]:max-w-[200px]">
-        <div class="aspect-[4/5] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
-          <img
-            src="/woo-kin-wai-software-builder.avif"
-            alt="Woo Kin Wai, software builder and technical partner"
-            width="1500"
-            height="1497"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
-          />
+    <SectionHead title="The short" em="version" />
+    <div
+      class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9"
+      data-stagger
+    >
+      <div>
+        <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
+          I studied engineering, but I found my work in software, products, and systems.
+        </p>
+        <p class="mb-5 text-[19px] leading-[1.62] text-ink">
+          Over time, I moved from writing code to leading technical work, supporting the systems behind a company as it
+          grew from a small team of around ten people to about a hundred. That shaped how I see software: not just as
+          clean code, but as a system that has to fit the business, the people, the timing, the constraints, and the
+          next stage of growth.
+        </p>
+        <p class="mb-0 text-[19px] leading-[1.62] text-ink">
+          Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
+          next. Sometimes it is a straightforward build. Sometimes, when the opportunity is strong and the fit is right,
+          I work closer to the outcome through a stake, revenue share, or longer-term partnership.
+        </p>
+      </div>
+      <aside class="relative border border-rule bg-bg p-3.5 max-[900px]:max-w-[300px]">
+        <Ticks />
+        <img
+          src="/woo-kin-wai-software-builder.avif"
+          alt="Woo Kin Wai, software builder and technical partner"
+          width="1500"
+          height="1497"
+          loading="lazy"
+          decoding="async"
+          class="block w-full saturate-[.9] contrast-[1.02]"
+        />
+        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-anno-sm text-mut">
+          <span>woo kin wai</span>
+          <span>kuala lumpur</span>
         </div>
       </aside>
-      <div class="mt-[30px] text-[17px] leading-[1.7] text-ink" data-stagger>
-        <p class="mb-4">
-          I trained as an engineer, then spent about a decade building software, mostly client work at an agency and some
-          outsourced projects. Over that time I moved into technical leadership and helped grow the company from around
-          <b class="font-bold">10 people to about 100</b>. That experience shaped how I see software.
-        </p>
-        <p class="mb-4">
-          Good software is not just clean code. It is a system that fits the business, the people, the timing, the
-          constraints, and the next stage of growth.
-        </p>
-        <p class="mb-4">
-          AI changes how fast software gets built, not what makes it worth building. The hard part is still deciding
-          what the business actually needs.
-        </p>
-        <p class="mb-4">
-          Today I run <a href="https://www.tinyedges.com/" target="_blank" rel="noopener" class="font-bold text-ink underline decoration-acc decoration-2 underline-offset-[3px] transition-colors hover:text-acc">Tiny Edges</a>. I work with founders and SMEs to shape and build the
-          software their business needs next.
-        </p>
-        <p class="mb-4">
-          Most of the work is a direct build on a fee. Sometimes, when the opportunity is strong and the fit is right, I
-          work closer to the outcome through a <b class="font-bold text-acc">stake, revenue share, or a longer-term partnership</b>.
-        </p>
-        <blockquote
-          class="my-[30px] border-l-4 border-acc pl-[22px] font-sans text-[clamp(24px,3.2vw,34px)] font-extrabold leading-[1.12] tracking-[-0.025em] text-ink"
-        >
-          What system does this business need in order to grow?
-        </blockquote>
-        <div class="mt-[26px] flex items-center gap-[14px]">
-          <div class="grid h-12 w-12 flex-none place-items-center rounded-[2px] border-2 border-rule bg-panel font-mono text-[13px] font-bold text-ink">
-            WKW
-          </div>
-          <div class="font-sans text-[18px] font-extrabold tracking-[-0.015em] text-ink">
-            Kin Wai<small class="mt-1 block font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-soft">Kuala Lumpur</small>
-          </div>
-        </div>
-      </div>
-    </SectionHead>
+    </div>
+    <div
+      class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9"
+    >
+      <Ticks />
+      <span class="whitespace-nowrap font-mono text-anno text-acc">the working question /</span>
+      <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
+        What system does this business need in order to grow?
+      </blockquote>
+    </div>
+    <a href="/about/" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-anno-md no-underline">
+      <span class="text-soft">more /</span>
+      <span
+        class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+        >how i think about the work, and what keeps me going</span
+      >
+      <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+        >→</span
+      >
+    </a>
   </section>
 
-  <!-- 03 — Selected work -->
+  <!-- fig. 04 — selected work: the build sheets -->
   <section class={secWrap} id="work">
-    <SectionHead index="03 / Selected work" title="Selected work" sub="As of May 2026">
-    <p class={lead}>
-      A few examples of growth needs turned into working systems, from founder-led products to platforms and internal
-      tools.
-    </p>
-
-    <div class="mt-[30px] border-t-2 border-rule" data-stagger>
-      {work.length === 0 && (
-        <p class="border-b-2 border-rule py-5 font-mono text-[12px] uppercase tracking-[0.12em] text-soft">
-          Selected work will appear here.
-        </p>
-      )}
-      {
-        work.map((entry, i) => {
-          const w = entry.data;
-          const model = w.engagement ? modelMap[w.engagement] : null;
-          return (
-            <div class="flow border-b-2 border-rule">
-              <div class="flow-main row-edge group grid cursor-pointer grid-cols-[auto_1fr_auto] items-center gap-[18px] py-5 transition-colors hover:bg-panel max-[760px]:grid-cols-[auto_1fr]">
-                <div class="w-7 font-mono text-[13px] font-bold text-acc">{String(i + 1).padStart(2, '0')}</div>
-                <div>
-                  <div class="flex items-center gap-3 font-sans text-[23px] font-extrabold tracking-[-0.015em] text-ink transition-colors group-hover:text-acc">
-                    {w.name}
-                    <span class="exp inline-block font-mono text-[15px] font-bold text-acc">+</span>
-                  </div>
-                  <div class="mt-1 text-[14px] text-mut">{w.tease}</div>
-                </div>
-                <div class:list={['flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] font-bold uppercase tracking-[0.16em] max-[760px]:col-span-2 max-[760px]:pl-[34px]', statusColor[w.status]]}>
+    <SectionHead
+      title="Selected"
+      em="work"
+      sub="as of may 2026. a few examples of growth needs turned into working systems, from founder-led products to platforms and internal tools."
+    />
+    {
+      work.length === 0 && (
+        <p class="mt-3 border-b border-line pb-5 font-mono text-anno text-soft">selected work will appear here.</p>
+      )
+    }
+    {
+      work.map((entry) => {
+        const w = entry.data;
+        const closed = w.status === 'closed';
+        const hasShot = Boolean(w.screenshotUrl || w.shot);
+        const modelBits = [w.engagement && modelLabel[w.engagement], w.role?.toLowerCase()].filter(Boolean);
+        return (
+          <article
+            class:list={['mt-12 border bg-bg first-of-type:mt-3', closed ? 'border-dashed border-mut' : 'border-rule']}
+          >
+            <div
+              class:list={[
+                'grid grid-cols-[1fr_auto] border-b max-[900px]:grid-cols-1',
+                closed ? 'border-dashed border-line' : 'border-rule',
+              ]}
+            >
+              <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-[22px] py-4">
+                <h3 class="m-0 whitespace-nowrap text-[27px] font-semibold text-ink">{w.name}</h3>
+                <span class="text-[16px] italic text-mut">{w.tease}</span>
+              </div>
+              <div class="flex items-center gap-3.5 border-l border-line px-[22px] py-4 font-mono text-anno text-mut max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-line max-[900px]:py-2.5">
+                <span class="flex items-center gap-1.5 whitespace-nowrap">
                   <span class:list={['smark', w.status]} />
                   {statusLabel[w.status]}
-                </div>
+                </span>
+                {modelBits.length > 0 && <span class="text-acc">{modelBits.join(' · ')}</span>}
               </div>
-              <div class="detail">
-                <div class="pb-9 pt-1.5">
-                  {(w.shot || w.screenshotUrl) && (
-                    <div class="mb-6 aspect-[16/9] overflow-hidden rounded-[2px] border-2 border-rule bg-panel shadow-card">
-                      <div class="flex h-[30px] items-center gap-1.5 border-b-2 border-rule bg-bg px-3">
-                        <i class="block h-2 w-2 bg-rule" />
-                        <i class="block h-2 w-2 bg-rule" />
-                        <i class="block h-2 w-2 bg-rule" />
-                        <span class="ml-[9px] font-mono text-[9.5px] font-medium text-soft">{w.shot?.url}</span>
+            </div>
+            <div class:list={['grid max-[900px]:grid-cols-1', hasShot ? 'grid-cols-[1.15fr_1fr]' : 'grid-cols-2']}>
+              <div class="border-r border-line p-[30px_34px_34px] max-[900px]:border-r-0 max-[900px]:border-b max-[900px]:border-line max-[900px]:p-6">
+                {hasShot ? (
+                  <div>
+                    <div class="border border-rule">
+                      <div class="flex items-center gap-2.5 border-b border-rule bg-panel px-3 py-[9px]">
+                        <span class="flex gap-1.5" aria-hidden="true">
+                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+                        </span>
+                        <span class="flex min-w-0 flex-1 items-center gap-1.5 rounded-[5px] border border-line bg-bg px-2.5 py-1 font-mono text-anno-sm text-mut">
+                          <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-acc" />
+                          <span class="truncate">{w.shot?.url ?? w.name.toLowerCase()}</span>
+                        </span>
                       </div>
                       {w.screenshotUrl ? (
                         <img
                           src={w.screenshotUrl}
-                          alt={w.shot?.label || `${w.name} screenshot`}
+                          alt={w.screenshotAlt || w.shot?.label || `${w.name} screenshot`}
                           loading="lazy"
                           decoding="async"
-                          class="h-[calc(100%-30px)] w-full object-cover object-top"
+                          class="block aspect-[16/10] w-full object-cover object-top"
                         />
                       ) : (
-                        <div
-                          class="grid h-[calc(100%-30px)] place-items-center"
-                          style="background:repeating-linear-gradient(45deg, transparent, transparent 11px, var(--color-line-2) 11px, var(--color-line-2) 12px);"
-                        >
-                          <span class="border-2 border-rule bg-panel px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-soft">
-                            {w.name} screenshot
+                        <div class="grid aspect-[16/10] place-items-center bg-[repeating-linear-gradient(-45deg,var(--color-acc-soft)_0_5px,transparent_5px_11px)]">
+                          <span class="border border-line bg-bg px-3 py-1.5 font-mono text-anno-sm text-soft">
+                            {w.name.toLowerCase()} · drawing to follow
                           </span>
                         </div>
                       )}
                     </div>
-                  )}
-                  <div class="mb-6 grid grid-cols-[auto_1fr] overflow-hidden rounded-[2px] border-2 border-rule">
-                    {w.nd.map((n, j) => (
-                      <>
-                        <span class:list={[ndLabel, j > 0 && 'border-t border-line']}>{n.label}</span>
-                        <span class:list={[ndText, j > 0 && 'border-t border-line']}>{n.text}</span>
-                      </>
-                    ))}
+                    {w.shot?.label && <div class="px-0.5 pt-3 font-mono text-anno-sm text-mut">{w.shot.label}</div>}
                   </div>
-                  {(w.role || model) && (
-                    <div class="mb-5 flex w-fit flex-wrap overflow-hidden rounded-[2px] border-2 border-rule">
-                      {w.role && (
-                        <div class="flex flex-col gap-1 px-[18px] py-3">
-                          <span class={metaLabel}>Role</span>
-                          <span class="font-mono text-[13px] font-medium text-ink">{w.role}</span>
-                        </div>
-                      )}
-                      {model && (
-                        <div class="flex flex-col gap-1 border-l-2 border-rule px-[18px] py-3">
-                          <span class={metaLabel}>Model</span>
-                          <span class:list={['inline-flex items-center gap-[7px] font-mono text-[13px] font-medium', model.tone === 'acc' ? 'text-acc' : 'text-acc-blue']}>
-                            <span class:list={['h-1.5 w-1.5 flex-none', model.tone === 'acc' ? 'bg-acc' : 'bg-acc-blue']} />
-                            {model.value}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  {w.bodyHtml && (
-                    <p class="mb-[18px] text-[16px] leading-[1.66] text-mut [&_b]:font-bold [&_b]:text-ink" set:html={w.bodyHtml} />
-                  )}
-                  {w.stack.length > 0 && (
-                    <div class="flex flex-wrap gap-2">
-                      {w.stack.map((s) => (
-                        <span class="border-2 border-rule px-[10px] py-[5px] font-mono text-[10.5px] uppercase leading-none tracking-[0.08em] text-mut">{s}</span>
-                      ))}
-                    </div>
-                  )}
-                  {w.visit && (
-                    <a
-                      href={w.visit.href}
-                      target="_blank"
-                      rel="noopener"
-                      class="mt-5 inline-flex items-center rounded-[2px] border-2 border-acc px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-acc no-underline transition-all hover:-translate-x-px hover:-translate-y-px hover:bg-acc hover:text-on-accent hover:shadow-acc"
+                ) : (
+                  w.bodyHtml && (
+                    <p class="m-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold" set:html={w.bodyHtml} />
+                  )
+                )}
+              </div>
+              <div class="p-[30px_34px_34px] max-[900px]:p-6">
+                {hasShot && w.bodyHtml && (
+                  <p
+                    class="mb-[22px] mt-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold"
+                    set:html={w.bodyHtml}
+                  />
+                )}
+                {w.stack.length > 0 && (
+                  <div class="mb-5 font-mono text-anno text-mut">
+                    <span class="text-soft">stack /</span> {w.stack.map((s) => s.toLowerCase()).join(' · ')}
+                  </div>
+                )}
+                {w.nd.length > 0 && (
+                  <dl class="m-0 border-t border-line">
+                    {w.nd.map((n) => (
+                      <div class={factRow}>
+                        <dt class={factKey}>{n.label.toLowerCase()}</dt>
+                        <dd class={factVal}>{n.text}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+                {w.visit && (
+                  <a
+                    href={w.visit.href}
+                    target="_blank"
+                    rel="noopener"
+                    class="group mt-6 inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
+                  >
+                    <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
+                      {w.visit.label.toLowerCase()}
+                    </span>
+                    <span
+                      class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
+                      aria-hidden="true"
                     >
-                      {w.visit.label}
-                    </a>
-                  )}
-                </div>
+                      →
+                    </span>
+                  </a>
+                )}
               </div>
             </div>
+          </article>
+        );
+      })
+    }
+  </section>
+
+  <!-- fig. 05 — how the work unfolds -->
+  <section class={secWrap} id="process">
+    <SectionHead title="How the work" em="unfolds" sub="start small enough to learn, serious enough to matter." />
+    <div class="tl-line mx-[30px] mt-[70px] max-[760px]:hidden">
+      {
+        /* packet before arrow so the arrowhead paints on top and the pen head
+          tucks behind it on arrival */
+      }
+      <span class="conn-packet" aria-hidden="true"></span>
+      <span class="conn-arrow" aria-hidden="true"></span>
+    </div>
+    <div
+      class="tl-stops mx-[30px] grid grid-cols-4 max-[760px]:mx-0 max-[760px]:grid-cols-1 max-[760px]:gap-9"
+      data-stagger
+    >
+      {
+        steps.map(([id, h, p]) => (
+          <div class="tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0">
+            <span class="tl-mark max-[760px]:hidden" aria-hidden="true" />
+            <div class="mb-3 font-mono text-anno text-soft">step {id} /</div>
+            <h3 class="mb-2 mt-0 text-[21px] font-semibold italic text-ink">{h}</h3>
+            <p class="m-0 text-[15px] text-mut">{p}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="mt-12 max-w-[680px] text-[16px] leading-[1.62] text-mut max-[760px]:mt-9">
+      The same applies when I work with others: understand the business, think clearly, build carefully, and stay close
+      to what happens after shipping.
+    </p>
+  </section>
+
+  <!-- contact — the title block -->
+  <section class="reveal pb-12 pt-[110px] max-[760px]:pt-20" id="contact">
+    <p
+      class="mx-auto mb-14 max-w-[760px] text-balance text-center text-[clamp(26px,3.6vw,40px)] font-extrabold leading-[1.25] tracking-[-0.01em] text-ink"
+    >
+      If you can describe where your business is trying to grow,{' '}
+      <em class="em-acc">I can help you work out the system it needs.</em>
+    </p>
+    <div class="relative mx-auto max-w-[820px] border-[1.5px] border-rule bg-bg">
+      <Ticks />
+      {
+        ctaRows.map((r, i) => {
+          const inner = (
+            <div class="grid grid-cols-[200px_1fr] max-[560px]:grid-cols-1">
+              <span class={ctaLabel}>
+                <SocialIcon name={r.icon} class="h-[15px] w-[15px] flex-none text-mut" />
+                {r.label} /
+              </span>
+              <span class={ctaValue}>{r.href ? <span class={ctaLink}>{r.value}</span> : r.value}</span>
+            </div>
+          );
+          const edge = i > 0 ? 'border-t border-line' : '';
+          return r.href ? (
+            <a href={r.href} class:list={['row-edge group block no-underline transition-colors hover:bg-panel', edge]}>
+              {inner}
+            </a>
+          ) : (
+            <div class:list={[edge]}>{inner}</div>
           );
         })
       }
     </div>
-    </SectionHead>
-  </section>
-
-  <!-- 04 — Process -->
-  <section class={secWrap} id="process">
-    <SectionHead
-      index="04 / Process"
-      title="How the work happens"
-      sub="The same loop, adjusted to the business."
-    >
-    <p class={lead}>
-      The process is deliberately simple. Get the problem right, build the smallest serious version that works, then keep
-      improving it with my team as real use shows what matters.
+    <p class="mt-7 text-center font-mono text-anno">
+      <a href="/contact/" class="group inline-flex items-baseline gap-2 no-underline">
+        <span
+          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+          >see the contact page to check fit, first steps, and common questions.</span
+        >
+        <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+          >→</span
+        >
+      </a>
     </p>
-    <ol class="proc mt-[42px]" data-proc>
-      {
-        steps.map(([num, h, p], i) => (
-          <li class="proc-step group" style={`--i:${i}`}>
-            <div class="proc-rail">
-              <span class="proc-num">{num}</span>
-              <span class="proc-node" />
-              {i < steps.length - 1 && <span class="proc-line" />}
-            </div>
-            <div class="proc-body">
-              <h3 class="proc-title">{h}</h3>
-              <p class="proc-desc">{p}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
-    </SectionHead>
-  </section>
-
-  <!-- 05 — Contact -->
-  <section class={secWrap} id="contact">
-    <SectionHead
-      index="05 / Contact"
-      title="When it makes sense to talk"
-      sub="You have a real growth problem, and the system matters."
-    >
-    <p class={lead}>
-      I am especially interested in founder-led businesses, SMEs, and early ventures where the opportunity is practical,
-      the constraints are real, and the technical work has to connect back to the business.
-    </p>
-    <a
-      href="/contact"
-      class="mt-7 inline-flex items-center gap-2 font-mono text-[11.5px] font-bold uppercase tracking-[0.12em] text-ink no-underline shadow-[inset_0_-2px_0_var(--color-acc)] transition-all hover:gap-3"
-      >See if it's a fit, what to expect, and FAQ → Contact</a
-    >
-    <div class="mt-10"><EmailButton /></div>
-    </SectionHead>
   </section>
 </BaseLayout>
 
 <script>
-  // growth → gap → build: an anime.js timeline relays a red signal packet down
-  // each connector wire (Growth → Gap → Build), looping with a brief dwell. Runs
-  // only while the flow is on screen, skips entirely under reduced-motion, and
-  // rebinds cleanly across View-Transition navigations.
+  // Relays, ported from the previous design and redrawn in drafting language.
+  //
+  // fig. 01 — growth → gap → build: an anime.js timeline sends a green "pen
+  // head" down each dashed leader line in turn; the arrowhead pulses as it
+  // arrives. The packet is the work moving through the system.
+  //
+  // fig. 05 — the drafted timeline: the same pen head travels the baseline
+  // stop to stop, and each square marker pulses as the work passes through it
+  // (listen → shape → build → stay close), fading out at the arrowhead.
+  //
+  // The other sections stay still on purpose: cases, sheets, and the title
+  // block have no direction to animate — motion there would be noise. Both
+  // relays run only while on screen, skip entirely under reduced motion, and
+  // rebind cleanly across View-Transition navigations.
   import { createTimeline } from 'animejs';
 
-  let tl: ReturnType<typeof createTimeline> | null = null;
-  let io: IntersectionObserver | null = null;
+  const STEP = 720; // fig. 01 — travel time per leader line
+  const WALK = 1400; // fig. 05 — travel time per baseline segment (a slower, surveying pace)
+  const OVERLAP = 100; // how much the next segment fires before the last lands
+  const DWELL = 660; // pause between loops
+
+  let tls: ReturnType<typeof createTimeline>[] = [];
+  let ios: IntersectionObserver[] = [];
 
   function teardown() {
-    io?.disconnect();
-    io = null;
-    tl?.pause();
-    tl?.revert();
-    tl = null;
+    ios.forEach((io) => io.disconnect());
+    ios = [];
+    tls.forEach((tl) => {
+      tl.pause();
+      tl.revert();
+    });
+    tls = [];
+    // drop any ticked timeline stops so a fresh run starts from empty squares
+    document.querySelectorAll('.tl-mark.is-done').forEach((m) => m.classList.remove('is-done'));
   }
 
-  function initFlow() {
-    teardown();
+  // play/pause a timeline as its host scrolls in and out of view
+  function bind(watch: HTMLElement, tl: ReturnType<typeof createTimeline>) {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => (e.isIntersecting ? tl.play() : tl.pause())),
+      { threshold: 0.25 }
+    );
+    io.observe(watch);
+    ios.push(io);
+    tls.push(tl);
+  }
 
-    const flow = document.querySelector<HTMLElement>('.flow-relay');
-    if (!flow) return;
-    const conns = [...flow.querySelectorAll<HTMLElement>('.flow-conn')];
-    if (!conns.length) return;
+  const visible = (el: HTMLElement | null): el is HTMLElement => !!el && el.getClientRects().length > 0;
+
+  function initRelays() {
+    teardown();
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    flow.classList.add('flow-live');
+    // fig. 01 — leader-line relay
+    const flow = document.querySelector<HTMLElement>('.flow-relay');
+    const conns = flow ? [...flow.querySelectorAll<HTMLElement>('.flow-conn')].filter(visible) : [];
+    if (flow && conns.length) {
+      flow.classList.add('flow-live');
+      const tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
+      let at = 0;
+      conns.forEach((conn) => {
+        const packet = conn.querySelector<HTMLElement>('.conn-packet');
+        const arrow = conn.querySelector<HTMLElement>('.conn-arrow');
+        if (!packet) return;
+        tl.add(
+          packet,
+          {
+            left: ['0%', '100%'],
+            // fade in fast, ride the line lit, snuff out on arrival
+            opacity: [
+              { to: 1, duration: 70 },
+              { to: 1, duration: 560 },
+              { to: 0, duration: 90 },
+            ],
+            duration: STEP,
+          },
+          at
+        );
+        if (arrow) {
+          tl.add(arrow, { scale: [1, 1.5, 1], duration: 340, ease: 'outQuad' }, at + STEP - 190);
+        }
+        at += STEP - OVERLAP;
+      });
+      // hold on the empty line before the relay loops
+      const first = conns[0].querySelector<HTMLElement>('.conn-packet');
+      if (first) tl.add(first, { opacity: 0, duration: DWELL }, at);
+      bind(flow, tl);
+    }
 
-    tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
-
-    const STEP = 720; // packet travel time per wire
-    const OVERLAP = 100; // how much the next wire fires before the last lands
-    const DWELL = 660; // pause between loops
-    let at = 0;
-
-    conns.forEach((conn) => {
-      const packet = conn.querySelector<HTMLElement>('.flow-packet');
-      const arrow = conn.querySelector<SVGElement>('.flow-arrow');
-      if (!packet) return;
-
-      tl!.add(
+    // fig. 05 — baseline walk: stop to stop, pulsing each marker on arrival
+    const line = document.querySelector<HTMLElement>('.tl-line');
+    const stops = document.querySelector<HTMLElement>('.tl-stops');
+    const packet = line?.querySelector<HTMLElement>('.conn-packet');
+    const arrow = line?.querySelector<HTMLElement>('.conn-arrow');
+    const marks = stops ? [...stops.querySelectorAll<HTMLElement>('.tl-mark')] : [];
+    if (visible(line) && packet && stops && marks.length === 4) {
+      line.classList.add('flow-live');
+      const tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
+      let at = 0;
+      // a stop is "ticked" green as the pen head reaches it, like a checkbox
+      const tick = (m: HTMLElement) => m.classList.add('is-done');
+      // set off from the first stop… (clear the board at the top of each loop)
+      tl.add(
+        marks[0],
+        {
+          scale: [1, 1.4, 1],
+          duration: 300,
+          ease: 'outQuad',
+          onBegin: () => {
+            marks.forEach((m) => m.classList.remove('is-done'));
+            tick(marks[0]);
+          },
+        },
+        0
+      );
+      tl.add(packet, { opacity: [0, 1], duration: 90 }, 0);
+      // …walk the three segments between the four stops, ticking each on arrival…
+      for (let k = 0; k < 3; k++) {
+        tl.add(packet, { left: [`${k * 25}%`, `${(k + 1) * 25}%`], duration: WALK }, at);
+        tl.add(
+          marks[k + 1],
+          { scale: [1, 1.4, 1], duration: 360, ease: 'outQuad', onBegin: () => tick(marks[k + 1]) },
+          at + WALK - 200
+        );
+        at += WALK - OVERLAP;
+      }
+      // …then run off the end of the drawing
+      tl.add(
         packet,
         {
-          left: ['0%', '100%'],
-          // fade in fast, ride the wire lit, snuff out on arrival
-          opacity: [{ to: 1, duration: 70 }, { to: 1, duration: 560 }, { to: 0, duration: 90 }],
-          duration: STEP,
+          left: ['75%', '100%'],
+          opacity: [
+            { to: 1, duration: WALK - 120 },
+            { to: 0, duration: 120 },
+          ],
+          duration: WALK,
         },
         at
       );
-
       if (arrow) {
-        tl!.add(
-          arrow,
-          { scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5], duration: 340, ease: 'outQuad' },
-          at + STEP - 190
-        );
+        tl.add(arrow, { scale: [1, 1.5, 1], duration: 380, ease: 'outQuad' }, at + WALK - 230);
       }
-
-      at += STEP - OVERLAP;
-    });
-
-    // hold on the empty wire before the relay loops
-    const first = conns[0].querySelector<HTMLElement>('.flow-packet');
-    if (first) tl.add(first, { opacity: 0, duration: DWELL }, at);
-
-    io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => (e.isIntersecting ? tl?.play() : tl?.pause())),
-      { threshold: 0.25 }
-    );
-    io.observe(flow);
+      tl.add(packet, { opacity: 0, duration: DWELL }, at + WALK);
+      bind(stops, tl);
+    }
   }
 
-  document.addEventListener('astro:page-load', initFlow);
+  document.addEventListener('astro:page-load', initRelays);
   document.addEventListener('astro:before-swap', teardown);
 </script>
 

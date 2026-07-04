@@ -57,6 +57,12 @@ const work = defineCollection({
     visit: z.object({ href: z.string(), label: z.string() }).nullable(),
     bodyHtml: z.string(),
     sortOrder: z.number(),
+    // .nullish() (not .nullable()): as of this change the live CMS hasn't
+    // shipped these fields yet — they're absent from /api/work entirely,
+    // not present-as-null. Tolerate both shapes so the build doesn't break
+    // on an API that hasn't deployed the companion change.
+    screenshotAlt: z.string().nullish(),
+    updatedDate: z.coerce.date().nullish(),
   }),
 });
 
@@ -73,6 +79,12 @@ const notes = defineCollection({
     heroAlt: z.string().nullable(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().nullable(),
+    // .nullish(): these are new fields on the companion CMS; tolerate the
+    // field being entirely absent from older API responses, not just null
+    // (see the same reasoning on work.screenshotAlt/updatedDate above).
+    bodyMd: z.string().nullish(),
+    seoTitle: z.string().nullish(),
+    seoDescription: z.string().nullish(),
   }),
 });
 

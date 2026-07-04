@@ -2,32 +2,36 @@
 import { SITE, SOCIALS } from '../consts';
 
 const year = new Date().getFullYear();
-const linkClass = 'text-soft no-underline transition-colors hover:text-acc';
-// Square icon chip — rhymes with the header theme-toggle button, plus the
-// design system's hard offset shadow that presses flat on hover.
-const chipClass =
-  'grid h-[34px] w-[34px] flex-none place-items-center rounded-none border-2 border-rule bg-transparent text-ink shadow-sm transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-ink hover:text-on-ink hover:shadow-press';
+// Underlined so links are distinguishable without relying on colour, and
+// text-mut so they clear AA contrast on the paper background.
+const linkClass = 'text-mut underline decoration-1 underline-offset-2 transition-colors hover:text-acc';
+// Standalone nav links also need a 24px-tall tap target (WCAG 2.5.8).
+const navLinkClass = `${linkClass} inline-flex min-h-[24px] items-center`;
 ---
 
-<footer
-  class="mt-24 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t-[3px] border-rule pb-20 pt-[26px] font-mono text-[11px] font-medium uppercase tracking-[0.04em] text-soft"
->
-  <span class="flex flex-wrap items-center gap-x-4 gap-y-2">
+<footer class="mt-5 border-t border-rule bg-bg">
+  <div
+    class="mx-auto flex h-[72px] max-w-[1180px] flex-wrap items-center gap-x-6 gap-y-1 px-14 font-mono text-anno text-mut max-[900px]:px-7 max-[560px]:h-auto max-[560px]:px-5 max-[560px]:py-5"
+  >
+    {/* Explicit {' '} at each seam: compressHTML:'jsx' drops spaces that fall across a newline. */}
     <span>
-      © {year} <b class="font-bold text-ink">{SITE.author}</b> ·
-      <a href={SITE.orgUrl} target="_blank" rel="noopener noreferrer" class={linkClass}>{SITE.org}</a>
+      © {year}{' '}
+      {SITE.author.toLowerCase()} ·{' '}
+      <a href={SITE.orgUrl} target="_blank" rel="noopener noreferrer" class={linkClass}>{SITE.org.toLowerCase()}</a> ·{
+        ' '
+      }
+      {SITE.location.toLowerCase()}
     </span>
-    {
-      SOCIALS.map((s) => (
-        <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} class={chipClass}>
-          {/* LinkedIn "in" mark — inherits currentColor, flips on hover */}
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.3c0-1.26-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21h-4z" />
-          </svg>
-        </a>
-      ))
-    }
-  </span>
-
-  <a href="#top" class={linkClass}>↑ Back to top</a>
+    <span class="ml-auto flex gap-6 max-[560px]:ml-0">
+      {
+        SOCIALS.map((s) => (
+          <a href={s.href} target="_blank" rel="noopener noreferrer" class={navLinkClass}>
+            {s.label.toLowerCase()}
+          </a>
+        ))
+      }
+      <a href="/card/" class={navLinkClass}>card</a>
+      <a href="#top" class={navLinkClass}>back to the top</a>
+    </span>
+  </div>
 </footer>

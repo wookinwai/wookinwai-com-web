@@ -17,9 +17,9 @@ export const SITE = {
 export const NAV: { label: string; href: string }[] = [
   { label: 'Work', href: '/#work' },
   { label: 'Process', href: '/#process' },
-  { label: 'About', href: '/#about' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'Notes', href: '/notes' },
+  { label: 'About', href: '/about/' },
+  { label: 'Contact', href: '/contact/' },
+  { label: 'Notes', href: '/notes/' },
 ];
 
 export const SOCIALS: { label: string; href: string }[] = [
@@ -28,7 +28,16 @@ export const SOCIALS: { label: string; href: string }[] = [
 
 // Source of truth for the digital business card (/card). Kept separate from
 // SOCIALS so the footer chip set stays untouched. `icon` keys map to SocialIcon.
-export type IconName = 'email' | 'linkedin' | 'x' | 'facebook' | 'instagram' | 'studio';
+export type IconName =
+  | 'email'
+  | 'linkedin'
+  | 'x'
+  | 'facebook'
+  | 'instagram'
+  | 'work'
+  | 'location'
+  | 'growth'
+  | 'system';
 export const PROFILE_LINKS: {
   label: string;
   value: string;
@@ -37,9 +46,27 @@ export const PROFILE_LINKS: {
   external?: boolean;
 }[] = [
   { label: 'Email', value: SITE.email, href: `mailto:${SITE.email}`, icon: 'email' },
-  { label: 'LinkedIn', value: 'linkedin.com/in/wookinwai', href: 'https://linkedin.com/in/wookinwai', icon: 'linkedin', external: true },
+  {
+    label: 'LinkedIn',
+    value: 'linkedin.com/in/wookinwai',
+    href: 'https://linkedin.com/in/wookinwai',
+    icon: 'linkedin',
+    external: true,
+  },
   { label: 'X', value: 'x.com/wookinwai', href: 'https://twitter.com/wookinwai', icon: 'x', external: true },
-  { label: 'Facebook', value: 'facebook.com/wookinwai', href: 'https://facebook.com/wookinwai', icon: 'facebook', external: true },
-  { label: 'Instagram', value: 'instagram.com/wookinwai', href: 'https://instagram.com/wookinwai', icon: 'instagram', external: true },
-  { label: 'Tiny Edges', value: 'tinyedges.com', href: SITE.orgUrl, icon: 'studio', external: true },
+  {
+    label: 'Facebook',
+    value: 'facebook.com/wookinwai',
+    href: 'https://facebook.com/wookinwai',
+    icon: 'facebook',
+    external: true,
+  },
+  {
+    label: 'Instagram',
+    value: 'instagram.com/wookinwai',
+    href: 'https://instagram.com/wookinwai',
+    icon: 'instagram',
+    external: true,
+  },
+  { label: 'Work', value: 'tinyedges.com', href: SITE.orgUrl, icon: 'work', external: true },
 ];

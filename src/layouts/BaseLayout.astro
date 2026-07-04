@@ -1,31 +1,62 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import SEO from '../components/SEO.astro';
+import Seo from '@jdevalk/astro-seo-graph/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import MosaicBackground from '../components/MosaicBackground.astro';
+import PlotBackground from '../components/PlotBackground.astro';
+import { SITE } from '../consts';
+import { siteGraph } from '../lib/seo';
 
-// Self-hosted fonts (Fontsource variable). Press Mono uses only Hanken Grotesk
-// (voice + display) and JetBrains Mono (structural labels) — no serif.
-import '@fontsource-variable/hanken-grotesk';
-import '@fontsource-variable/jetbrains-mono';
+// Self-hosted fonts (Fontsource). The Drafting Table speaks in Hanken Grotesk
+// (voice + display) and Crimson Pro (annotations, labels, figure numbers).
+// Both are variable builds carrying the full [wght] axis plus an italic cut,
+// so headings, body, the green-italic emphasis word, and the serif annotations
+// all draw from a handful of woff2 files.
+import '@fontsource-variable/hanken-grotesk/wght.css';
+import '@fontsource-variable/hanken-grotesk/wght-italic.css';
+import '@fontsource-variable/crimson-pro/wght.css';
+import '@fontsource-variable/crimson-pro/wght-italic.css';
 import '../styles/global.css';
 
 // Preload the above-the-fold body/display face.
-import hankenWoff2 from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
+import sansWoff2 from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
 
 export interface Props {
   title: string;
   description: string;
   canonical?: string;
-  image?: string;
+  /** Open Graph share image. Root-relative or absolute. Defaults to the Seo component's own default. */
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article' | 'profile' | 'book';
+  article?: {
+    publishedTime?: Date | string;
+    modifiedTime?: Date | string;
+    tags?: readonly string[];
+  };
+  /** JSON-LD @graph to emit. Defaults to the site-wide linked graph (WebSite + Person + Organization). */
+  graph?: Record<string, unknown> | null;
+  noindex?: boolean;
 }
 
-const { title, description, canonical, image } = Astro.props;
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og.png',
+  ogImageAlt = 'Woo Kin Wai: software builder & technical partner',
+  ogType = 'website',
+  article,
+  graph = siteGraph(),
+  noindex,
+} = Astro.props;
+
+const site = Astro.site ?? new URL(SITE.url);
+const ogImageURL = new URL(ogImage, site).href;
 ---
 
 <!doctype html>
-<html lang="en" data-pal="press">
+<html lang="en" data-pal="paper">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +69,12 @@ const { title, description, canonical, image } = Astro.props;
       (function () {
         try {
           var stored = localStorage.getItem('pal');
-          var pal = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'press');
+          var pal =
+            stored === 'ink' || stored === 'paper'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'ink'
+                : 'paper';
           document.documentElement.dataset.pal = pal;
           if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('motion');
@@ -47,50 +83,73 @@ const { title, description, canonical, image } = Astro.props;
       })();
     </script>
 
-    <link rel="preload" as="font" type="font/woff2" href={hankenWoff2} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansWoff2} crossorigin />
 
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title="Woo Kin Wai" href="/rss.xml" />
-    <meta name="theme-color" content="#f2eee4" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f0e2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#201c13" media="(prefers-color-scheme: dark)" />
 
-    <SEO title={title} description={description} canonical={canonical} image={image} />
+    <Seo
+      title={title}
+      description={description}
+      canonical={canonical}
+      ogType={ogType}
+      ogImage={ogImageURL}
+      ogImageAlt={ogImageAlt}
+      ogImageWidth={1200}
+      ogImageHeight={630}
+      siteName={SITE.author}
+      locale="en_US"
+      article={article}
+      noindex={noindex}
+      author={SITE.author}
+      graph={graph}
+    />
 
     <ClientRouter />
   </head>
 
-  <body id="top" class="relative overflow-x-hidden bg-bg font-sans text-ink antialiased">
+  <body
+    id="top"
+    class="relative flex min-h-screen flex-col overflow-x-hidden bg-bg font-sans text-[17px] leading-[1.55] text-ink antialiased"
+  >
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:border-2 focus:border-rule focus:bg-panel focus:px-4 focus:py-2 focus:font-mono focus:text-[12px] focus:uppercase focus:tracking-[0.12em] focus:text-ink focus:no-underline"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:border focus:border-rule focus:bg-panel focus:px-4 focus:py-2 focus:font-mono focus:text-[12px] focus:text-ink focus:no-underline"
       >Skip to content</a
     >
 
-    <MosaicBackground />
-    <div class="grid-bg"></div>
+    <PlotBackground />
 
     <Header transition:persist />
 
-    <div class="relative z-[2] mx-auto max-w-[1020px] px-10 max-[760px]:px-[22px]">
+    <div class="relative z-[2] mx-auto w-full max-w-[1180px] flex-1 px-14 max-[900px]:px-7 max-[560px]:px-5">
       <main id="main"><slot /></main>
-      <Footer />
     </div>
+
+    <Footer />
 
     <script>
       import { animate, stagger } from 'animejs';
 
       // Re-assert the chosen palette + motion flag after each View-Transitions swap.
-      // Astro copies the incoming page's hardcoded <html data-pal="press"> onto the
+      // Astro copies the incoming page's hardcoded <html data-pal="paper"> onto the
       // live root, and the is:inline head script does NOT re-run on navigation — so
-      // without this, dark mode (and the .motion gate) would reset on every page change.
+      // without this, lamplight (and the .motion gate) would reset on every page change.
       // astro:after-swap fires before paint, so there's no theme flash mid-transition.
       function applyChrome() {
         try {
           const stored = localStorage.getItem('pal');
-          const pal = stored || (matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'press');
+          const pal =
+            stored === 'ink' || stored === 'paper'
+              ? stored
+              : matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'ink'
+                : 'paper';
           document.documentElement.dataset.pal = pal;
           if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('motion');
@@ -102,13 +161,13 @@ const { title, description, canonical, image } = Astro.props;
       // Re-runs on first load and after every client-side (View Transitions)
       // navigation, so handlers re-bind to fresh DOM.
       function init() {
-        // Theme toggle — persists the chosen palette (press ⇄ ink).
+        // Theme toggle — persists the chosen palette (paper ⇄ ink/lamplight).
         const btn = document.getElementById('theme');
         if (btn && !btn.dataset.bound) {
           btn.dataset.bound = 'true';
           btn.addEventListener('click', () => {
             const root = document.documentElement;
-            const next = root.dataset.pal === 'ink' ? 'press' : 'ink';
+            const next = root.dataset.pal === 'ink' ? 'paper' : 'ink';
             root.dataset.pal = next;
             try {
               localStorage.setItem('pal', next);
@@ -116,14 +175,7 @@ const { title, description, canonical, image } = Astro.props;
           });
         }
 
-        // Selected-work accordions: clicking the row toggles `.open` on the .flow.
-        document.querySelectorAll<HTMLElement>('.flow-main').forEach((m) => {
-          if (m.dataset.bound) return;
-          m.dataset.bound = 'true';
-          m.addEventListener('click', () => m.parentElement?.classList.toggle('open'));
-        });
-
-        // Reveal sections on scroll (masthead fade + the section rule drawing in).
+        // Reveal sections on scroll (figure head fade + the section rule drawing in).
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((e) => {
@@ -138,7 +190,7 @@ const { title, description, canonical, image } = Astro.props;
         document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
         // Staggered content reveals — the children of a [data-stagger] group
-        // cascade in (rise + fade) as it scrolls into view. Mechanical, restrained:
+        // cascade in (rise + fade) as it scrolls into view. Drafted, restrained:
         // small offset, crisp out-cubic, tight stagger. Gated on `.motion` so
         // reduced-motion / no-JS keep everything visible (see global.css).
         if (document.documentElement.classList.contains('motion')) {

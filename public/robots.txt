@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.wookinwai.com/sitemap-index.xml
+Schemamap: https://www.wookinwai.com/schemamap.xml
+Content-Signal: ai-train=yes, search=yes, ai-input=yes

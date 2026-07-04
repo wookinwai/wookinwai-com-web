@@ -1,22 +1,26 @@
 ---
-// Interactive mosaic backdrop. Aligns to the same 40px cell grid as `.grid-bg`
-// and fills a scattered subset of cells with low-alpha red/coral tiles — a living
-// echo of the WKW mosaic favicon. Hybrid behaviour: a faint always-on ambient
-// shimmer plus cursor-proximity intensification. Subtle by design (low alpha cap,
-// hard squares, no blur) so it never fights the newsprint restraint.
+// Interactive plot backdrop — the drafting-table adaptation of the old mosaic
+// band. Aligns to the same 36px cell grid as the body's graph paper and shades
+// a scattered subset of cells with low-alpha drafting-green and graphite
+// washes, as if someone were pencilling in cells on the plot. Hybrid
+// behaviour: a faint always-on ambient breathing plus cursor-proximity
+// shading — the pointer acts like a pencil hovering over the paper. Subtle by
+// design (low alpha cap, hard squares, no blur) so it never fights the
+// drafting restraint.
 //
-// Theme-aware (press⇄ink), reduced-motion-safe (one static frame, no loop),
-// touch-safe (ambient runs regardless), and View-Transitions-safe (clean teardown).
+// Theme-aware (paper⇄lamplight), reduced-motion-safe (one static frame, no
+// loop), touch-safe (ambient runs regardless), and View-Transitions-safe
+// (clean teardown).
 ---
 
-<canvas class="mosaic-bg" aria-hidden="true"></canvas>
+<canvas class="plot-bg" aria-hidden="true"></canvas>
 
 <script>
-  const CELL = 40; // matches the .grid-bg cell size
-  const BAND = 620; // matches the .grid-bg height (top band only)
-  const AMBIENT_CAP = 0.06; // max alpha for the idle shimmer (very faint)
-  const PROX_CAP = 0.18; // max alpha added by the cursor
-  const ALPHA_CAP = 0.22; // hard ceiling on combined alpha (restraint)
+  const CELL = 36; // matches the body graph-paper cell size
+  const BAND = 620; // height of the shaded top band
+  const AMBIENT_CAP = 0.08; // max alpha for the idle breathing (faint, but legibly green)
+  const PROX_CAP = 0.24; // max alpha added by the cursor "pencil"
+  const ALPHA_CAP = 0.3; // hard ceiling on combined alpha (restraint)
   const RADIUS = CELL * 3.4; // cursor influence reach
   const SHIMMER_SPEED = 0.55; // ambient breathing rate
 
@@ -28,7 +32,6 @@
   let cols = 0;
   let rows = 0;
   let dpr = 1;
-  let palette: number[][] = [];
   let mo: MutationObserver | null = null;
 
   // pointer state (CSS px within the band) + eased influence
@@ -40,7 +43,7 @@
     influenceTarget = 0;
 
   // ---- helpers -------------------------------------------------------------
-  // stable per-cell pseudo-random in [0,1) — keeps each tile's shade & phase fixed
+  // stable per-cell pseudo-random in [0,1) — keeps each cell's shade & phase fixed
   function hash(x: number, y: number) {
     let h = (x * 374761393 + y * 668265263) | 0;
     h = (h ^ (h >>> 13)) * 1274126177;
@@ -55,18 +58,33 @@
       return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
     }
     const m = v.match(/\d+/g);
-    return m ? [+m[0], +m[1], +m[2]] : [193, 51, 31];
+    return m ? [+m[0], +m[1], +m[2]] : [47, 107, 76];
   }
 
-  const lighten = (c: number[], t: number): number[] =>
-    c.map((v) => Math.round(v + (255 - v) * t));
+  const lighten = (c: number[], t: number): number[] => c.map((v) => Math.round(v + (255 - v) * t));
+
+  // greens carry the plan; a rare red or blue cell is the off-plan moment —
+  // not everything goes smoothly or always goes to plan. Both are channel
+  // permutations of the brand green ([r,g,b] → [g,r,b] / [r,b,g]), so they
+  // share its exact tonal weight in both palettes and never shout.
+  let greens: number[][] = [];
+  let offRed: number[] = [];
+  let offBlue: number[] = [];
 
   function readPalette() {
     const cs = getComputedStyle(document.documentElement);
     const acc = parseColor(cs.getPropertyValue('--color-acc'));
     const acc2 = parseColor(cs.getPropertyValue('--color-acc-2'));
-    // four warm shades, mosaic-like: signal red, deep red, coral, warm orange
-    palette = [acc, acc2, lighten(acc, 0.18), [acc[0], Math.min(255, acc[1] + 34), acc[2]]];
+    greens = [acc, acc2, lighten(acc, 0.2)];
+    offRed = [acc[1], acc[0], acc[2]];
+    offBlue = [acc[0], acc[2], acc[1]];
+  }
+
+  function pickShade(cx: number, cy: number) {
+    const r = hash(cx + 1, cy + 11);
+    if (r < 0.05) return offRed; // ~5% off-plan red
+    if (r < 0.1) return offBlue; // ~5% off-plan blue
+    return greens[(((r - 0.1) / 0.9) * greens.length) | 0] || greens[0];
   }
 
   function resize() {
@@ -88,22 +106,35 @@
     const w = canvas!.clientWidth;
     ctx.clearRect(0, 0, w, BAND);
 
-    for (let cy = 0; cy < rows; cy++) {
+    // The canvas is viewport-fixed but the body's graph paper scrolls, so draw
+    // in PAPER space: each cell's identity (hash) is keyed to its row on the
+    // paper, and its screen position shifts up by the scroll remainder. Cells
+    // stay glued to their paper square and ride it out of the band. Reading
+    // the document's rect (not scrollY) also tracks rubber-band overscroll
+    // where the browser exposes it to JS (Safari); compositor-level bounces
+    // (Chrome on macOS) are invisible to scripts and can't be followed.
+    const sy = -document.documentElement.getBoundingClientRect().top;
+    const rowOff = Math.floor(sy / CELL);
+    const pix = sy - rowOff * CELL;
+
+    for (let vy = 0; vy <= rows; vy++) {
+      const cy = vy + rowOff; // paper-space row — keeps shade & phase fixed
+      const yPx = vy * CELL - pix; // screen-space y
       for (let cx = 0; cx < cols; cx++) {
         const r = hash(cx, cy);
-        const participates = r < 0.42; // ~42% scattered ambient tiles
+        const participates = r < 0.38; // ~38% scattered ambient cells
         const phase = hash(cx + 7, cy + 3) * Math.PI * 2;
-        const shade = palette[(hash(cx + 1, cy + 11) * palette.length) | 0] || palette[0];
+        const shade = pickShade(cx, cy);
+        // off-plan cells breathe a touch brighter so they read at rest
+        const boost = shade === offRed || shade === offBlue ? 1.35 : 1;
 
         // ambient breathing (only participating cells)
-        let alpha = participates
-          ? AMBIENT_CAP * (0.45 + 0.55 * Math.sin(t * SHIMMER_SPEED + phase))
-          : 0;
+        let alpha = participates ? boost * AMBIENT_CAP * (0.45 + 0.55 * Math.sin(t * SHIMMER_SPEED + phase)) : 0;
 
         // cursor proximity (all cells, lightly textured per-cell)
         if (influence > 0.001) {
           const dx = cx * CELL + CELL / 2 - mx;
-          const dy = cy * CELL + CELL / 2 - my;
+          const dy = yPx + CELL / 2 - my;
           const d = Math.hypot(dx, dy);
           if (d < RADIUS) {
             const f = 1 - d / RADIUS; // 0..1
@@ -115,11 +146,12 @@
         if (alpha < 0.004) continue;
         if (alpha > ALPHA_CAP) alpha = ALPHA_CAP;
 
-        // subtle "pop": square grows from inset toward full cell as alpha rises
+        // cells fill from a 1px inset so the graph-paper hairlines stay visible
+        // around each shaded cell — pencil staying inside the lines
         const k = Math.min(alpha / ALPHA_CAP, 1);
         const inset = 6 - 5 * k;
         ctx.fillStyle = `rgba(${shade[0]},${shade[1]},${shade[2]},${alpha})`;
-        ctx.fillRect(cx * CELL + inset, cy * CELL + inset, CELL - inset * 2, CELL - inset * 2);
+        ctx.fillRect(cx * CELL + inset, yPx + inset, CELL - inset * 2, CELL - inset * 2);
       }
     }
   }
@@ -150,14 +182,28 @@
     resizeTimer = window.setTimeout(resize, 150);
   }
 
+  // reduced-motion mode has no rAF loop, so re-draw the static frame on scroll
+  // (throttled to one frame) to keep cells glued to the paper grid
+  let scrollRaf = 0;
+  function onScrollStatic() {
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = 0;
+      draw(0);
+    });
+  }
+
   function teardown() {
     cancelAnimationFrame(raf);
     raf = 0;
+    cancelAnimationFrame(scrollRaf);
+    scrollRaf = 0;
     clearTimeout(resizeTimer);
     clearTimeout(idleTimer);
     window.removeEventListener('pointermove', onMove);
     document.removeEventListener('pointerleave', onLeave);
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('scroll', onScrollStatic);
     mo?.disconnect();
     mo = null;
     ctx = null;
@@ -166,7 +212,7 @@
 
   function init() {
     teardown();
-    canvas = document.querySelector<HTMLCanvasElement>('.mosaic-bg');
+    canvas = document.querySelector<HTMLCanvasElement>('.plot-bg');
     if (!canvas) return;
     readPalette();
     resize();
@@ -177,6 +223,7 @@
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
       draw(0);
+      window.addEventListener('scroll', onScrollStatic, { passive: true });
       return;
     }
 
@@ -184,7 +231,7 @@
     document.addEventListener('pointerleave', onLeave);
     window.addEventListener('resize', onResize);
 
-    // re-read shades when the palette toggles (press ⇄ ink)
+    // re-read shades when the palette toggles (paper ⇄ lamplight)
     mo = new MutationObserver(readPalette);
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-pal'] });
 

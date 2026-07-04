@@ -1,81 +1,91 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ----------------------------------------------------------------------------
-   Press Mono — design tokens.
+   The Drafting Table — design tokens.
 
-   The "press" (light) palette is the default, declared in @theme so every
-   generated utility references var(--color-*). The [data-pal="ink"] block below
-   re-declares those same custom properties, re-theming the whole site through
-   the toggle with no per-utility dark variants. Source of truth:
-   docs/claude-design-files/tokens/*.css
+   Paper, ink, graphite, and a single drafting green. Hanken Grotesk carries the
+   voice; Crimson Pro carries the annotations. The "paper" (light) palette is
+   the default, declared in @theme so every generated utility references
+   var(--color-*). The [data-pal="ink"] block below re-declares those same
+   custom properties for the "lamplight" (dark) variant, re-theming the whole
+   site through the toggle with no per-utility dark variants.
 ---------------------------------------------------------------------------- */
 @theme {
   /* surfaces */
-  --color-bg: #f2eee4;
-  --color-panel: #fcfaf4;
+  --color-bg: #f4f0e2;
+  --color-panel: #faf6ea;
 
   /* text */
-  --color-ink: #15130f;
-  --color-mut: #57514a;
-  --color-soft: #6e685d;
+  --color-ink: #2b261c;
+  --color-mut: #6e6755; /* graphite */
+  --color-soft: #746c56; /* faint — darkened to clear AA (4.5:1) on paper bg */
 
-  /* accent — signal red + categorical secondaries */
-  --color-acc: #c1331f;
-  --color-acc-2: #9c2817;
-  --color-acc-soft: #c1331f2e;
-  --color-acc-blue: #2f5fd0;
-  --color-acc-green: #2f7d4f;
+  /* accent — drafting green */
+  --color-acc: #2f6b4c;
+  --color-acc-2: #265a3f;
+  --color-acc-soft: rgba(47, 107, 76, 0.09); /* green wash */
 
   /* rules & hairlines */
-  --color-rule: #15130f;
-  --color-line: #d4cdbe;
-  --color-line-2: #e3dccd;
+  --color-rule: #2b261c;
+  --color-line: rgba(43, 38, 28, 0.16); /* hair */
+  --color-line-2: rgba(43, 38, 28, 0.045); /* hair 2 — background grid */
+  --color-arrow: #000000; /* black — darker than the rule line (paper) */
 
   /* status */
-  --color-live: #2f7d4f;
-  --color-build: #c1331f;
-  --color-ongoing: var(--color-acc-blue);
-  --color-closed: #9b958a;
+  --color-live: #2f6b4c;
+  --color-build: #2f6b4c;
+  --color-ongoing: #2f6b4c;
+  --color-closed: #8a8268;
 
   /* on-fill text */
-  --color-on-accent: #f7f3ea;
-  --color-on-ink: #f2eee4;
+  --color-on-accent: #f4f0e2;
+  --color-on-ink: #f4f0e2;
 
-  /* families — no serif in Press Mono */
-  --font-sans: "Hanken Grotesk Variable", "Hanken Grotesk", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  /* families — grotesque voice, Crimson Pro serif annotations */
+  --font-sans: 'Hanken Grotesk Variable', 'Hanken Grotesk', system-ui, sans-serif;
+  /* --font-mono keeps its utility name (`font-mono`) but now carries the serif
+     annotation face; --font-code stays monospace for code/pre in prose. */
+  --font-mono: 'Crimson Pro Variable', 'Crimson Pro', Georgia, serif;
+  --font-code: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  /* hard offset shadows (solid, no blur) — follow --color-rule/-acc into dark */
-  --shadow-card: 4px 4px 0 var(--color-rule);
-  --shadow-lift: 8px 8px 0 var(--color-rule);
-  --shadow-sm: 3px 3px 0 var(--color-rule);
-  --shadow-acc: 4px 4px 0 var(--color-acc);
-  --shadow-press: 0 0 0 var(--color-rule);
+  /* annotation (Crimson Pro) type scale — the single knob for label sizing.
+     Every mono label reads from `text-anno*`; edit here to rescale them all. */
+  --text-anno-sm: 16px; /* small meta: tags, chips, fine print */
+  --text-anno: 17px; /* default label / figure numbers */
+  --text-anno-md: 18px; /* kickers, prominent labels */
+  --text-anno-lg: 20px; /* large labels, card values */
+
+  /* drafting sheets sit flat on the table — no offset shadows */
+  --shadow-card: none;
+  --shadow-lift: none;
+  --shadow-sm: none;
+  --shadow-acc: none;
+  --shadow-press: none;
 
   /* signature easing */
   --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* "ink" (dark) palette — overrides the generated CSS variables in place. */
-html[data-pal="ink"] {
-  --color-bg: #16140f;
-  --color-panel: #211e16;
-  --color-ink: #f0ece1;
-  --color-mut: #a39c8d;
-  --color-soft: #8a8374;
-  --color-acc: #e8533c;
-  --color-acc-2: #c1331f;
-  --color-acc-soft: #e8533c33;
-  --color-acc-blue: #6695f0;
-  --color-acc-green: #4fa86a;
-  --color-rule: #f0ece1;
-  --color-line: #322e24;
-  --color-line-2: #28241b;
-  --color-live: #4fa86a;
-  --color-build: #e8533c;
-  --color-closed: #6f6859;
-  --color-on-accent: #16140f;
-  --color-on-ink: #16140f;
+/* "lamplight" (dark) palette — overrides the generated CSS variables in place. */
+html[data-pal='ink'] {
+  --color-bg: #201c13;
+  --color-panel: #262217;
+  --color-ink: #ece4d0;
+  --color-mut: #b2a88e;
+  --color-soft: #8d8470;
+  --color-acc: #6fae8c;
+  --color-acc-2: #5d9d7b;
+  --color-acc-soft: rgba(111, 174, 140, 0.12);
+  --color-rule: #ece4d0;
+  --color-line: rgba(236, 228, 208, 0.18);
+  --color-line-2: rgba(236, 228, 208, 0.035);
+  --color-arrow: #fbf7ee; /* a step lighter than the rule line (ink palette) */
+  --color-live: #6fae8c;
+  --color-build: #6fae8c;
+  --color-ongoing: #6fae8c;
+  --color-closed: #847b65;
+  --color-on-accent: #201c13;
+  --color-on-ink: #201c13;
 }
 
 @layer base {
@@ -83,6 +93,8 @@ html[data-pal="ink"] {
     scroll-behavior: smooth;
   }
   body {
+    /* crisp kerning/ligatures for the grotesque at display sizes */
+    text-rendering: optimizeLegibility;
     transition:
       background 0.25s var(--ease-smooth),
       color 0.25s var(--ease-smooth);
@@ -98,144 +110,194 @@ html[data-pal="ink"] {
 }
 
 /* ----------------------------------------------------------------------------
-   Irreducible effects — Press Mono Hard. Pseudo-elements, the newsprint grid +
-   grain, the accordion, the section-rule draw, and entrance motion. Everything
-   else (square corners, hard rules, hover fills) lives in the markup as Tailwind
-   utilities.
+   Irreducible effects — the graph-paper field, registration ticks, schematic
+   connectors, the drafted timeline, and entrance motion. Everything else
+   (hairlines, sheet frames, hover states) lives in the markup as utilities.
 ---------------------------------------------------------------------------- */
 
-/* newsprint grain — multiply on light, screen on dark */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.06;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-html[data-pal="ink"] body::before {
-  mix-blend-mode: screen;
-  opacity: 0.05;
-}
-
-/* interactive mosaic layer — sits in the same top band, BEHIND the hairlines.
-   Alpha restraint is handled per-tile in JS (see MosaicBackground.astro), not via
-   a blunt element opacity, so cursor-lit tiles can still read clearly. */
-.mosaic-bg {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 620px;
-  z-index: 0;
-  pointer-events: none;
-  mask-image: linear-gradient(180deg, #000 0%, #000 30%, transparent 100%);
-}
-
-/* hard newsprint grid backdrop — crisp 1px lines, 40px cell, fades by the fold */
-.grid-bg {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 620px;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.5;
+/* graph paper — the whole page sits on a faint 36px drafting grid */
+body {
   background-image:
-    linear-gradient(var(--color-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(var(--color-line-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line-2) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* interactive plot layer — a fixed top band where graph-paper cells get
+   pencilled in (see PlotBackground.astro). Sits behind the content, fades out
+   by the fold. Alpha restraint is handled per-cell in JS, not via a blunt
+   element opacity, so cursor-shaded cells can still read clearly. */
+.plot-bg {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 620px;
+  z-index: 0;
+  pointer-events: none;
   mask-image: linear-gradient(180deg, #000 0%, #000 30%, transparent 100%);
 }
 
-/* Section grid — left label rail. A narrow margin column carries the mono
-   kicker + dek (and, on About, the portrait via the `rail` slot); the main
-   column holds the headline, rule, and body at one measure. Collapses to a
-   single stacked column < 760px. */
-.sec-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 180px;
-  column-gap: 48px;
-}
-.sec-rail {
-  grid-column: 2;
-  align-self: start;
-}
-.sec-kicker {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--color-acc);
-}
-.sec-dek {
-  margin-top: 14px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.55;
+/* registration ticks — small crosshairs pinned to a framed sheet's corners.
+   Markup: <span class="tick" /> ×4 inside any `relative` frame; each is placed
+   by the nth-of-type rules below. */
+.tick {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  pointer-events: none;
   color: var(--color-mut);
 }
-.sec-main {
-  grid-column: 1;
-  min-width: 0;
+.tick::before,
+.tick::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
 }
-.sec-title {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: clamp(30px, 4.4vw, 52px);
+.tick::before {
+  top: 5px;
+  left: 0;
+  width: 11px;
+  height: 1px;
+}
+.tick::after {
+  left: 5px;
+  top: 0;
+  width: 1px;
+  height: 11px;
+}
+.tick:nth-of-type(1) {
+  top: -6px;
+  left: -6px;
+}
+.tick:nth-of-type(2) {
+  top: -6px;
+  right: -6px;
+}
+.tick:nth-of-type(3) {
+  bottom: -6px;
+  left: -6px;
+}
+.tick:nth-of-type(4) {
+  bottom: -6px;
+  right: -6px;
+}
+
+/* schematic connector — a dashed leader line. Arrowhead and the travelling
+   pen head are real elements (not pseudos) so the anime.js relay can drive
+   them; see the relay script in index.astro. */
+.conn {
+  position: relative;
+  height: 0;
+}
+/* the leader line stops ~5px short of the right edge, i.e. inside the
+   arrowhead's base, so no line pokes through the tapering triangle to its tip.
+   top -1.75px puts the 1.5px line's midline on the shared centerline (-1px). */
+.conn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 5px;
+  top: -1.75px;
+  border-top: 1.5px dashed var(--color-mut);
+}
+.conn-arrow {
+  position: absolute;
+  right: -1px;
+  /* point (at top + 4.5px) on the shared line/marker centerline (-1px) */
+  top: -5.5px;
+  width: 0;
+  height: 0;
+  border-top: 4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+  /* darker than the leader line on paper, lighter than it in the ink palette */
+  border-left: 7px solid var(--color-arrow);
+  transform-origin: center;
+}
+/* the pen head — a green square riding the leader line, trailing a short
+   fading stroke (the ink it just laid down) */
+.conn-packet {
+  position: absolute;
+  /* 7px square centered on the shared line/marker centerline (-1px) */
+  top: -4.5px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  background: var(--color-acc);
+  opacity: 0;
+  pointer-events: none;
+}
+.conn-packet::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  width: 26px;
+  height: 1.5px;
+  transform: translateY(-50%);
+  background: linear-gradient(270deg, var(--color-acc), transparent);
+}
+
+/* hatched fill for the emphasised schematic stage (the build) — opaque paper
+   base so content behind it (the relay pen head) can't show through */
+.hatch {
+  background-color: var(--color-bg);
+  background-image: repeating-linear-gradient(-45deg, var(--color-acc-soft) 0 5px, transparent 5px 11px);
+}
+
+/* drafted timeline — a solid baseline with an arrowhead, square stops above.
+   Markers and arrowhead are real elements so the relay can pulse them. */
+.tl-line {
+  position: relative;
+}
+/* baseline stops inside the arrowhead's base (see .conn::before); midline sits
+   on the shared centerline (-1px) so the line runs through the marker centers */
+.tl-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 5px;
+  top: -1.75px;
+  border-top: 1.5px solid var(--color-rule);
+}
+.tl-line .conn-arrow {
+  right: -2px;
+  top: -5.5px;
+  border-left-width: 8px;
+  /* darker than the rule line on paper, lighter than it in the ink palette, so
+     the arrowhead reads as a stronger terminal than the baseline in both */
+  border-left-color: var(--color-arrow);
+}
+/* stops start as empty squares; the relay fills each one green as the pen head
+   passes (see index.astro), like ticking a checkbox once the work is done */
+.tl-mark {
+  position: absolute;
+  top: -6.5px;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-rule);
+  transform-origin: center;
+  transition:
+    background-color 0.25s var(--ease-smooth),
+    border-color 0.25s var(--ease-smooth);
+}
+.tl-mark.is-done {
+  background: var(--color-acc);
+  border-color: var(--color-acc);
+}
+
+/* hero kicker — the mono/serif eyebrow that sits above a display heading */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-anno-md);
+  letter-spacing: 0.04em;
+  color: var(--color-acc);
+}
+/* green-italic emphasis word closing a display heading */
+.em-acc {
   font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  color: var(--color-ink);
-}
-
-/* section baseline rule draws in on reveal (3px ink, scaleX) */
-.sec-rule {
-  height: 3px;
-  margin-top: 18px;
-  background: var(--color-rule);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.9s var(--ease-smooth) 0.05s;
-}
-.reveal.in .sec-rule {
-  transform: scaleX(1);
-}
-
-@media (max-width: 760px) {
-  .sec-grid {
-    grid-template-columns: 1fr;
-  }
-  /* single column: drop the explicit placement so rail + main stack in source
-     order (kicker/dek above the headline) instead of forcing an implicit column */
-  .sec-rail,
-  .sec-main {
-    grid-column: auto;
-  }
-  .sec-rail {
-    position: static;
-    margin-bottom: 18px;
-  }
-  .sec-dek {
-    margin-top: 10px;
-  }
-}
-
-/* selected-work / flow accordion — kept identical to the old mechanism;
-   BaseLayout's script toggles `.open` on the .flow parent. */
-.flow .exp {
-  transition: transform 0.25s var(--ease-smooth);
-}
-.flow.open .exp {
-  transform: rotate(45deg);
-}
-.detail {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.45s var(--ease-smooth);
-}
-.flow.open .detail {
-  max-height: 1600px;
+  font-style: italic;
+  color: var(--color-acc);
 }
 
 /* square status markers — live blinks (hard step), closed is a hollow box */
@@ -253,8 +315,8 @@ html[data-pal="ink"] body::before {
   background: var(--color-build);
 }
 .smark.ongoing {
-  background: var(--color-ongoing);
-  animation: smark-pulse 2.2s var(--ease-smooth) infinite;
+  background: transparent;
+  border: 1.5px solid var(--color-ongoing);
 }
 .smark.closed {
   background: transparent;
@@ -273,28 +335,6 @@ html[data-pal="ink"] body::before {
   50% {
     opacity: 0.4;
   }
-}
-
-/* growth → gap → build — anime.js signal-packet relay.
-   A hard red square head travels each connector wire, trailing a fading comet
-   tail; the arrowhead lights up as the packet arrives. The JS adds `.flow-live`
-   only when it actually animates, so reduced-motion keeps the static full wire. */
-.flow-packet::before {
-  content: "";
-  position: absolute;
-  right: 100%;
-  top: 50%;
-  width: 28px;
-  height: 2px;
-  transform: translateY(-50%);
-  background: linear-gradient(270deg, var(--color-acc), transparent);
-  pointer-events: none;
-}
-.flow-arrow {
-  transform-origin: center;
-}
-.flow-relay.flow-live .flow-arrow {
-  opacity: 0.5;
 }
 
 /* entrance motion */
@@ -333,6 +373,16 @@ html[data-pal="ink"] body::before {
   transform: none;
 }
 
+/* section baseline rule draws in on reveal (1px ink, scaleX) */
+.sec-rule {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease-smooth) 0.05s;
+}
+.reveal.in .sec-rule {
+  transform: scaleX(1);
+}
+
 /* Staggered content reveals — children of a [data-stagger] group start hidden
    and are cascaded in by anime.js (BaseLayout). Hidden state is gated on
    `html.motion` so no-JS / reduced-motion render fully visible. */
@@ -341,12 +391,12 @@ html.motion [data-stagger] > * {
   transform: translateY(14px);
 }
 
-/* signal edge — a red rule wipes down the left of an interactive row on hover */
+/* leader edge — a green rule wipes down the left of an interactive row on hover */
 .row-edge {
   position: relative;
 }
 .row-edge::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0 auto 0 0;
   width: 2px;

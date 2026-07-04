@@ -2,12 +2,16 @@
 import QRCode from 'qrcode';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SocialIcon from '../components/SocialIcon.astro';
+import Ticks from '../components/Ticks.astro';
 import { SITE, PROFILE_LINKS } from '../consts';
+import { pageGraph } from '../lib/seo';
 
-const title = `${SITE.author} — Digital card`;
+const title = 'Digital card - Woo Kin Wai, Software Builder';
 const description = `${SITE.author}, ${SITE.role}. Save my contact, scan the code, or reach me on any channel.`;
 
 const cardUrl = `${SITE.url}/card`;
+
+const graph = pageGraph({ url: Astro.url, title, description });
 
 // Build-time QR generation — `qrcode` runs in Node during the build and the SVG
 // is inlined, so nothing ships to the client. Recolor it to inherit the palette:
@@ -17,92 +21,89 @@ const qrSvg = rawQr
   .replace('#ffffff', 'transparent')
   .replace('#000000', 'currentColor')
   .replace('<svg ', '<svg class="h-full w-full" ');
-
-// Reused row chrome — the signature hard-shouldered button that slams into
-// signal red on hover (same idiom as EmailButton / the footer chip).
-const rowBase =
-  'group flex items-center gap-4 rounded-[2px] border-2 border-rule px-[18px] py-[15px] no-underline shadow-card transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-acc hover:bg-acc hover:text-on-accent hover:shadow-acc';
 ---
 
-<BaseLayout title={title} description={description}>
-  <div class="mx-auto max-w-[520px] pb-10 pt-[64px] max-[760px]:pt-[44px]">
-    <!-- 1 — Identity -->
+<BaseLayout title={title} description={description} graph={graph}>
+  <div class="mx-auto max-w-[520px] pb-20 pt-[72px] max-[760px]:pt-12">
+    <!-- Identity -->
     <header class="flex items-center gap-5 max-[420px]:flex-col max-[420px]:items-start max-[420px]:gap-4">
       <img
         src="/woo-kin-wai-software-builder.avif"
         width="104"
         height="104"
         alt={`Portrait of ${SITE.author}`}
-        class="rise d1 h-[104px] w-[104px] flex-none rounded-[2px] border-2 border-rule object-cover shadow-card"
+        class="rise d1 h-[104px] w-[104px] flex-none border-[1.5px] border-rule object-cover"
       />
       <div>
-        <div class="rise d1 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acc">Digital card</div>
-        <h1 class="rise d2 mt-[10px] font-sans text-[clamp(28px,7vw,40px)] font-extrabold leading-[1.02] tracking-[-0.035em] text-ink">
+        <div class="rise d1 kicker">digital card</div>
+        <h1
+          class="rise d2 mt-2.5 font-sans text-[clamp(28px,7vw,40px)] font-extrabold leading-[1.05] tracking-[-0.018em] text-ink"
+        >
           {SITE.author}
         </h1>
-        <p class="rise d2 mt-[8px] font-sans text-[15px] leading-[1.4] text-mut">{SITE.role}</p>
-        <p class="rise d3 mt-[6px] font-mono text-[11px] uppercase tracking-[0.12em] text-soft">
-          {SITE.location} · GMT+8
-        </p>
+        <p class="rise d2 mt-2 text-[16px] leading-[1.4] text-mut">{SITE.role}</p>
+        <p class="rise d3 mt-1.5 font-mono text-anno text-soft">{SITE.location.toLowerCase()} · gmt+8</p>
       </div>
     </header>
 
-    <!-- 2 — Primary actions -->
+    <!-- Primary actions -->
     <div class="rise d3 mt-9 flex flex-wrap gap-3">
       <a
         href="/woo-kin-wai.vcf"
         download
-        class="inline-flex items-center gap-2 rounded-[2px] border-2 border-acc bg-acc px-[18px] py-3 font-sans text-[15px] font-extrabold tracking-[-0.01em] text-on-accent no-underline shadow-acc transition-all hover:-translate-x-0.5 hover:-translate-y-0.5"
+        class="inline-flex items-center gap-2 border-[1.5px] border-acc bg-acc px-[18px] py-3 font-mono text-anno-md text-on-accent no-underline transition-colors hover:border-acc-2 hover:bg-acc-2"
       >
-        <SocialIcon name="email" class="h-[15px] w-[15px]" /> Save contact
+        save contact ↓
       </a>
       <button
         id="copy-email"
         type="button"
         data-email={SITE.email}
-        data-label="Copy email"
-        class="inline-flex items-center gap-2 rounded-[2px] border-2 border-rule bg-transparent px-[18px] py-3 font-sans text-[15px] font-extrabold tracking-[-0.01em] text-ink shadow-card transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-acc hover:bg-acc hover:text-on-accent hover:shadow-acc"
+        data-label="copy email"
+        class="inline-flex items-center gap-2 border-[1.5px] border-rule bg-transparent px-[18px] py-3 font-mono text-anno-md text-ink transition-colors hover:border-acc hover:text-acc"
       >
-        <span data-copy-label>Copy email</span>
+        <span data-copy-label>copy email</span>
       </button>
     </div>
 
-    <!-- 3 — Channels -->
-    <nav class="mt-9 flex flex-col gap-3" data-stagger aria-label="Contact channels">
+    <!-- Channels (the title block) -->
+    <nav class="relative mt-9 border-[1.5px] border-rule bg-bg" data-stagger aria-label="Contact channels">
+      <Ticks />
       {
-        PROFILE_LINKS.map((c) => (
+        PROFILE_LINKS.map((c, i) => (
           <a
             href={c.href}
             target={c.external ? '_blank' : undefined}
             rel={c.external ? 'noopener noreferrer' : undefined}
-            class={rowBase}
+            class:list={[
+              'row-edge group block no-underline transition-colors hover:bg-panel',
+              i > 0 ? 'border-t border-line' : '',
+            ]}
           >
-            <span class="flex-none text-mut transition-colors group-hover:text-on-accent">
-              <SocialIcon name={c.icon} class="h-[18px] w-[18px]" />
-            </span>
-            <span class="min-w-0 flex-1">
-              <span class="block font-sans text-[15px] font-extrabold leading-tight tracking-[-0.01em] text-ink transition-colors group-hover:text-on-accent">
-                {c.label}
+            <div class="grid grid-cols-[150px_1fr] items-center max-[520px]:grid-cols-1">
+              <span class="flex h-full items-center gap-2.5 border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[520px]:border-r-0 max-[520px]:pb-0">
+                <SocialIcon name={c.icon} class="h-[15px] w-[15px] flex-none text-mut" />
+                {c.label.toLowerCase()} /
               </span>
-              <span class="block truncate font-mono text-[12px] leading-tight text-soft transition-colors group-hover:text-on-accent">
-                {c.value}
+              <span class="flex items-center px-[22px] py-[15px] font-mono text-anno-lg">
+                <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
+                  {c.value}
+                </span>
+                {c.external && <span class="ml-1 text-soft">↗</span>}
               </span>
-            </span>
-            <span class="flex-none font-mono text-[13px] text-soft transition-colors group-hover:text-on-accent">
-              {c.external ? '↗' : '→'}
-            </span>
+            </div>
           </a>
         ))
       }
     </nav>
 
-    <!-- 4 — QR -->
-    <div class="reveal mt-12 flex flex-col items-center border-t-2 border-rule pt-10">
-      <div class="h-[150px] w-[150px] rounded-[2px] border-2 border-rule bg-panel p-3 text-ink shadow-card">
+    <!-- QR -->
+    <section class="reveal mt-14 flex flex-col items-center border-t border-rule pt-12">
+      <div class="h-[150px] w-[150px] border-[1.5px] border-rule bg-panel p-3 text-ink">
         <Fragment set:html={qrSvg} />
       </div>
-      <p class="mt-4 font-mono text-[10.5px] font-bold uppercase tracking-[0.16em] text-soft">Scan to open · share</p>
-    </div>
+      <p class="mt-4 font-mono text-anno-sm tracking-[0.04em] text-soft">scan to open · share</p>
+    </section>
   </div>
 
   <script>
@@ -122,7 +123,7 @@ const rowBase =
         }
         if (!label) return;
         const original = btn.dataset.label || label.textContent || '';
-        label.textContent = 'Copied ✓';
+        label.textContent = 'copied ✓';
         window.setTimeout(() => {
           label.textContent = original;
         }, 1500);

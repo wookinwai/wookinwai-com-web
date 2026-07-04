@@ -1,0 +1,23 @@
+name: Link check
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - '*.md'
+  schedule:
+    # Mondays at 09:00 UTC — catches link rot in content the push trigger
+    # won't see (e.g. an external site that went down after the last push).
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress './**/*.astro' './**/*.md'
+          fail: true
