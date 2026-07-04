@@ -327,6 +327,15 @@ body {
     opacity: 0.35;
   }
 }
+@keyframes smark-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
 
 /* entrance motion */
 .rise {
@@ -400,6 +409,140 @@ html.motion [data-stagger] > * {
   transform: scaleY(1);
 }
 
+/* Process — vertical spine timeline. A mono-numbered ledger running down a
+   connecting rail, with a node marking each step. The rail's right edge is the
+   spine axis; nodes and the connector line all center on it. Hidden state is
+   gated on `html.motion` (no-JS / reduced-motion render fully visible) and the
+   reveal is choreographed by anime.js (index.astro). */
+.proc {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.proc-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  column-gap: 28px;
+  padding-bottom: 34px;
+}
+.proc-step:last-child {
+  padding-bottom: 0;
+}
+.proc-rail {
+  position: relative;
+}
+.proc-num {
+  position: absolute;
+  top: 1px;
+  right: 22px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-acc);
+  transition: color 0.28s var(--ease-smooth);
+}
+.proc-node {
+  position: absolute;
+  top: 5px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-rule);
+  border-radius: 50%;
+  background: var(--color-bg);
+  transition:
+    background 0.28s var(--ease-smooth),
+    border-color 0.28s var(--ease-smooth),
+    box-shadow 0.28s var(--ease-smooth);
+}
+/* connector bridges this node down to the next: top of node → next node centre
+   (34px padding + 12px next-node offset = 46px below the rail's bottom edge), so
+   it stays joined regardless of how tall each step's copy runs. */
+.proc-line {
+  position: absolute;
+  top: 19px;
+  bottom: -46px;
+  right: -1px;
+  width: 2px;
+  background: var(--color-line);
+  transform-origin: top;
+}
+.proc-body {
+  padding-top: 1px;
+}
+.proc-title {
+  margin: 0 0 8px;
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+.proc-desc {
+  margin: 0;
+  max-width: none;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--color-mut);
+}
+.proc-step:hover .proc-node {
+  background: var(--color-acc);
+  border-color: var(--color-acc);
+  box-shadow: 0 0 0 4px var(--color-acc-soft);
+}
+.proc-step:hover .proc-num {
+  color: var(--color-acc-2);
+}
+
+/* node the travelling spark has reached — stays lit until the loop resets */
+.proc-node.is-active {
+  background: var(--color-acc);
+  border-color: var(--color-acc);
+  box-shadow: 0 0 0 4px var(--color-acc-soft);
+}
+
+/* the spark: a glowing accent dot that rides the rail node → node, then loops.
+   centred on its (left, top) via the translate, so anime.js drives `top`.
+   created by JS only when motion is on; absent under no-JS / reduced-motion. */
+.proc-spark {
+  position: absolute;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-acc);
+  box-shadow:
+    0 0 0 4px var(--color-acc-soft),
+    0 0 14px 2px var(--color-acc);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* row fade-in plays once on scroll-in; gated on motion so no-JS / reduced-motion
+   render fully visible. The spine + nodes stay static (the spark's track). */
+html.motion .proc-step {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+@media (max-width: 520px) {
+  .proc-step {
+    grid-template-columns: 58px 1fr;
+    column-gap: 20px;
+  }
+  .proc-num {
+    right: 20px;
+    font-size: 13px;
+  }
+  .proc-title {
+    font-size: 18px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -414,10 +557,17 @@ html.motion [data-stagger] > * {
   .sec-rule {
     transform: scaleX(1) !important;
   }
-  .smark.live {
+  .smark.live,
+  .smark.ongoing {
     animation: none !important;
   }
   [data-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .proc-step,
+  .proc-node,
+  .proc-line {
     opacity: 1 !important;
     transform: none !important;
   }

@@ -171,6 +171,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
         ))
       }
     </div>
+    </SectionHead>
   </section>
 
   <!-- fig. 03 — about -->
@@ -590,4 +591,146 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
 
   document.addEventListener('astro:page-load', initRelays);
   document.addEventListener('astro:before-swap', teardown);
+</script>
+
+<script>
+  // process timeline: rows fade up once on scroll-in, then a glowing accent
+  // "spark" rides the rail node → node (lighting each as it arrives), holds at
+  // the end, resets, and loops while the section is on screen. Node y-positions
+  // are measured from layout, so the loop is rebuilt on a debounced resize.
+  // Skips entirely when motion is off (no-JS / reduced-motion) and rebinds
+  // cleanly across View-Transition navigations.
+  import { animate, stagger, createTimeline } from 'animejs';
+
+  let entranceIo: IntersectionObserver | null = null;
+  let playIo: IntersectionObserver | null = null;
+  let tl: ReturnType<typeof createTimeline> | null = null;
+  let spark: HTMLElement | null = null;
+  let onResize: (() => void) | null = null;
+  let resizeTimer = 0;
+
+  function teardownProc() {
+    entranceIo?.disconnect();
+    entranceIo = null;
+    playIo?.disconnect();
+    playIo = null;
+    tl?.pause();
+    tl?.revert();
+    tl = null;
+    if (onResize) {
+      window.removeEventListener('resize', onResize);
+      onResize = null;
+    }
+    spark?.remove();
+    spark = null;
+    document
+      .querySelectorAll<HTMLElement>('.proc-node.is-active')
+      .forEach((n) => n.classList.remove('is-active'));
+  }
+
+  // (re)build the looping spark against the current layout — also what the
+  // debounced resize handler calls, since node centres are pixel-based.
+  function buildSpark(proc: HTMLElement, nodes: HTMLElement[]) {
+    playIo?.disconnect();
+    playIo = null;
+    tl?.pause();
+    tl?.revert();
+    tl = null;
+    spark?.remove();
+    nodes.forEach((n) => n.classList.remove('is-active'));
+
+    spark = document.createElement('span');
+    spark.className = 'proc-spark';
+    proc.appendChild(spark);
+
+    const base = proc.getBoundingClientRect();
+    const first = nodes[0].getBoundingClientRect();
+    const x = first.left - base.left + first.width / 2;
+    const ys = nodes.map((n) => {
+      const r = n.getBoundingClientRect();
+      return r.top - base.top + r.height / 2;
+    });
+    spark.style.left = `${x}px`;
+    spark.style.top = `${ys[0]}px`;
+
+    const STEP = 520; // travel time between adjacent nodes
+    const DWELL = 150; // pause on each node
+    const HOLD = 700; // pause at the end before the reset
+
+    tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
+
+    // light the first node as the spark fades in
+    tl.add(
+      spark,
+      { opacity: [0, 1], duration: 220, ease: 'outQuad', onBegin: () => nodes[0].classList.add('is-active') },
+      0
+    );
+    let at = DWELL;
+    for (let i = 0; i < nodes.length - 1; i++) {
+      const next = nodes[i + 1];
+      tl.add(spark, { top: [ys[i], ys[i + 1]], duration: STEP, onComplete: () => next.classList.add('is-active') }, at);
+      at += STEP + DWELL;
+    }
+    // hold on the full rail, then snuff spark + nodes and drop back to the top
+    tl.add(spark, { opacity: [1, 0], duration: 260, ease: 'outQuad' }, at + HOLD);
+    tl.add(
+      spark,
+      { top: ys[0], duration: 1, onBegin: () => nodes.forEach((n) => n.classList.remove('is-active')) },
+      at + HOLD + 260
+    );
+
+    playIo = new IntersectionObserver(
+      (entries) => entries.forEach((e) => (e.isIntersecting ? tl?.play() : tl?.pause())),
+      { threshold: 0.25 }
+    );
+    playIo.observe(proc);
+  }
+
+  function initProc() {
+    teardownProc();
+
+    if (!document.documentElement.classList.contains('motion')) return;
+
+    const proc = document.querySelector<HTMLElement>('.proc');
+    if (!proc) return;
+
+    const steps = [...proc.querySelectorAll<HTMLElement>('.proc-step')];
+    const nodes = [...proc.querySelectorAll<HTMLElement>('.proc-node')];
+    if (!steps.length || !nodes.length) return;
+
+    entranceIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          entranceIo?.unobserve(e.target);
+
+          // rows fade up once; build the spark only after they settle, so node
+          // y-positions are measured at rest (the rows translateY during this).
+          animate(steps, {
+            opacity: [0, 1],
+            translateY: [12, 0],
+            duration: 560,
+            delay: stagger(90),
+            ease: 'outCubic',
+            onComplete: () => {
+              steps.forEach((el) => (el.style.willChange = 'auto'));
+              buildSpark(proc, nodes);
+            },
+          });
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -8% 0px' }
+    );
+    entranceIo.observe(proc);
+
+    onResize = () => {
+      if (!spark) return; // only after the first build
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => buildSpark(proc, nodes), 160);
+    };
+    window.addEventListener('resize', onResize);
+  }
+
+  document.addEventListener('astro:page-load', initProc);
+  document.addEventListener('astro:before-swap', teardownProc);
 </script>
