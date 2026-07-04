@@ -29,6 +29,7 @@
   --color-rule: #2b261c;
   --color-line: rgba(43, 38, 28, 0.16); /* hair */
   --color-line-2: rgba(43, 38, 28, 0.045); /* hair 2 — background grid */
+  --color-arrow: #000000; /* black — darker than the rule line (paper) */
 
   /* status */
   --color-live: #2f6b4c;
@@ -78,6 +79,7 @@ html[data-pal='ink'] {
   --color-rule: #ece4d0;
   --color-line: rgba(236, 228, 208, 0.18);
   --color-line-2: rgba(236, 228, 208, 0.035);
+  --color-arrow: #fbf7ee; /* a step lighter than the rule line (ink palette) */
   --color-live: #6fae8c;
   --color-build: #6fae8c;
   --color-ongoing: #6fae8c;
@@ -185,23 +187,36 @@ body {
 .conn {
   position: relative;
   height: 0;
+}
+/* the leader line stops ~5px short of the right edge, i.e. inside the
+   arrowhead's base, so no line pokes through the tapering triangle to its tip.
+   top -1.75px puts the 1.5px line's midline on the shared centerline (-1px). */
+.conn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 5px;
+  top: -1.75px;
   border-top: 1.5px dashed var(--color-mut);
 }
 .conn-arrow {
   position: absolute;
   right: -1px;
-  top: -5px;
+  /* point (at top + 4.5px) on the shared line/marker centerline (-1px) */
+  top: -5.5px;
   width: 0;
   height: 0;
   border-top: 4.5px solid transparent;
   border-bottom: 4.5px solid transparent;
-  border-left: 7px solid var(--color-mut);
+  /* darker than the leader line on paper, lighter than it in the ink palette */
+  border-left: 7px solid var(--color-arrow);
   transform-origin: center;
 }
 /* the pen head — a green square riding the leader line, trailing a short
    fading stroke (the ink it just laid down) */
 .conn-packet {
   position: absolute;
+  /* 7px square centered on the shared line/marker centerline (-1px) */
   top: -4.5px;
   left: 0;
   width: 7px;
@@ -220,10 +235,6 @@ body {
   transform: translateY(-50%);
   background: linear-gradient(270deg, var(--color-acc), transparent);
 }
-/* while a relay is live its resting arrowheads dim, so the arrival pulse reads */
-.flow-live .conn-arrow {
-  opacity: 0.55;
-}
 
 /* hatched fill for the emphasised schematic stage (the build) — opaque paper
    base so content behind it (the relay pen head) can't show through */
@@ -236,14 +247,27 @@ body {
    Markers and arrowhead are real elements so the relay can pulse them. */
 .tl-line {
   position: relative;
+}
+/* baseline stops inside the arrowhead's base (see .conn::before); midline sits
+   on the shared centerline (-1px) so the line runs through the marker centers */
+.tl-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 5px;
+  top: -1.75px;
   border-top: 1.5px solid var(--color-rule);
 }
 .tl-line .conn-arrow {
   right: -2px;
   top: -5.5px;
   border-left-width: 8px;
-  border-left-color: var(--color-rule);
+  /* darker than the rule line on paper, lighter than it in the ink palette, so
+     the arrowhead reads as a stronger terminal than the baseline in both */
+  border-left-color: var(--color-arrow);
 }
+/* stops start as empty squares; the relay fills each one green as the pen head
+   passes (see index.astro), like ticking a checkbox once the work is done */
 .tl-mark {
   position: absolute;
   top: -6.5px;
@@ -253,8 +277,11 @@ body {
   background: var(--color-bg);
   border: 1.5px solid var(--color-rule);
   transform-origin: center;
+  transition:
+    background-color 0.25s var(--ease-smooth),
+    border-color 0.25s var(--ease-smooth);
 }
-.tl-stop.is-last .tl-mark {
+.tl-mark.is-done {
   background: var(--color-acc);
   border-color: var(--color-acc);
 }

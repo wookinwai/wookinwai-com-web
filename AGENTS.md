@@ -46,4 +46,5 @@ Path alias: `~/*` → `src/*` (`tsconfig.json`, extends `astro/tsconfigs/strict`
 
 - **No em dashes in user-facing copy** (owner preference). Use commas/periods/colons, or the site's kicker separator `·`. Dev-only code/HTML comments are exempt.
 - Page kickers, labels, and footers are lowercase mono; headings are grotesque with a closing green-italic emphasis word (`<em class="font-medium italic text-acc">`); match this voice when adding copy.
+- Full stops on headings follow grammar, not level: a heading that is a complete sentence ends with a full stop (page-hero statements, the display CTA statement, a `SectionHead` whose title reads as a full sentence); a fragment, noun phrase, or short label never does (most section heads, "Field notes", the name card).
 - `docs/claude-design-files/` is the design source-of-truth (tokens, guidelines). `docs/old/` is the previous (mosaic) design, kept for reference only; do not wire it into the build.

@@ -28,7 +28,16 @@ export const SOCIALS: { label: string; href: string }[] = [
 
 // Source of truth for the digital business card (/card). Kept separate from
 // SOCIALS so the footer chip set stays untouched. `icon` keys map to SocialIcon.
-export type IconName = 'email' | 'linkedin' | 'x' | 'facebook' | 'instagram' | 'work';
+export type IconName =
+  | 'email'
+  | 'linkedin'
+  | 'x'
+  | 'facebook'
+  | 'instagram'
+  | 'work'
+  | 'location'
+  | 'growth'
+  | 'system';
 export const PROFILE_LINKS: {
   label: string;
   value: string;

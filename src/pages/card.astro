@@ -76,7 +76,7 @@ const qrSvg = rawQr
             target={c.external ? '_blank' : undefined}
             rel={c.external ? 'noopener noreferrer' : undefined}
             class:list={[
-              'row-edge block no-underline transition-colors hover:bg-panel',
+              'row-edge group block no-underline transition-colors hover:bg-panel',
               i > 0 ? 'border-t border-line' : '',
             ]}
           >
@@ -85,8 +85,10 @@ const qrSvg = rawQr
                 <SocialIcon name={c.icon} class="h-[15px] w-[15px] flex-none text-mut" />
                 {c.label.toLowerCase()} /
               </span>
-              <span class="flex items-center px-[22px] py-[15px] font-mono text-anno-lg text-ink">
-                {c.value}
+              <span class="flex items-center px-[22px] py-[15px] font-mono text-anno-lg">
+                <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
+                  {c.value}
+                </span>
                 {c.external && <span class="ml-1 text-soft">↗</span>}
               </span>
             </div>

@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/SectionHead.astro';
 import EmailButton from '../components/EmailButton.astro';
 import Ticks from '../components/Ticks.astro';
-import { SITE, SOCIALS } from '../consts';
+import SocialIcon from '../components/SocialIcon.astro';
+import { SITE, SOCIALS, type IconName } from '../consts';
 import { pageGraph } from '../lib/seo';
 
 const title = 'Contact - Woo Kin Wai, Software Builder';
@@ -71,11 +72,11 @@ const faqs: { q: string; a: string }[] = [
 
 // fig. 04 — Direct channels (the title block)
 const linkedinPath = SOCIALS[0].href.replace(/^https?:\/\/(www\.)?linkedin\.com/, '').replace(/\/$/, '');
-const channels: { label: string; value: string; href?: string; external?: boolean }[] = [
-  { label: 'email', value: SITE.email, href: `mailto:${SITE.email}` },
-  { label: 'linkedin', value: `linkedin.com${linkedinPath}`, href: SOCIALS[0].href, external: true },
-  { label: 'work', value: SITE.org.toLowerCase(), href: SITE.orgUrl, external: true },
-  { label: 'based in', value: 'kuala lumpur · gmt+8' },
+const channels: { label: string; value: string; href?: string; external?: boolean; icon: IconName }[] = [
+  { label: 'email', value: SITE.email, href: `mailto:${SITE.email}`, icon: 'email' },
+  { label: 'linkedin', value: `linkedin.com${linkedinPath}`, href: SOCIALS[0].href, external: true, icon: 'linkedin' },
+  { label: 'work', value: SITE.org.toLowerCase(), href: SITE.orgUrl, external: true, icon: 'work' },
+  { label: 'based in', value: 'kuala lumpur · gmt+8', icon: 'location' },
 ];
 
 const checklistRow =
@@ -201,11 +202,18 @@ const checklistRow =
         channels.map((c, i) => {
           const inner = (
             <div class="grid grid-cols-[140px_1fr] items-center max-[520px]:grid-cols-1">
-              <span class="flex h-full items-center border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[520px]:border-r-0 max-[520px]:pb-0">
+              <span class="flex h-full items-center gap-2.5 border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[520px]:border-r-0 max-[520px]:pb-0">
+                <SocialIcon name={c.icon} class="h-[15px] w-[15px] flex-none text-mut" />
                 {c.label} /
               </span>
               <span class="px-[22px] py-[15px] font-mono text-anno-lg text-ink">
-                {c.value}
+                {c.href ? (
+                  <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
+                    {c.value}
+                  </span>
+                ) : (
+                  c.value
+                )}
                 {c.external && <span class="text-soft"> ↗</span>}
               </span>
             </div>
@@ -216,7 +224,7 @@ const checklistRow =
               href={c.href}
               target={c.external ? '_blank' : undefined}
               rel={c.external ? 'noopener' : undefined}
-              class:list={['row-edge block no-underline transition-colors hover:bg-panel', edge]}
+              class:list={['row-edge group block no-underline transition-colors hover:bg-panel', edge]}
             >
               {inner}
             </a>
@@ -231,7 +239,7 @@ const checklistRow =
   <!-- Closing CTA -->
   <section class="reveal pb-12 pt-24 max-[760px]:pt-[72px]">
     <p class="max-w-[560px] text-[18px] leading-[1.6] text-ink">
-      Prefer to skip the form fields and just write? <em class="italic text-acc">Same here.</em>
+      The whole thing starts with <em class="italic text-acc">one email</em>. No form, no funnel.
     </p>
     <div class="mt-6"><EmailButton /></div>
   </section>

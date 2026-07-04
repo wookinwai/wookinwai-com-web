@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/SectionHead.astro';
-import EmailButton from '../components/EmailButton.astro';
 import Ticks from '../components/Ticks.astro';
+import SocialIcon from '../components/SocialIcon.astro';
 import { getCollection } from 'astro:content';
+import { SITE, type IconName } from '../consts';
 
 const title = 'Woo Kin Wai: software builder & technical partner';
 const description =
@@ -78,14 +79,17 @@ const factKey = 'pt-[3px] font-mono text-anno text-soft max-[560px]:pt-0';
 const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 
 // contact — the title block (mirrors the contact page's Direct channels).
-const ctaRows = [
-  { label: 'next', value: 'the system your business needs next' },
-  { label: 'start with', value: 'where the business is trying to grow' },
-  { label: 'based in', value: 'kuala lumpur · gmt+8' },
+const ctaRows: { label: string; value: string; href?: string; icon: IconName }[] = [
+  { label: 'next', value: 'the system your business needs next', icon: 'system' },
+  { label: 'start with', value: 'where the business is trying to grow', icon: 'growth' },
+  { label: 'based in', value: 'kuala lumpur · gmt+8', icon: 'location' },
+  { label: 'write', value: SITE.email, href: `mailto:${SITE.email}`, icon: 'email' },
 ];
 const ctaLabel =
-  'flex h-full items-center border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[560px]:border-r-0 max-[560px]:pb-0';
+  'flex h-full items-center gap-2.5 border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[560px]:border-r-0 max-[560px]:pb-0';
 const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
+// Linkable values read as links: green text + green underline, deepening on hover.
+const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2';
 ---
 
 <BaseLayout title={title} description={description}>
@@ -139,8 +143,10 @@ const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
             </div>
             {i < flow.length - 1 && (
               <div class="conn flow-conn mt-[58px] self-start max-[900px]:hidden">
-                <span class="conn-arrow" aria-hidden="true" />
+                {/* packet before arrow so the arrowhead paints on top and the
+                    pen head tucks behind it on arrival */}
                 <span class="conn-packet" aria-hidden="true" />
+                <span class="conn-arrow" aria-hidden="true" />
               </div>
             )}
           </>
@@ -179,9 +185,10 @@ const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
           I studied engineering, but I found my work in software, products, and systems.
         </p>
         <p class="mb-5 text-[19px] leading-[1.62] text-ink">
-          Over time, I moved from writing code to leading technical work, helping scale a company from a small team of
-          around ten people to about a hundred. That shaped how I see software: not just as clean code, but as a system
-          that has to fit the business, the people, the timing, the constraints, and the next stage of growth.
+          Over time, I moved from writing code to leading technical work, supporting the systems behind a company as it
+          grew from a small team of around ten people to about a hundred. That shaped how I see software: not just as
+          clean code, but as a system that has to fit the business, the people, the timing, the constraints, and the
+          next stage of growth.
         </p>
         <p class="mb-0 text-[19px] leading-[1.62] text-ink">
           Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
@@ -359,16 +366,20 @@ const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
   <section class={secWrap} id="process">
     <SectionHead title="How the work" em="unfolds" sub="start small enough to learn, serious enough to matter." />
     <div class="tl-line mx-[30px] mt-[70px] max-[760px]:hidden">
-      <span class="conn-arrow" aria-hidden="true"></span>
+      {
+        /* packet before arrow so the arrowhead paints on top and the pen head
+          tucks behind it on arrival */
+      }
       <span class="conn-packet" aria-hidden="true"></span>
+      <span class="conn-arrow" aria-hidden="true"></span>
     </div>
     <div
       class="tl-stops mx-[30px] grid grid-cols-4 max-[760px]:mx-0 max-[760px]:grid-cols-1 max-[760px]:gap-9"
       data-stagger
     >
       {
-        steps.map(([id, h, p], i) => (
-          <div class:list={['tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0', i === steps.length - 1 && 'is-last']}>
+        steps.map(([id, h, p]) => (
+          <div class="tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0">
             <span class="tl-mark max-[760px]:hidden" aria-hidden="true" />
             <div class="mb-3 font-mono text-anno text-soft">step {id} /</div>
             <h3 class="mb-2 mt-0 text-[21px] font-semibold italic text-ink">{h}</h3>
@@ -394,17 +405,26 @@ const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
     <div class="relative mx-auto max-w-[820px] border-[1.5px] border-rule bg-bg">
       <Ticks />
       {
-        ctaRows.map((r, i) => (
-          <div class:list={['grid grid-cols-[200px_1fr] max-[560px]:grid-cols-1', i > 0 && 'border-t border-line']}>
-            <span class={ctaLabel}>{r.label} /</span>
-            <span class={ctaValue}>{r.value}</span>
-          </div>
-        ))
+        ctaRows.map((r, i) => {
+          const inner = (
+            <div class="grid grid-cols-[200px_1fr] max-[560px]:grid-cols-1">
+              <span class={ctaLabel}>
+                <SocialIcon name={r.icon} class="h-[15px] w-[15px] flex-none text-mut" />
+                {r.label} /
+              </span>
+              <span class={ctaValue}>{r.href ? <span class={ctaLink}>{r.value}</span> : r.value}</span>
+            </div>
+          );
+          const edge = i > 0 ? 'border-t border-line' : '';
+          return r.href ? (
+            <a href={r.href} class:list={['row-edge group block no-underline transition-colors hover:bg-panel', edge]}>
+              {inner}
+            </a>
+          ) : (
+            <div class:list={[edge]}>{inner}</div>
+          );
+        })
       }
-      <div class="grid grid-cols-[200px_1fr] border-t border-line max-[560px]:grid-cols-1">
-        <span class={ctaLabel}>write /</span>
-        <div class="px-[22px] py-[22px]"><EmailButton /></div>
-      </div>
     </div>
     <p class="mt-7 text-center font-mono text-anno">
       <a href="/contact/" class="group inline-flex items-baseline gap-2 no-underline">
@@ -453,6 +473,8 @@ const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
       tl.revert();
     });
     tls = [];
+    // drop any ticked timeline stops so a fresh run starts from empty squares
+    document.querySelectorAll('.tl-mark.is-done').forEach((m) => m.classList.remove('is-done'));
   }
 
   // play/pause a timeline as its host scrolls in and out of view
@@ -498,11 +520,7 @@ const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
           at
         );
         if (arrow) {
-          tl.add(
-            arrow,
-            { scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55], duration: 340, ease: 'outQuad' },
-            at + STEP - 190
-          );
+          tl.add(arrow, { scale: [1, 1.5, 1], duration: 340, ease: 'outQuad' }, at + STEP - 190);
         }
         at += STEP - OVERLAP;
       });
@@ -522,13 +540,31 @@ const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
       line.classList.add('flow-live');
       const tl = createTimeline({ loop: true, autoplay: false, defaults: { ease: 'inOutQuad' } });
       let at = 0;
-      // set off from the first stop…
-      tl.add(marks[0], { scale: [1, 1.4, 1], duration: 300, ease: 'outQuad' }, 0);
+      // a stop is "ticked" green as the pen head reaches it, like a checkbox
+      const tick = (m: HTMLElement) => m.classList.add('is-done');
+      // set off from the first stop… (clear the board at the top of each loop)
+      tl.add(
+        marks[0],
+        {
+          scale: [1, 1.4, 1],
+          duration: 300,
+          ease: 'outQuad',
+          onBegin: () => {
+            marks.forEach((m) => m.classList.remove('is-done'));
+            tick(marks[0]);
+          },
+        },
+        0
+      );
       tl.add(packet, { opacity: [0, 1], duration: 90 }, 0);
-      // …walk the three segments between the four stops…
+      // …walk the three segments between the four stops, ticking each on arrival…
       for (let k = 0; k < 3; k++) {
         tl.add(packet, { left: [`${k * 25}%`, `${(k + 1) * 25}%`], duration: WALK }, at);
-        tl.add(marks[k + 1], { scale: [1, 1.4, 1], duration: 360, ease: 'outQuad' }, at + WALK - 200);
+        tl.add(
+          marks[k + 1],
+          { scale: [1, 1.4, 1], duration: 360, ease: 'outQuad', onBegin: () => tick(marks[k + 1]) },
+          at + WALK - 200
+        );
         at += WALK - OVERLAP;
       }
       // …then run off the end of the drawing
@@ -545,11 +581,7 @@ const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
         at
       );
       if (arrow) {
-        tl.add(
-          arrow,
-          { scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55], duration: 380, ease: 'outQuad' },
-          at + WALK - 230
-        );
+        tl.add(arrow, { scale: [1, 1.5, 1], duration: 380, ease: 'outQuad' }, at + WALK - 230);
       }
       tl.add(packet, { opacity: 0, duration: DWELL }, at + WALK);
       bind(stops, tl);
