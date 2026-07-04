@@ -35,14 +35,14 @@ const qrSvg = rawQr
         class="rise d1 h-[104px] w-[104px] flex-none border-[1.5px] border-rule object-cover"
       />
       <div>
-        <div class="rise d1 font-mono text-[12.5px] tracking-[0.04em] text-acc">digital card</div>
+        <div class="rise d1 kicker">digital card</div>
         <h1
-          class="rise d2 mt-2.5 font-sans text-[clamp(28px,7vw,40px)] font-semibold leading-[1.05] tracking-[-0.018em] text-ink"
+          class="rise d2 mt-2.5 font-sans text-[clamp(28px,7vw,40px)] font-extrabold leading-[1.05] tracking-[-0.018em] text-ink"
         >
           {SITE.author}
         </h1>
         <p class="rise d2 mt-2 text-[16px] leading-[1.4] text-mut">{SITE.role}</p>
-        <p class="rise d3 mt-1.5 font-mono text-[11.5px] text-soft">{SITE.location.toLowerCase()} · gmt+8</p>
+        <p class="rise d3 mt-1.5 font-mono text-anno text-soft">{SITE.location.toLowerCase()} · gmt+8</p>
       </div>
     </header>
 
@@ -51,7 +51,7 @@ const qrSvg = rawQr
       <a
         href="/woo-kin-wai.vcf"
         download
-        class="inline-flex items-center gap-2 border-[1.5px] border-acc bg-acc px-[18px] py-3 font-mono text-[12.5px] text-on-accent no-underline transition-colors hover:border-acc-2 hover:bg-acc-2"
+        class="inline-flex items-center gap-2 border-[1.5px] border-acc bg-acc px-[18px] py-3 font-mono text-anno-md text-on-accent no-underline transition-colors hover:border-acc-2 hover:bg-acc-2"
       >
         save contact ↓
       </a>
@@ -60,7 +60,7 @@ const qrSvg = rawQr
         type="button"
         data-email={SITE.email}
         data-label="copy email"
-        class="inline-flex items-center gap-2 border-[1.5px] border-rule bg-transparent px-[18px] py-3 font-mono text-[12.5px] text-ink transition-colors hover:border-acc hover:text-acc"
+        class="inline-flex items-center gap-2 border-[1.5px] border-rule bg-transparent px-[18px] py-3 font-mono text-anno-md text-ink transition-colors hover:border-acc hover:text-acc"
       >
         <span data-copy-label>copy email</span>
       </button>
@@ -81,11 +81,11 @@ const qrSvg = rawQr
             ]}
           >
             <div class="grid grid-cols-[150px_1fr] items-center max-[520px]:grid-cols-1">
-              <span class="flex h-full items-center gap-2.5 border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[520px]:border-r-0 max-[520px]:pb-0">
+              <span class="flex h-full items-center gap-2.5 border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[520px]:border-r-0 max-[520px]:pb-0">
                 <SocialIcon name={c.icon} class="h-[15px] w-[15px] flex-none text-mut" />
                 {c.label.toLowerCase()} /
               </span>
-              <span class="flex items-center px-[22px] py-[15px] font-mono text-[13.5px] text-ink">
+              <span class="flex items-center px-[22px] py-[15px] font-mono text-anno-lg text-ink">
                 {c.value}
                 {c.external && <span class="ml-1 text-soft">↗</span>}
               </span>
@@ -100,7 +100,7 @@ const qrSvg = rawQr
       <div class="h-[150px] w-[150px] border-[1.5px] border-rule bg-panel p-3 text-ink">
         <Fragment set:html={qrSvg} />
       </div>
-      <p class="mt-4 font-mono text-[11px] tracking-[0.04em] text-soft">scan to open · share</p>
+      <p class="mt-4 font-mono text-anno-sm tracking-[0.04em] text-soft">scan to open · share</p>
     </section>
   </div>
 

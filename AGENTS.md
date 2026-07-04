@@ -27,11 +27,12 @@ Node `>=22.12`. There is no test suite and no separate lint step; `npm run build
 
 **`src/consts.ts` is the single source of truth** for identity and chrome: `SITE`, `NAV`, `SOCIALS`, and `PROFILE_LINKS` (the `/card` channel list). `Header`, `Footer`, and pages read from it; edit links/identity here, not inline.
 
-**Design system: "The Drafting Table"** (paper tones, a single drafting-green accent, Source Serif 4 + IBM Plex Mono, hand-drawn plot background and registration ticks).
+**Design system: "The Drafting Table"** (paper tones, a single drafting-green accent, Hanken Grotesk + Crimson Pro, hand-drawn plot background and registration ticks).
 
-- All tokens live in `src/styles/global.css` under Tailwind v4's `@theme` block (CSS-first config: there is **no `tailwind.config`**, and Tailwind is wired via the `@tailwindcss/vite` plugin in `astro.config.mjs`). `font-sans` = Source Serif 4, `font-mono` = IBM Plex Mono.
+- All tokens live in `src/styles/global.css` under Tailwind v4's `@theme` block (CSS-first config: there is **no `tailwind.config`**, and Tailwind is wired via the `@tailwindcss/vite` plugin in `astro.config.mjs`). `font-sans` = Hanken Grotesk, `font-mono` = Crimson Pro (serif annotation face; code/`pre` use `--font-code`, a system monospace).
 - **Theming** is one set of CSS custom properties re-declared under `html[data-pal='ink']` (the "lamplight"/dark palette), so the whole site re-themes through the `data-pal` attribute with no per-utility dark variants. The toggle persists to `localStorage['pal']`.
-- Reusable idioms (defined in `global.css`, used across pages): `.rise` + `.d1`–`.d4` entrance delays, `.reveal` + `.sec-rule` scroll reveals, `[data-stagger]` cascades, `.row-edge` green-rule hover, `.smark.<status>` work-status markers. `SectionHead`, `EmailButton`, and `Ticks` are the shared building blocks; new pages should compose these rather than invent new patterns.
+- Reusable idioms (defined in `global.css`, used across pages): `.rise` + `.d1`–`.d4` entrance delays, `.reveal` + `.sec-rule` scroll reveals, `[data-stagger]` cascades, `.row-edge` green-rule hover, `.smark.<status>` work-status markers, `.kicker` (the mono/serif eyebrow above a heading), `.em-acc` (the green-italic emphasis word closing a heading). `SectionHead`, `EmailButton`, and `Ticks` are the shared building blocks; new pages should compose these rather than invent new patterns.
+- **Annotation label sizing goes through the `text-anno*` scale** (`--text-anno-sm|anno|anno-md|anno-lg` in `global.css`'s `@theme`), the single source of truth for Crimson Pro label sizes. Use those utilities, not hardcoded `text-[Npx]`, on mono/serif labels so the whole set rescales from one place.
 
 **`BaseLayout.astro` owns the chrome and is View-Transitions aware** (`<ClientRouter />`). This drives several non-obvious rules:
 
@@ -44,5 +45,5 @@ Path alias: `~/*` → `src/*` (`tsconfig.json`, extends `astro/tsconfigs/strict`
 ## Conventions
 
 - **No em dashes in user-facing copy** (owner preference). Use commas/periods/colons, or the site's kicker separator `·`. Dev-only code/HTML comments are exempt.
-- Page kickers, labels, and footers are lowercase mono; headings are serif with a closing green-italic emphasis word (`<em class="font-medium italic text-acc">`); match this voice when adding copy.
+- Page kickers, labels, and footers are lowercase mono; headings are grotesque with a closing green-italic emphasis word (`<em class="font-medium italic text-acc">`); match this voice when adding copy.
 - `docs/claude-design-files/` is the design source-of-truth (tokens, guidelines). `docs/old/` is the previous (mosaic) design, kept for reference only; do not wire it into the build.

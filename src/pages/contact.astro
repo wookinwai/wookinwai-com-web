@@ -85,13 +85,11 @@ const checklistRow =
 <BaseLayout title={title} description={description} graph={graph}>
   <!-- Hero -->
   <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
-    <div class="rise d1 mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">
-      contact · kuala lumpur, gmt+8
-    </div>
+    <div class="rise d1 mb-[30px] kicker">contact · kuala lumpur, gmt+8</div>
     <h1
-      class="rise d2 mb-[30px] text-balance font-sans text-[clamp(32px,5.4vw,58px)] font-semibold leading-[1.08] tracking-[-0.018em] text-ink"
+      class="rise d2 mb-[30px] text-balance font-sans text-[clamp(32px,5.4vw,58px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
     >
-      Tell me where you're trying to grow <em class="font-medium italic text-acc">next</em>.
+      Tell me where you're trying to grow <em class="em-acc">next</em>.
     </h1>
     <p class="rise d3 max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
       If your business is trying to grow and the system behind it matters, I'd like to hear about it. The fastest way to
@@ -103,7 +101,7 @@ const checklistRow =
         href={SOCIALS[0].href}
         target="_blank"
         rel="noopener"
-        class="group inline-flex items-baseline gap-1.5 font-mono text-[12.5px] no-underline"
+        class="group inline-flex items-baseline gap-1.5 font-mono text-anno-md no-underline"
       >
         <span
           class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
@@ -129,7 +127,7 @@ const checklistRow =
     </ul>
 
     <div class="mt-11 max-w-[640px]">
-      <div class="mb-4 font-mono text-[12px] text-soft">probably not the right fit /</div>
+      <div class="mb-4 font-mono text-anno text-soft">probably not the right fit /</div>
       <ul class="m-0 list-none p-0" data-stagger>
         {
           lessFit.map((item) => (
@@ -152,8 +150,8 @@ const checklistRow =
     <ol class="m-0 max-w-[760px] list-none border-t border-line p-0" data-stagger>
       {
         next.map(([n, h, p]) => (
-          <li class="row-edge grid grid-cols-[78px_1fr] items-baseline gap-[18px] border-b border-line py-6 max-[520px]:grid-cols-1 max-[520px]:gap-2">
-            <div class="font-mono text-[12px] text-soft">step {n} /</div>
+          <li class="group grid grid-cols-[78px_1fr] items-baseline gap-[18px] border-b border-line py-6 max-[520px]:grid-cols-1 max-[520px]:gap-2">
+            <div class="font-mono text-anno text-soft transition-colors group-hover:text-acc">step {n} /</div>
             <div>
               <div class="text-[19px] font-semibold italic leading-[1.15] text-ink">{h}</div>
               <p class="mt-1.5 text-[15px] leading-[1.55] text-mut">{p}</p>
@@ -203,10 +201,10 @@ const checklistRow =
         channels.map((c, i) => {
           const inner = (
             <div class="grid grid-cols-[140px_1fr] items-center max-[520px]:grid-cols-1">
-              <span class="flex h-full items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[520px]:border-r-0 max-[520px]:pb-0">
+              <span class="flex h-full items-center border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[520px]:border-r-0 max-[520px]:pb-0">
                 {c.label} /
               </span>
-              <span class="px-[22px] py-[15px] font-mono text-[13.5px] text-ink">
+              <span class="px-[22px] py-[15px] font-mono text-anno-lg text-ink">
                 {c.value}
                 {c.external && <span class="text-soft"> ↗</span>}
               </span>

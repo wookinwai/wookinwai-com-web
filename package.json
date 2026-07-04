@@ -17,9 +17,10 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
-    "@fontsource-variable/source-serif-4": "^5.2.9",
-    "@fontsource/ibm-plex-mono": "^5.2.7",
-    "@fontsource/source-serif-4": "^5.2.9",
+    "@fontsource-variable/crimson-pro": "^5.2.8",
+    "@fontsource-variable/hanken-grotesk": "^5.2.8",
+    "@fontsource/crimson-pro": "^5.2.8",
+    "@fontsource/hanken-grotesk": "^5.2.8",
     "@jdevalk/astro-seo-graph": "^2.0.0",
     "@jdevalk/seo-graph-core": "^0.6.2",
     "@tailwindcss/vite": "^4.3.1",

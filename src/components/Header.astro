@@ -29,7 +29,7 @@ const mark = [
             ))
         }
       </span>
-      <span class="whitespace-nowrap font-mono text-[13.5px] tracking-[0.02em] text-ink">
+      <span class="whitespace-nowrap font-mono text-anno-lg tracking-[0.02em] text-ink">
         woo kin wai <span class="text-mut">/ tiny edges</span>
       </span>
     </a>
@@ -41,7 +41,7 @@ const mark = [
               href={link.href}
               aria-current={isCurrent(link.href) ? 'page' : undefined}
               class:list={[
-                "font-mono text-[12.5px] lowercase tracking-[0.02em] no-underline transition-colors hover:text-acc before:content-['/_'] before:text-soft",
+                "font-mono text-anno-md lowercase tracking-[0.02em] no-underline transition-colors hover:text-acc before:content-['/_'] before:text-soft",
                 isCurrent(link.href) ? 'text-acc' : 'text-mut',
               ]}
             >
@@ -54,7 +54,7 @@ const mark = [
     <button
       id="theme"
       aria-label="Toggle theme"
-      class="ml-2 grid h-[34px] w-[34px] flex-none cursor-pointer place-items-center border border-line bg-transparent font-mono text-[15px] leading-none text-mut transition-colors hover:border-rule hover:text-ink max-[760px]:ml-auto"
+      class="ml-2 grid h-[34px] w-[34px] flex-none cursor-pointer place-items-center border border-line bg-transparent font-mono text-[26px] leading-none text-mut transition-colors hover:border-rule hover:text-ink max-[760px]:ml-auto"
     >
       <span class="lamp" aria-hidden="true">◐</span>
       <span class="day" aria-hidden="true">◑</span>
@@ -70,7 +70,7 @@ const mark = [
               href={link.href}
               aria-current={isCurrent(link.href) ? 'page' : undefined}
               class:list={[
-                "font-mono text-[12px] lowercase tracking-[0.02em] no-underline transition-colors hover:text-acc before:content-['/_'] before:text-soft",
+                "font-mono text-anno lowercase tracking-[0.02em] no-underline transition-colors hover:text-acc before:content-['/_'] before:text-soft",
                 isCurrent(link.href) ? 'text-acc' : 'text-mut',
               ]}
             >

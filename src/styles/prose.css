@@ -1,6 +1,7 @@
 /* ----------------------------------------------------------------------------
-   Prose — Drafting Table article body (notes). Source Serif 4 for text,
-   IBM Plex Mono for code and annotations. Hairline rules, drafting-green links.
+   Prose — Drafting Table article body (notes). Hanken Grotesk for text,
+   Crimson Pro for annotations, system monospace for code. Hairline rules,
+   drafting-green links.
 
    Loaded only by PostLayout (note/article pages) so it stays off the
    render-blocking global stylesheet on the homepage. Depends on the design
@@ -79,7 +80,7 @@
   left: 0;
   top: 0.25em;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 17px;
   color: var(--color-acc);
 }
 .prose-drafting blockquote {
@@ -90,14 +91,14 @@
   font-size: 19px;
 }
 .prose-drafting code {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.84em;
   background: var(--color-acc-soft);
   border: 1px solid var(--color-line);
   padding: 0.1em 0.4em;
 }
 .prose-drafting pre {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 13.5px;
   line-height: 1.6;
   background: var(--color-panel);

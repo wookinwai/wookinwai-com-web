@@ -7,18 +7,19 @@ import PlotBackground from '../components/PlotBackground.astro';
 import { SITE } from '../consts';
 import { siteGraph } from '../lib/seo';
 
-// Self-hosted fonts (Fontsource). The Drafting Table speaks in Source Serif 4
-// (voice + display) and IBM Plex Mono (annotations, labels, figure numbers).
-// The opsz variants carry the [opsz,wght] axes, so large headings render in
-// the sharp display optical size — same cut as Google Fonts serves.
-import '@fontsource-variable/source-serif-4/opsz.css';
-import '@fontsource-variable/source-serif-4/opsz-italic.css';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+// Self-hosted fonts (Fontsource). The Drafting Table speaks in Hanken Grotesk
+// (voice + display) and Crimson Pro (annotations, labels, figure numbers).
+// Both are variable builds carrying the full [wght] axis plus an italic cut,
+// so headings, body, the green-italic emphasis word, and the serif annotations
+// all draw from a handful of woff2 files.
+import '@fontsource-variable/hanken-grotesk/wght.css';
+import '@fontsource-variable/hanken-grotesk/wght-italic.css';
+import '@fontsource-variable/crimson-pro/wght.css';
+import '@fontsource-variable/crimson-pro/wght-italic.css';
 import '../styles/global.css';
 
 // Preload the above-the-fold body/display face.
-import serifWoff2 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2?url';
+import sansWoff2 from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
 
 export interface Props {
   title: string;
@@ -82,7 +83,7 @@ const ogImageURL = new URL(ogImage, site).href;
       })();
     </script>
 
-    <link rel="preload" as="font" type="font/woff2" href={serifWoff2} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansWoff2} crossorigin />
 
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -112,7 +113,10 @@ const ogImageURL = new URL(ogImage, site).href;
     <ClientRouter />
   </head>
 
-  <body id="top" class="relative overflow-x-hidden bg-bg font-sans text-[17px] leading-[1.55] text-ink antialiased">
+  <body
+    id="top"
+    class="relative flex min-h-screen flex-col overflow-x-hidden bg-bg font-sans text-[17px] leading-[1.55] text-ink antialiased"
+  >
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:border focus:border-rule focus:bg-panel focus:px-4 focus:py-2 focus:font-mono focus:text-[12px] focus:text-ink focus:no-underline"
@@ -123,7 +127,7 @@ const ogImageURL = new URL(ogImage, site).href;
 
     <Header transition:persist />
 
-    <div class="relative z-[2] mx-auto max-w-[1180px] px-14 max-[900px]:px-7 max-[560px]:px-5">
+    <div class="relative z-[2] mx-auto w-full max-w-[1180px] flex-1 px-14 max-[900px]:px-7 max-[560px]:px-5">
       <main id="main"><slot /></main>
     </div>
 

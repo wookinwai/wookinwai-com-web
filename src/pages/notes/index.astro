@@ -15,11 +15,11 @@ const graph = pageGraph({ url: Astro.url, title, description });
 
 <BaseLayout title={title} description={description} graph={graph}>
   <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
-    <div class="mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">notes /</div>
+    <div class="mb-[30px] kicker">notes /</div>
     <h1
-      class="mb-[30px] font-sans text-[clamp(32px,5.4vw,58px)] font-semibold leading-[1.08] tracking-[-0.018em] text-ink"
+      class="mb-[30px] font-sans text-[clamp(32px,5.4vw,58px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
     >
-      Field <em class="font-medium italic text-acc">notes</em>
+      Field <em class="em-acc">notes</em>
     </h1>
     <p class="max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
       Notes on software, systems, and building with founders and SMEs.
@@ -28,7 +28,7 @@ const graph = pageGraph({ url: Astro.url, title, description });
 
   {
     notes.length === 0 ? (
-      <p class="mt-14 max-w-[640px] font-mono text-[12.5px] leading-[1.6] text-soft">
+      <p class="mt-14 max-w-[640px] font-mono text-anno-md leading-[1.6] text-soft">
         No notes published yet. This will become a place for short writing on software, systems, and the work behind
         useful builds.
       </p>
@@ -37,16 +37,18 @@ const graph = pageGraph({ url: Astro.url, title, description });
         {notes.map((note) => (
           <a
             href={`/notes/${note.data.slug}/`}
-            class="row-edge group grid grid-cols-[150px_1fr] items-baseline gap-[18px] border-b border-line py-[22px] no-underline transition-colors hover:bg-panel max-[760px]:grid-cols-1 max-[760px]:gap-2"
+            class="group grid grid-cols-[150px_1fr] items-baseline gap-[18px] border-b border-line py-[22px] no-underline transition-colors hover:bg-panel max-[760px]:grid-cols-1 max-[760px]:gap-2"
           >
-            <div class="whitespace-nowrap pt-1 font-mono text-[12px] text-soft">{fmt(note.data.pubDate)}</div>
+            <div class="whitespace-nowrap pt-1 font-mono text-anno text-soft transition-colors group-hover:text-acc">
+              {fmt(note.data.pubDate)}
+            </div>
             <div>
               <div class="text-[22px] font-semibold leading-[1.12] text-ink transition-colors group-hover:text-acc">
                 {note.data.title}
               </div>
               <p class="mt-1.5 text-[14.5px] leading-[1.55] text-mut">{note.data.description}</p>
               {note.data.tags.length > 0 && (
-                <div class="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-soft">
+                <div class="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-anno-sm text-soft">
                   {note.data.tags.map((tag) => (
                     <span>/ {tag.toLowerCase()}</span>
                   ))}

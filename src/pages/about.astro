@@ -22,13 +22,11 @@ const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.
 <BaseLayout title={title} description={description} graph={graph}>
   <!-- Hero -->
   <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
-    <div class="rise d1 mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">
-      the person behind the work · kuala lumpur, gmt+8
-    </div>
+    <div class="rise d1 mb-[30px] kicker">the person behind the work · kuala lumpur, gmt+8</div>
     <h1
-      class="rise d2 mb-[30px] text-balance font-sans text-[clamp(32px,5.4vw,58px)] font-semibold leading-[1.08] tracking-[-0.018em] text-ink"
+      class="rise d2 mb-[30px] text-balance font-sans text-[clamp(32px,5.4vw,58px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
     >
-      Who you'd be <em class="font-medium italic text-acc">working with</em>.
+      Who you'd be <em class="em-acc">working with</em>.
     </h1>
     <p class="rise d3 max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
       Before you hand someone your next build, it helps to know how they think. This is how I decide what to build, how
@@ -74,7 +72,7 @@ const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.
           decoding="async"
           class="block w-full saturate-[.9] contrast-[1.02]"
         />
-        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-[11px] text-mut">
+        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-anno-sm text-mut">
           <span>woo kin wai</span>
           <span>kuala lumpur</span>
         </div>
@@ -155,7 +153,7 @@ const mantra = ['Stay true.', 'Keep going.', 'Lift others up.', 'And never quit.
     </p>
     <div class="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
       <EmailButton />
-      <a href="/contact/" class="group inline-flex items-baseline gap-2 font-mono text-[12.5px] no-underline">
+      <a href="/contact/" class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline">
         <span
           class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
           >what to expect</span

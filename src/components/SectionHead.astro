@@ -1,6 +1,6 @@
 ---
 // Drafting-table section head:
-//   • serif sentence-case headline, with an optional italic-green emphasis
+//   • grotesque sentence-case headline, with an optional italic-green emphasis
 //     (`em`) closing the phrase
 //   • one hard 1px ink rule under the headline (draws in on scroll reveal)
 //   • an optional mono annotation (`sub`) hanging below the rule
@@ -13,15 +13,15 @@ const { title, em, sub } = Astro.props;
 ---
 
 <header class="relative flex flex-wrap items-baseline gap-x-6 gap-y-2 pb-[22px]">
-  <h2 class="m-0 font-sans text-[clamp(28px,4vw,42px)] font-semibold leading-[1.1] tracking-[-0.015em] text-ink">
+  <h2 class="m-0 font-sans text-[clamp(28px,4vw,42px)] font-extrabold leading-[1.1] tracking-[-0.015em] text-ink">
     {title}{
       em && (
         <>
-          &nbsp;<em class="font-medium italic text-acc">{em}</em>
+          &nbsp;<em class="em-acc">{em}</em>
         </>
       )
     }
   </h2>
   <div class="sec-rule absolute inset-x-0 bottom-0 h-px bg-rule"></div>
 </header>
-{sub && <p class="mb-10 mt-[18px] font-mono text-[12px] leading-[1.55] text-soft">{sub}</p>}
+{sub && <p class="mb-10 mt-[18px] font-mono text-anno leading-[1.55] text-soft">{sub}</p>}

@@ -6,6 +6,6 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: interest-cohort=()
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; img-src 'self' data: https://cdn.wookinwai.com https://c.bing.com https://*.clarity.ms; script-src 'self' 'unsafe-inline' https://*.clarity.ms; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' https://*.clarity.ms https://c.bing.com; frame-ancestors 'none'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; img-src 'self' data: https://cdn.wookinwai.com https://c.bing.com https://*.clarity.ms; script-src 'self' 'unsafe-inline' https://*.clarity.ms; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' https://*.clarity.ms https://c.bing.com; frame-src https://www.youtube-nocookie.com; frame-ancestors 'none'; form-action 'self'
   Link: </sitemap-index.xml>; rel="sitemap", </llms.txt>; rel="alternate"; type="text/plain", </.well-known/api-catalog>; rel="api-catalog", </schemamap.xml>; rel="schemamap"
   No-Vary-Search: key-order, params=("utm_source" "utm_medium" "utm_campaign" "utm_content" "utm_term")

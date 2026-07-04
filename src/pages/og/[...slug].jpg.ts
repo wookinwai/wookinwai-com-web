@@ -11,11 +11,11 @@ import type { APIContext } from 'astro';
  * hex values, since satori can't read CSS custom properties.
  *
  * Font note: satori (via its bundled @shuding/opentype.js parser) cannot
- * parse .woff2 — only .woff/.ttf/.otf. The only Source Serif 4 package in
- * this repo is the *variable* @fontsource-variable build, which ships
- * woff2-only files. So this route pulls weights from the static
- * @fontsource/source-serif-4 package instead (installed alongside satori +
- * sharp for this route), which ships plain .woff per static weight.
+ * parse .woff2 — only .woff/.ttf/.otf. The @fontsource-variable builds ship
+ * woff2-only files, so this route pulls weights from the static
+ * @fontsource/hanken-grotesk and @fontsource/crimson-pro packages instead
+ * (installed alongside satori + sharp for this route), which ship plain
+ * .woff per static weight. The title mirrors the site's extrabold headings.
  */
 
 const PAPER = '#f4f0e2';
@@ -23,16 +23,16 @@ const INK = '#2b261c';
 const MUT = '#6e6755';
 const ACC = '#2f6b4c';
 
-const serifSemibold = readFileSync(
-  'node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff'
+const sansExtrabold = readFileSync(
+  'node_modules/@fontsource/hanken-grotesk/files/hanken-grotesk-latin-800-normal.woff'
 );
-const serifItalic = readFileSync('node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-500-italic.woff');
-const monoMedium = readFileSync('node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff');
+const sansItalic = readFileSync('node_modules/@fontsource/hanken-grotesk/files/hanken-grotesk-latin-500-italic.woff');
+const noteSerif = readFileSync('node_modules/@fontsource/crimson-pro/files/crimson-pro-latin-500-normal.woff');
 
 const fonts = [
-  { name: 'serif', data: serifSemibold, weight: 600 as const, style: 'normal' as const },
-  { name: 'serif', data: serifItalic, weight: 500 as const, style: 'italic' as const },
-  { name: 'mono', data: monoMedium, weight: 500 as const, style: 'normal' as const },
+  { name: 'sans', data: sansExtrabold, weight: 800 as const, style: 'normal' as const },
+  { name: 'sans', data: sansItalic, weight: 500 as const, style: 'italic' as const },
+  { name: 'note', data: noteSerif, weight: 500 as const, style: 'normal' as const },
 ];
 
 // Conservative caps: satori doesn't auto-fit text, so long strings are
@@ -67,7 +67,7 @@ export async function GET({ props }: APIContext) {
           justifyContent: 'space-between',
           padding: '64px',
           background: PAPER,
-          fontFamily: 'serif',
+          fontFamily: 'sans',
         },
         children: [
           {
@@ -75,7 +75,7 @@ export async function GET({ props }: APIContext) {
             props: {
               style: {
                 display: 'flex',
-                fontFamily: 'mono',
+                fontFamily: 'note',
                 fontSize: 26,
                 color: ACC,
                 letterSpacing: 1,
@@ -94,7 +94,7 @@ export async function GET({ props }: APIContext) {
                     style: {
                       display: 'flex',
                       fontSize: 60,
-                      fontWeight: 600,
+                      fontWeight: 800,
                       color: INK,
                       lineHeight: 1.15,
                     },

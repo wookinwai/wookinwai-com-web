@@ -3,8 +3,8 @@
 /* ----------------------------------------------------------------------------
    The Drafting Table — design tokens.
 
-   Paper, ink, graphite, and a single drafting green. Source Serif 4 carries the
-   voice; IBM Plex Mono carries the annotations. The "paper" (light) palette is
+   Paper, ink, graphite, and a single drafting green. Hanken Grotesk carries the
+   voice; Crimson Pro carries the annotations. The "paper" (light) palette is
    the default, declared in @theme so every generated utility references
    var(--color-*). The [data-pal="ink"] block below re-declares those same
    custom properties for the "lamplight" (dark) variant, re-theming the whole
@@ -40,9 +40,19 @@
   --color-on-accent: #f4f0e2;
   --color-on-ink: #f4f0e2;
 
-  /* families — serif voice, mono annotations */
-  --font-sans: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  /* families — grotesque voice, Crimson Pro serif annotations */
+  --font-sans: 'Hanken Grotesk Variable', 'Hanken Grotesk', system-ui, sans-serif;
+  /* --font-mono keeps its utility name (`font-mono`) but now carries the serif
+     annotation face; --font-code stays monospace for code/pre in prose. */
+  --font-mono: 'Crimson Pro Variable', 'Crimson Pro', Georgia, serif;
+  --font-code: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* annotation (Crimson Pro) type scale — the single knob for label sizing.
+     Every mono label reads from `text-anno*`; edit here to rescale them all. */
+  --text-anno-sm: 16px; /* small meta: tags, chips, fine print */
+  --text-anno: 17px; /* default label / figure numbers */
+  --text-anno-md: 18px; /* kickers, prominent labels */
+  --text-anno-lg: 20px; /* large labels, card values */
 
   /* drafting sheets sit flat on the table — no offset shadows */
   --shadow-card: none;
@@ -81,8 +91,8 @@ html[data-pal='ink'] {
     scroll-behavior: smooth;
   }
   body {
-    /* let the variable serif pick its display cut at heading sizes */
-    font-optical-sizing: auto;
+    /* crisp kerning/ligatures for the grotesque at display sizes */
+    text-rendering: optimizeLegibility;
     transition:
       background 0.25s var(--ease-smooth),
       color 0.25s var(--ease-smooth);
@@ -247,6 +257,20 @@ body {
 .tl-stop.is-last .tl-mark {
   background: var(--color-acc);
   border-color: var(--color-acc);
+}
+
+/* hero kicker — the mono/serif eyebrow that sits above a display heading */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-anno-md);
+  letter-spacing: 0.04em;
+  color: var(--color-acc);
+}
+/* green-italic emphasis word closing a display heading */
+.em-acc {
+  font-weight: 800;
+  font-style: italic;
+  color: var(--color-acc);
 }
 
 /* square status markers — live blinks (hard step), closed is a hollow box */

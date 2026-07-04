@@ -74,21 +74,29 @@ const steps = [
 const secWrap = 'reveal pt-24 max-[760px]:pt-20';
 const factRow =
   'grid grid-cols-[168px_1fr] gap-[18px] border-b border-line py-3 max-[560px]:grid-cols-1 max-[560px]:gap-1';
-const factKey = 'pt-[3px] font-mono text-[11.5px] text-soft max-[560px]:pt-0';
+const factKey = 'pt-[3px] font-mono text-anno text-soft max-[560px]:pt-0';
 const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
+
+// contact — the title block (mirrors the contact page's Direct channels).
+const ctaRows = [
+  { label: 'next', value: 'the system your business needs next' },
+  { label: 'start with', value: 'where the business is trying to grow' },
+  { label: 'based in', value: 'kuala lumpur · gmt+8' },
+];
+const ctaLabel =
+  'flex h-full items-center border-r border-line px-[22px] py-[15px] font-mono text-anno text-soft max-[560px]:border-r-0 max-[560px]:pb-0';
+const ctaValue = 'px-[22px] py-[15px] font-mono text-anno-lg text-ink';
 ---
 
 <BaseLayout title={title} description={description}>
   <!-- Hero -->
   <header class="max-w-[880px] pt-[92px] pb-9 max-[760px]:pt-16">
-    <div class="rise d1 mb-[30px] font-mono text-[12.5px] tracking-[0.04em] text-acc">
-      software builder &amp; technical partner · kuala lumpur, gmt+8
-    </div>
+    <div class="rise d1 mb-[30px] kicker">software builder &amp; technical partner · kuala lumpur, gmt+8</div>
     <h1
-      class="rise d2 mb-[34px] text-balance font-sans text-[clamp(34px,5.4vw,64px)] font-semibold leading-[1.08] tracking-[-0.018em] text-ink"
+      class="rise d2 mb-[34px] text-balance font-sans text-[clamp(34px,5.4vw,64px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
     >
       I help businesses define and build the software they need for their{' '}
-      <em class="font-medium italic text-acc">next stage of growth</em>.
+      <em class="em-acc">next stage of growth</em>.
     </h1>
     <div class="rise d3">
       <p class="mb-4 max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
@@ -121,14 +129,11 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                 ]}
               >
                 <div
-                  class:list={[
-                    'mb-2.5 text-[25px] italic leading-none',
-                    f.build ? 'font-semibold text-acc' : 'text-ink',
-                  ]}
+                  class:list={['mb-2.5 text-[25px] font-bold italic leading-none', f.build ? 'text-acc' : 'text-ink']}
                 >
                   {f.label}
                 </div>
-                <div class="font-mono text-[12px] leading-[1.5] text-mut">{f.ann}</div>
+                <div class="font-mono text-anno leading-[1.5] text-mut">{f.ann}</div>
               </div>
               <p class="mx-1 mb-0 mt-[22px] text-[15px] leading-[1.55] text-mut">{f.desc}</p>
             </div>
@@ -142,7 +147,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         ))
       }
     </div>
-    <figcaption class="mt-11 border-t border-line pt-4 font-mono text-[12.5px] text-mut">
+    <figcaption class="mt-11 border-t border-line pt-4 font-mono text-anno-md text-mut">
       from business need · to working system
     </figcaption>
   </figure>
@@ -195,7 +200,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
           decoding="async"
           class="block w-full saturate-[.9] contrast-[1.02]"
         />
-        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-[11px] text-mut">
+        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-anno-sm text-mut">
           <span>woo kin wai</span>
           <span>kuala lumpur</span>
         </div>
@@ -205,12 +210,12 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
       class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9"
     >
       <Ticks />
-      <span class="whitespace-nowrap font-mono text-[12px] text-acc">the working question /</span>
+      <span class="whitespace-nowrap font-mono text-anno text-acc">the working question /</span>
       <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
         What system does this business need in order to grow?
       </blockquote>
     </div>
-    <a href="/about/" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-[12.5px] no-underline">
+    <a href="/about/" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-anno-md no-underline">
       <span class="text-soft">more /</span>
       <span
         class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
@@ -231,7 +236,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
     />
     {
       work.length === 0 && (
-        <p class="mt-3 border-b border-line pb-5 font-mono text-[12px] text-soft">selected work will appear here.</p>
+        <p class="mt-3 border-b border-line pb-5 font-mono text-anno text-soft">selected work will appear here.</p>
       )
     }
     {
@@ -254,7 +259,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                 <h3 class="m-0 whitespace-nowrap text-[27px] font-semibold text-ink">{w.name}</h3>
                 <span class="text-[16px] italic text-mut">{w.tease}</span>
               </div>
-              <div class="flex items-center gap-3.5 border-l border-line px-[22px] py-4 font-mono text-[11.5px] text-mut max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-line max-[900px]:py-2.5">
+              <div class="flex items-center gap-3.5 border-l border-line px-[22px] py-4 font-mono text-anno text-mut max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-line max-[900px]:py-2.5">
                 <span class="flex items-center gap-1.5 whitespace-nowrap">
                   <span class:list={['smark', w.status]} />
                   {statusLabel[w.status]}
@@ -273,7 +278,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                           <span class="h-[9px] w-[9px] rounded-full border border-mut" />
                           <span class="h-[9px] w-[9px] rounded-full border border-mut" />
                         </span>
-                        <span class="flex min-w-0 flex-1 items-center gap-1.5 rounded-[5px] border border-line bg-bg px-2.5 py-1 font-mono text-[10.5px] text-mut">
+                        <span class="flex min-w-0 flex-1 items-center gap-1.5 rounded-[5px] border border-line bg-bg px-2.5 py-1 font-mono text-anno-sm text-mut">
                           <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-acc" />
                           <span class="truncate">{w.shot?.url ?? w.name.toLowerCase()}</span>
                         </span>
@@ -288,13 +293,13 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                         />
                       ) : (
                         <div class="grid aspect-[16/10] place-items-center bg-[repeating-linear-gradient(-45deg,var(--color-acc-soft)_0_5px,transparent_5px_11px)]">
-                          <span class="border border-line bg-bg px-3 py-1.5 font-mono text-[10.5px] text-soft">
+                          <span class="border border-line bg-bg px-3 py-1.5 font-mono text-anno-sm text-soft">
                             {w.name.toLowerCase()} · drawing to follow
                           </span>
                         </div>
                       )}
                     </div>
-                    {w.shot?.label && <div class="px-0.5 pt-3 font-mono text-[11px] text-mut">{w.shot.label}</div>}
+                    {w.shot?.label && <div class="px-0.5 pt-3 font-mono text-anno-sm text-mut">{w.shot.label}</div>}
                   </div>
                 ) : (
                   w.bodyHtml && (
@@ -310,7 +315,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                   />
                 )}
                 {w.stack.length > 0 && (
-                  <div class="mb-5 font-mono text-[11.5px] text-mut">
+                  <div class="mb-5 font-mono text-anno text-mut">
                     <span class="text-soft">stack /</span> {w.stack.map((s) => s.toLowerCase()).join(' · ')}
                   </div>
                 )}
@@ -329,7 +334,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
                     href={w.visit.href}
                     target="_blank"
                     rel="noopener"
-                    class="group mt-6 inline-flex items-baseline gap-2 font-mono text-[12.5px] no-underline"
+                    class="group mt-6 inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
                   >
                     <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
                       {w.visit.label.toLowerCase()}
@@ -365,7 +370,7 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
         steps.map(([id, h, p], i) => (
           <div class:list={['tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0', i === steps.length - 1 && 'is-last']}>
             <span class="tl-mark max-[760px]:hidden" aria-hidden="true" />
-            <div class="mb-3 font-mono text-[11.5px] text-soft">step {id} /</div>
+            <div class="mb-3 font-mono text-anno text-soft">step {id} /</div>
             <h3 class="mb-2 mt-0 text-[21px] font-semibold italic text-ink">{h}</h3>
             <p class="m-0 text-[15px] text-mut">{p}</p>
           </div>
@@ -381,47 +386,27 @@ const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
   <!-- contact — the title block -->
   <section class="reveal pb-12 pt-[110px] max-[760px]:pt-20" id="contact">
     <p
-      class="mx-auto mb-14 max-w-[760px] text-balance text-center text-[clamp(26px,3.6vw,40px)] font-semibold leading-[1.25] tracking-[-0.01em] text-ink"
+      class="mx-auto mb-14 max-w-[760px] text-balance text-center text-[clamp(26px,3.6vw,40px)] font-extrabold leading-[1.25] tracking-[-0.01em] text-ink"
     >
       If you can describe where your business is trying to grow,{' '}
-      <em class="font-medium italic text-acc">I can help you work out the system it needs.</em>
+      <em class="em-acc">I can help you work out the system it needs.</em>
     </p>
     <div class="relative mx-auto max-w-[820px] border-[1.5px] border-rule bg-bg">
       <Ticks />
-      <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
-        <div
-          class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
-        >
-          next /
-        </div>
-        <div class="px-[22px] py-[15px] text-[16px] text-ink">the system your business needs next</div>
-      </div>
-      <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
-        <div
-          class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
-        >
-          start with /
-        </div>
-        <div class="px-[22px] py-[15px] text-[16px] text-ink">where the business is trying to grow</div>
-      </div>
-      <div class="grid grid-cols-[200px_1fr] border-b border-line max-[560px]:grid-cols-1">
-        <div
-          class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
-        >
-          based in /
-        </div>
-        <div class="px-[22px] py-[15px] font-mono text-[13px] text-mut">kuala lumpur · gmt+8</div>
-      </div>
-      <div class="grid grid-cols-[200px_1fr] max-[560px]:grid-cols-1">
-        <div
-          class="flex items-center border-r border-line px-[22px] py-[15px] font-mono text-[11.5px] text-soft max-[560px]:border-r-0 max-[560px]:pb-0"
-        >
-          write /
-        </div>
+      {
+        ctaRows.map((r, i) => (
+          <div class:list={['grid grid-cols-[200px_1fr] max-[560px]:grid-cols-1', i > 0 && 'border-t border-line']}>
+            <span class={ctaLabel}>{r.label} /</span>
+            <span class={ctaValue}>{r.value}</span>
+          </div>
+        ))
+      }
+      <div class="grid grid-cols-[200px_1fr] border-t border-line max-[560px]:grid-cols-1">
+        <span class={ctaLabel}>write /</span>
         <div class="px-[22px] py-[22px]"><EmailButton /></div>
       </div>
     </div>
-    <p class="mt-7 text-center font-mono text-[12px]">
+    <p class="mt-7 text-center font-mono text-anno">
       <a href="/contact/" class="group inline-flex items-baseline gap-2 no-underline">
         <span
           class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
