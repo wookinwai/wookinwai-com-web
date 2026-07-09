@@ -64,12 +64,12 @@ const cases = [
 const steps = [
   [
     '01',
-    'First, listen.',
+    'Assess the situation.',
     'Understand where the business wants to grow, what is blocking it, and what cannot be ignored.',
   ],
-  ['02', 'Then, shape.', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
-  ['03', 'Next, build.', 'Create the smallest serious version that can be used, tested, and improved.'],
-  ['04', 'And stay close.', 'Ship, learn, adjust. Where I share in the upside, I stay close to the outcome.'],
+  ['02', 'Shape the system.', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
+  ['03', 'Build the first version.', 'Create the smallest serious version that can be used, tested, and improved.'],
+  ['04', 'Refine it with reality.', 'Ship, learn, and refine the system as the business, users, and constraints become clearer.'],
 ];
 
 const secWrap = 'reveal pt-24 max-[760px]:pt-20';
@@ -388,10 +388,16 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
         ))
       }
     </div>
-    <p class="mt-12 max-w-[680px] text-[16px] leading-[1.62] text-mut max-[760px]:mt-9">
-      The same applies when I work with others: understand the business, think clearly, build carefully, and stay close
-      to what happens after shipping.
-    </p>
+    <a href="/process/" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-anno-md no-underline">
+      <span class="text-soft">more /</span>
+      <span
+        class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+        >why this process is important</span
+      >
+      <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+        >→</span
+      >
+    </a>
   </section>
 
   <!-- contact — the title block -->
@@ -622,9 +628,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
     }
     spark?.remove();
     spark = null;
-    document
-      .querySelectorAll<HTMLElement>('.proc-node.is-active')
-      .forEach((n) => n.classList.remove('is-active'));
+    document.querySelectorAll<HTMLElement>('.proc-node.is-active').forEach((n) => n.classList.remove('is-active'));
   }
 
   // (re)build the looping spark against the current layout — also what the

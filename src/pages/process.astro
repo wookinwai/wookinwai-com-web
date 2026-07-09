@@ -1,0 +1,310 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import EmailButton from '../components/EmailButton.astro';
+import Ticks from '../components/Ticks.astro';
+import { pageGraph } from '../lib/seo';
+
+const title = 'Process - Woo Kin Wai, Software Builder';
+const description =
+  'A practical way to reduce the risk of building the wrong thing: assess, shape, build, and refine with reality.';
+
+const graph = pageGraph({ url: Astro.url, title, description });
+
+const secWrap = 'reveal pt-24 max-[760px]:pt-20';
+
+const process = [
+  {
+    n: '01',
+    title: 'Assess',
+    summary: 'Understand the business direction, the current reality, and the constraints that cannot be ignored.',
+    details: [
+      'Where the business is trying to go, and why this matters now.',
+      'What is currently manual, scattered, unclear, or holding the work back.',
+      'Who the system needs to support: customers, operators, partners, or internal teams.',
+      'What should be solved first, and what should not be built yet.',
+    ],
+    riskTitle: 'Assumption-led build',
+    riskBody: 'The team starts from what people think is needed, while the real constraint stays hidden.',
+  },
+  {
+    n: '02',
+    title: 'Shape',
+    summary: 'Turn the opportunity into a clear system direction before design and code make it expensive to change.',
+    details: [
+      'Clarify the first serious version of the system.',
+      'Map the main flows, roles, data, decisions, and operational edge cases.',
+      'Separate what is essential now from what can wait.',
+      'Make the tradeoffs visible before they become hidden costs.',
+    ],
+    riskTitle: 'Scope that keeps spreading',
+    riskBody: 'The idea gets bigger before it gets clearer, and every decision becomes harder to make.',
+  },
+  {
+    n: '03',
+    title: 'Build',
+    summary: 'Create the smallest serious version that can be used, tested, and improved.',
+    details: [
+      'Build the core system with enough quality to be used in the real business.',
+      'Keep the scope focused without treating the work like a throwaway prototype.',
+      'Connect design, software, data, integrations, and operations into one usable flow.',
+      'Ship in a way that gives the business something concrete to learn from.',
+    ],
+    riskTitle: 'Something real never ships',
+    riskBody: 'The work stays in planning too long, or ships as something too rough for the business to trust.',
+  },
+  {
+    n: '04',
+    title: 'Refine',
+    summary: 'Use what happens after launch to improve the system with reality, not just assumptions.',
+    details: [
+      'Watch what happens when real people use the system.',
+      'Improve the parts that create friction, confusion, or operational drag.',
+      'Adjust the system as the business model, team, users, or constraints change.',
+      'Decide what is worth strengthening, automating, or scaling next.',
+    ],
+    riskTitle: 'Launch becomes the finish line',
+    riskBody: 'The system goes live, but the team does not learn from how people actually use it.',
+  },
+];
+
+const principles = [
+  ['Start with the business gap', 'The work should connect to a real business movement, not just a feature list.'],
+  [
+    'Choose the smallest serious version',
+    'Small enough to move, serious enough to matter, and clear enough to learn from.',
+  ],
+  [
+    'Make tradeoffs explicit',
+    'Budget, time, quality, risk, and operational fit should be discussed before they become hidden costs.',
+  ],
+  [
+    'Work with context, not just tasks',
+    'Good technical work needs to understand the business, the user, the constraints, and the people who will live with the system.',
+  ],
+  ['Treat launch as a beginning', 'The first release reveals what the business, users, and system actually need next.'],
+];
+
+const engagements = [
+  {
+    title: 'A first serious build',
+    body: 'For a business that already knows the direction and needs the first usable version built properly.',
+  },
+  {
+    title: 'A system that needs shaping',
+    body: 'For a broad opportunity, messy workflow, or early idea that needs clearer structure before serious build work begins.',
+  },
+  {
+    title: 'A longer build partnership',
+    body: 'For work where the system is closely tied to the business outcome, and the useful work continues after the first release.',
+  },
+];
+
+const risks = process.map((step) => [step.title, step.riskTitle, step.riskBody]);
+---
+
+<BaseLayout title={title} description={description} graph={graph}>
+  <!-- Hero -->
+  <header class="max-w-[940px] pt-[92px] max-[760px]:pt-16">
+    <div class="rise d1 mb-[30px] kicker">process · assess / shape / build / refine</div>
+    <h1
+      class="rise d2 mb-[30px] max-w-[880px] text-balance font-sans text-[clamp(34px,5.6vw,64px)] font-extrabold leading-[1.06] tracking-[-0.02em] text-ink"
+    >
+      A practical way to reduce the risk of building the <em class="em-acc">wrong thing</em>.
+    </h1>
+    <p class="rise d3 max-w-[720px] text-[18.5px] leading-[1.6] text-ink">
+      Before the work becomes design, code, or integrations, I try to understand the business direction, the operating
+      reality, and the tradeoffs that will shape the system.
+    </p>
+    <p class="rise d3 mt-5 max-w-[720px] text-[18.5px] leading-[1.6] text-ink">
+      The loop is simple: assess what matters, shape the system, build the smallest serious version, then refine it with
+      what real use reveals.
+    </p>
+  </header>
+
+  <!-- Process overview -->
+  <section class="reveal pt-20 max-[760px]:pt-16">
+    <div class="relative border border-rule bg-bg px-14 py-12 max-[760px]:px-7 max-[760px]:py-9">
+      <Ticks />
+      <div class="grid grid-cols-[220px_1fr] items-start gap-12 max-[820px]:grid-cols-1 max-[820px]:gap-6">
+        <div class="pt-2 font-mono text-anno text-acc">the working loop /</div>
+        <div>
+          <h2
+            class="m-0 text-balance text-[clamp(34px,5vw,56px)] font-extrabold leading-[1.08] tracking-[-0.025em] text-ink"
+          >
+            Assess / Shape / Build / <em class="em-acc">Refine</em>
+          </h2>
+          <p
+            class="mt-7 max-w-[760px] text-[clamp(22px,2.6vw,31px)] font-medium italic leading-[1.38] tracking-[-0.01em] text-ink"
+          >
+            Assess the situation. Shape the system. Build the first serious version. Refine it with reality.
+          </p>
+          <p class="mt-6 max-w-[620px] text-[15.5px] leading-[1.62] text-mut">
+            The loop is simple enough to remember, but each stage has a job to do.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why this process exists -->
+  <section class={secWrap}>
+    <SectionHead
+      title="Why the process"
+      em="matters"
+      sub="the goal is to reduce the risk of building the wrong thing."
+    />
+    <div class="grid max-w-[960px] grid-cols-[1fr_1.05fr] gap-12 max-[780px]:grid-cols-1 max-[780px]:gap-8">
+      <div>
+        <p class="mb-5 mt-0 text-[17px] leading-[1.66] text-ink">
+          Many software projects drift before the first line of code. Not because the team cannot build, but because the
+          problem, sequence, tradeoffs, or operating reality were not clear enough.
+        </p>
+        <p class="m-0 text-[17px] leading-[1.66] text-ink">
+          This process keeps the work grounded. It creates enough clarity to move, enough structure to build, and enough
+          room for the people involved to understand why the system is being built this way.
+        </p>
+      </div>
+
+      <div class="relative border-[1.5px] border-rule bg-bg p-7">
+        <Ticks />
+        <div class="mb-4 font-mono text-anno text-soft">influenced by /</div>
+        <p class="m-0 text-[16px] leading-[1.66] text-ink">
+          The structure is partly influenced by decision-making frameworks such as Hasard Lee's ACE model: assess
+          clearly, choose deliberately, then execute with discipline. I have adapted that idea into a practical
+          software-building loop: assess, shape, build, refine.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step details -->
+  <section class={secWrap}>
+    <SectionHead title="How the work" em="moves" sub="each stage creates the clarity needed for the next one." />
+    <div class="mt-2.5 max-w-[920px] border-t border-line" data-stagger>
+      {
+        process.map((step) => (
+          <article
+            id={step.title.toLowerCase()}
+            class="grid scroll-mt-24 grid-cols-[180px_1fr] gap-10 border-b border-line py-10 max-[700px]:grid-cols-1 max-[700px]:gap-5"
+          >
+            <div>
+              <div class="font-mono text-anno text-soft">step {step.n} /</div>
+              <h2 class="mt-3 text-[32px] font-extrabold italic leading-[1.05] tracking-[-0.012em] text-ink">
+                {step.title}
+              </h2>
+            </div>
+            <div>
+              <p class="mb-6 mt-0 max-w-[680px] text-[19px] leading-[1.5] text-ink">{step.summary}</p>
+              <ul class="m-0 list-none p-0">
+                {step.details.map((item) => (
+                  <li class="relative border-t border-line py-3 pl-[30px] text-[15.5px] leading-[1.55] text-mut before:absolute before:left-0 before:top-3 before:font-mono before:text-[13px] before:text-acc before:content-['→']">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- What the process avoids -->
+  <section class={secWrap}>
+    <SectionHead
+      title="What happens when the work"
+      em="drifts"
+      sub="the process is there because software work can go wrong quietly before anything obvious breaks."
+    />
+
+    <div
+      class="mt-8 grid max-w-[960px] grid-cols-4 border border-rule bg-bg max-[960px]:grid-cols-2 max-[560px]:grid-cols-1"
+      data-stagger
+    >
+      {
+        risks.map(([stage, riskTitle, riskBody], i) => (
+          <article
+            class:list={[
+              'relative min-h-[260px] p-6',
+              i > 0 ? 'border-l border-rule max-[560px]:border-l-0 max-[560px]:border-t' : '',
+              i === 2 ? 'max-[960px]:border-l-0 max-[960px]:border-t' : '',
+              i === 3 ? 'max-[960px]:border-t' : '',
+            ]}
+          >
+            <div class="mb-14 flex items-center justify-between gap-4">
+              <span class="font-mono text-anno text-soft">without {stage.toLowerCase()} /</span>
+              <span class="font-mono text-[20px] leading-none text-acc" aria-hidden="true">
+                ×
+              </span>
+            </div>
+
+            <h3 class="mb-4 mt-0 max-w-[190px] text-[24px] font-extrabold italic leading-[1.05] tracking-[-0.012em] text-ink">
+              {riskTitle}
+            </h3>
+
+            <p class="m-0 text-[15.5px] leading-[1.58] text-mut">{riskBody}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class={secWrap}>
+    <SectionHead title="The principles behind" em="the loop" />
+    <div class="max-w-[860px] border-t border-line" data-stagger>
+      {
+        principles.map(([h, p]) => (
+          <div class="grid grid-cols-[260px_1fr] gap-8 border-b border-line py-6 max-[640px]:grid-cols-1 max-[640px]:gap-2">
+            <div class="text-[17px] font-semibold italic leading-[1.35] text-ink">{h}</div>
+            <p class="m-0 text-[15.5px] leading-[1.62] text-mut">{p}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Engagement fit -->
+  <section class={secWrap}>
+    <SectionHead
+      title="When this way of working"
+      em="helps"
+      sub="not every engagement needs the same depth, but the logic stays the same."
+    />
+    <div class="grid max-w-[960px] grid-cols-3 gap-5 max-[820px]:grid-cols-1" data-stagger>
+      {
+        engagements.map((item) => (
+          <div class="relative border-[1.5px] border-rule bg-bg p-6">
+            <Ticks />
+            <h2 class="mb-4 mt-0 text-[22px] font-extrabold italic leading-[1.1] tracking-[-0.01em] text-ink">
+              {item.title}
+            </h2>
+            <p class="m-0 text-[15.5px] leading-[1.62] text-mut">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="reveal pb-12 pt-24 max-[760px]:pt-[72px]">
+    <p class="max-w-[700px] text-[19px] leading-[1.62] text-ink">
+      If this feels like the way you want your next system to be shaped and built, <em class="italic text-acc"
+        >let's talk.</em
+      >
+    </p>
+    <div class="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+      <EmailButton />
+      <a href="/contact/" class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline">
+        <span
+          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+          >what to expect</span
+        >
+        <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+          >→</span
+        >
+      </a>
+    </div>
+  </section>
+</BaseLayout>
