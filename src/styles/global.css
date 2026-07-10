@@ -236,11 +236,21 @@ body {
   background: linear-gradient(270deg, var(--color-acc), transparent);
 }
 
-/* hatched fill for the emphasised schematic stage (the build) — opaque paper
-   base so content behind it (the relay pen head) can't show through */
-.hatch {
+/* solid corner tick for the emphasised schematic stage (the build) — a
+   drafting-style "this one" marker in the top-right corner. Interior stays
+   clean paper for readability; opaque base so content behind it (the relay
+   pen head) can't show through */
+.tick-corner {
+  position: relative;
   background-color: var(--color-bg);
-  background-image: repeating-linear-gradient(-45deg, var(--color-acc-soft) 0 5px, transparent 5px 11px);
+}
+.tick-corner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-top: 18px solid var(--color-acc);
+  border-left: 18px solid transparent;
 }
 
 /* drafted timeline — a solid baseline with an arrowhead, square stops above.
