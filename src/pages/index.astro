@@ -128,8 +128,8 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
             <div class="relative z-10">
               <div
                 class:list={[
-                  'relative border-[1.5px] border-rule bg-bg px-7 pb-6 pt-[26px]',
-                  f.build && 'tick-corner border-2 border-acc',
+                  'relative bg-bg px-7 pb-6 pt-[26px]',
+                  f.build ? 'tick-corner border-2 border-acc' : 'border-[1.5px] border-rule',
                 ]}
               >
                 <div
