@@ -324,6 +324,10 @@ body {
 .smark.building {
   background: var(--color-build);
 }
+.smark.testing {
+  background: var(--color-build);
+  animation: smark-pulse 1.4s ease-in-out infinite;
+}
 .smark.ongoing {
   background: transparent;
   border: 1.5px solid var(--color-ongoing);
@@ -568,6 +572,7 @@ html.motion .proc-step {
     transform: scaleX(1) !important;
   }
   .smark.live,
+  .smark.testing,
   .smark.ongoing {
     animation: none !important;
   }

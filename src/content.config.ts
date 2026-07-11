@@ -47,7 +47,7 @@ const work = defineCollection({
     slug: z.string(),
     name: z.string(),
     tease: z.string(),
-    status: z.enum(['live', 'building', 'ongoing', 'closed']),
+    status: z.enum(['live', 'building', 'testing', 'ongoing', 'closed']),
     role: z.string().nullable(),
     engagement: z.enum(['upside', 'engaged']).nullable(),
     shot: z.object({ url: z.string(), label: z.string() }).nullable(),

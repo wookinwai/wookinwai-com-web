@@ -10,10 +10,16 @@ const title = 'Woo Kin Wai: software builder & technical partner';
 const description =
   'I work with founders and SMEs to shape and build the software their business needs next, from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
 
-// Selected work — CMS-driven (fig. 04).
+// Selected work — CMS-driven (fig. 02).
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 
-const statusLabel = { live: 'live', building: 'in build', ongoing: 'ongoing', closed: 'closed' } as const;
+const statusLabel = {
+  live: 'live',
+  building: 'in build',
+  testing: 'in testing',
+  ongoing: 'ongoing',
+  closed: 'closed',
+} as const;
 const modelLabel = { upside: 'upside participation', engaged: 'engaged to build' } as const;
 
 // fig. 01 — the schematic: growth → gap → build.
@@ -36,7 +42,7 @@ const flow = [
   },
 ];
 
-// fig. 02 — a few common forms the work tends to take.
+// fig. 03 — a few common forms the work tends to take.
 const cases = [
   [
     'a',
@@ -69,7 +75,11 @@ const steps = [
   ],
   ['02', 'Shape the system.', 'Turn the ambition into a clear product, workflow, platform, or system design.'],
   ['03', 'Build the first version.', 'Create the smallest serious version that can be used, tested, and improved.'],
-  ['04', 'Refine it with reality.', 'Ship, learn, and refine the system as the business, users, and constraints become clearer.'],
+  [
+    '04',
+    'Refine it with reality.',
+    'Ship, learn, and refine the system as the business, users, and constraints become clearer.',
+  ],
 ];
 
 const secWrap = 'reveal pt-24 max-[760px]:pt-20';
@@ -99,7 +109,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
     <h1
       class="rise d2 mb-[34px] text-balance font-sans text-[clamp(34px,5.4vw,64px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
     >
-      I help businesses define and build the software they need for their{' '}
+      I help businesses shape and build the software they need for their{' '}
       <em class="em-acc">next stage of growth</em>.
     </h1>
     <div class="rise d3">
@@ -158,89 +168,22 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
     </figcaption>
   </figure>
 
-  <!-- fig. 02 — what this usually looks like -->
-  <section class={secWrap}>
-    <SectionHead title="What this usually" em="looks like" sub="a few common forms the work tends to take." />
-    <div class="grid grid-cols-2 gap-x-[72px] max-[760px]:grid-cols-1" data-stagger>
-      {
-        cases.map(([, h, p]) => (
-          <div class="border-b border-line py-[26px]">
-            <h3 class="mb-2 mt-0 text-[21.5px] font-semibold leading-[1.3] text-ink">{h}</h3>
-            <p class="m-0 text-[15.5px] text-mut">{p}</p>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- fig. 03 — about -->
-  <section class={secWrap} id="about">
-    <SectionHead title="The short" em="version" />
-    <div
-      class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9"
-      data-stagger
-    >
-      <div>
-        <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
-          I studied engineering, but I found my work in software, products, and systems.
-        </p>
-        <p class="mb-5 text-[19px] leading-[1.62] text-ink">
-          Over time, I moved from writing code to leading technical work, supporting the systems behind a company as it
-          grew from a small team of around ten people to about a hundred. That shaped how I see software: not just as
-          clean code, but as a system that has to fit the business, the people, the timing, the constraints, and the
-          next stage of growth.
-        </p>
-        <p class="mb-0 text-[19px] leading-[1.62] text-ink">
-          Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
-          next. Sometimes it is a straightforward build. Sometimes, when the opportunity is strong and the fit is right,
-          I work closer to the outcome through a stake, revenue share, or longer-term partnership.
-        </p>
-      </div>
-      <aside class="relative border border-rule bg-bg p-3.5 max-[900px]:max-w-[300px]">
-        <Ticks />
-        <img
-          src="/woo-kin-wai-software-builder.avif"
-          alt="Woo Kin Wai, software builder and technical partner"
-          width="1500"
-          height="1497"
-          loading="lazy"
-          decoding="async"
-          class="block w-full saturate-[.9] contrast-[1.02]"
-        />
-        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-anno-sm text-mut">
-          <span>woo kin wai</span>
-          <span>kuala lumpur</span>
-        </div>
-      </aside>
-    </div>
-    <div
-      class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9"
-    >
-      <Ticks />
-      <span class="whitespace-nowrap font-mono text-anno text-acc">the working question /</span>
-      <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
-        What system does this business need in order to grow?
-      </blockquote>
-    </div>
-    <a href="/about/" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-anno-md no-underline">
-      <span class="text-soft">more /</span>
-      <span
-        class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
-        >how i think about the work, and what keeps me going</span
-      >
-      <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
-        >→</span
-      >
-    </a>
-  </section>
-
-  <!-- fig. 04 — selected work: the build sheets -->
-  <section class={secWrap} id="work">
+  <!-- fig. 02 — selected work: the build sheets -->
+  <section class:list={[secWrap, 'max-[760px]:scroll-mt-12']} id="work">
     <SectionHead
       title="Selected"
       em="work"
-      sub="as of may 2026. a few examples of growth needs turned into working systems, from founder-led products to platforms and internal tools."
+      sub="a few examples of growth needs turned into working systems, from founder-led products to platforms and internal tools."
     />
+    <div class="mb-9 mt-2 max-w-[760px]">
+      <p class="m-0 text-[16px] leading-[1.6] text-ink">
+        Two ways I work: <b class="font-semibold">engaged to build</b>, on a fee, or{' '}
+        <b class="font-semibold">upside participation</b>, through a stake or revenue share. Each card notes which one.
+      </p>
+      <p class="mb-0 mt-2 font-mono text-anno text-mut">
+        both are normal ways i work; the model depends on the fit, not the size of the opportunity.
+      </p>
+    </div>
     {
       work.length === 0 && (
         <p class="mt-3 border-b border-line pb-5 font-mono text-anno text-soft">selected work will appear here.</p>
@@ -271,7 +214,14 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                   <span class:list={['smark', w.status]} />
                   {statusLabel[w.status]}
                 </span>
-                {modelBits.length > 0 && <span class="text-acc">{modelBits.join(' · ')}</span>}
+                {modelBits.length > 0 && (
+                  <>
+                    <span class="text-soft" aria-hidden="true">
+                      ·
+                    </span>
+                    <span class="text-acc">{modelBits.join(' · ')}</span>
+                  </>
+                )}
               </div>
             </div>
             <div class:list={['grid max-[900px]:grid-cols-1', hasShot ? 'grid-cols-[1.15fr_1fr]' : 'grid-cols-2']}>
@@ -362,8 +312,85 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
     }
   </section>
 
+  <!-- fig. 03 — what this usually looks like -->
+  <section class={secWrap}>
+    <SectionHead title="What this usually" em="looks like" sub="a few common forms the work tends to take." />
+    <div class="grid grid-cols-2 gap-x-[72px] max-[760px]:grid-cols-1" data-stagger>
+      {
+        cases.map(([, h, p]) => (
+          <div class="border-b border-line py-[26px]">
+            <h3 class="mb-2 mt-0 text-[21.5px] font-semibold leading-[1.3] text-ink">{h}</h3>
+            <p class="m-0 text-[15.5px] text-mut">{p}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- fig. 04 — about -->
+  <section class:list={[secWrap, 'max-[760px]:scroll-mt-12']} id="about">
+    <SectionHead title="The short" em="version" />
+    <div
+      class="mt-2.5 grid grid-cols-[1fr_300px] items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-9"
+      data-stagger
+    >
+      <div>
+        <p class="mb-5 mt-0 text-[19px] leading-[1.62] text-ink">
+          I trained as an engineer, but found my work in software, products, and systems.
+        </p>
+        <p class="mb-5 text-[19px] leading-[1.62] text-ink">
+          Over time, I moved from writing code to leading technical work, supporting the systems behind a company as it
+          grew from a small team of around ten people to about a hundred. That shaped how I see software: not just as
+          clean code, but as a system that has to fit the business, the people, the timing, the constraints, and the
+          next stage of growth.
+        </p>
+        <p class="mb-0 text-[19px] leading-[1.62] text-ink">
+          Today I run Tiny Edges. I work with founders and SMEs to shape and build the software their business needs
+          next. I lead the work personally and, when the build requires it, bring in a small team through Tiny Edges
+          across software and design. Sometimes it is a straightforward build. Sometimes, when the opportunity is strong
+          and the fit is right, I work closer to the outcome through a stake, revenue share, or longer-term partnership.
+        </p>
+      </div>
+      <aside class="relative border border-rule bg-bg p-3.5 max-[900px]:max-w-[300px]">
+        <Ticks />
+        <img
+          src="/woo-kin-wai-software-builder.avif"
+          alt="Woo Kin Wai, software builder and technical partner"
+          width="1500"
+          height="1497"
+          loading="lazy"
+          decoding="async"
+          class="block w-full saturate-[.9] contrast-[1.02]"
+        />
+        <div class="flex justify-between px-0.5 pb-0.5 pt-3 font-mono text-anno-sm text-mut">
+          <span>woo kin wai</span>
+          <span>kuala lumpur</span>
+        </div>
+      </aside>
+    </div>
+    <div
+      class="relative mt-[72px] flex items-baseline gap-10 border border-rule bg-bg px-14 py-12 max-[760px]:flex-col max-[760px]:gap-4 max-[760px]:px-7 max-[760px]:py-9"
+    >
+      <Ticks />
+      <span class="whitespace-nowrap font-mono text-anno text-acc">the working question /</span>
+      <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
+        What system does this business need in order to grow?
+      </blockquote>
+    </div>
+    <a href="/about/" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-anno-md no-underline">
+      <span class="text-soft">more /</span>
+      <span
+        class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+        >how i think about the work, and what keeps me going</span
+      >
+      <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+        >→</span
+      >
+    </a>
+  </section>
+
   <!-- fig. 05 — how the work unfolds -->
-  <section class={secWrap} id="process">
+  <section class:list={[secWrap, 'max-[760px]:scroll-mt-12']} id="process">
     <SectionHead title="How the work" em="unfolds" sub="start small enough to learn, serious enough to matter." />
     <div class="tl-line mx-[30px] mt-[70px] max-[760px]:hidden">
       {
@@ -401,7 +428,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
   </section>
 
   <!-- contact — the title block -->
-  <section class="reveal pb-12 pt-[110px] max-[760px]:pt-20" id="contact">
+  <section class="reveal pb-12 pt-[110px] max-[760px]:pt-20 max-[760px]:scroll-mt-12" id="contact">
     <p
       class="mx-auto mb-14 max-w-[760px] text-balance text-center text-[clamp(26px,3.6vw,40px)] font-extrabold leading-[1.25] tracking-[-0.01em] text-ink"
     >

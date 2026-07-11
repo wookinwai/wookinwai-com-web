@@ -8,7 +8,7 @@ const notes = (await getCollection('notes')).sort((a, b) => b.data.pubDate.value
 const fmt = (d: Date) =>
   `${d.getUTCFullYear()} · ${String(d.getUTCMonth() + 1).padStart(2, '0')} · ${String(d.getUTCDate()).padStart(2, '0')}`;
 
-const title = 'Notes - Woo Kin Wai, Software Builder';
+const title = 'Notes - Woo Kin Wai, Software Builder & Technical Partner';
 const description = 'Notes on software, systems, and building, written from years of client and founder work.';
 const graph = pageGraph({ url: Astro.url, title, description });
 ---

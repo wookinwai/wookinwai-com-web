@@ -7,7 +7,7 @@ import SocialIcon from '../components/SocialIcon.astro';
 import { SITE, SOCIALS, type IconName } from '../consts';
 import { pageGraph } from '../lib/seo';
 
-const title = 'Contact - Woo Kin Wai, Software Builder';
+const title = 'Contact - Woo Kin Wai, Software Builder & Technical Partner';
 const description =
   "Tell me where your business is trying to grow and what's getting in the way. Direct email, what to expect, and answers to common questions.";
 
@@ -26,7 +26,7 @@ const fit = [
 ];
 const lessFit = [
   'You need a pair of hands to close tickets on a fixed spec, with no say in the system.',
-  'You are looking for the cheapest possible build rather than the right one.',
+  'The decision is based only on the lowest initial price, without room to consider scope, maintainability, or business fit.',
   'The work has no real connection to a business outcome.',
 ];
 
@@ -46,7 +46,7 @@ const next = [
 const faqs: { q: string; a: string }[] = [
   {
     q: 'How do you charge?',
-    a: 'Two models. <b class="font-semibold text-ink">Engaged to build</b>: a straightforward project or retainer rate. <b class="font-semibold text-ink">Upside participation</b>: a stake, revenue share, or longer-term partnership, when the opportunity is strong and the fit is right.',
+    a: 'Two models. <b class="font-semibold text-ink">Engaged to build</b>: a straightforward project or retainer rate. <b class="font-semibold text-ink">Upside participation</b>: a stake, revenue share, or longer-term partnership, when the opportunity is strong and the fit is right. For upside participation, the work usually starts with a focused paid phase with a useful deliverable, so both sides can test the fit before committing to a longer arrangement.',
   },
   {
     q: 'What size of engagement do you take?',
@@ -179,7 +179,7 @@ const checklistRow =
   </section>
 
   <!-- If you want to build together -->
-  <section class={secWrap}>
+  <section class:list={[secWrap, 'scroll-mt-4 max-[760px]:scroll-mt-12']} id="builders">
     <SectionHead title="Thoughtful builders are" em="welcome." sub="if you want to build together." />
     <div class="max-w-[700px]" data-stagger>
       <p class="mb-5 mt-0 text-[17px] leading-[1.66] text-ink">

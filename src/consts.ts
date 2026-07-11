@@ -16,7 +16,7 @@ export const SITE = {
 // e.g. clicking "Work" on /notes navigates home and scrolls to the section.
 export const NAV: { label: string; href: string }[] = [
   { label: 'Work', href: '/#work' },
-  { label: 'Process', href: '/process' },
+  { label: 'Process', href: '/process/' },
   { label: 'About', href: '/about/' },
   { label: 'Contact', href: '/contact/' },
   { label: 'Notes', href: '/notes/' },
