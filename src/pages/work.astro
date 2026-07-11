@@ -1,0 +1,418 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailButton from '../components/EmailButton.astro';
+import ShotFrame from '../components/ShotFrame.astro';
+import Ticks from '../components/Ticks.astro';
+import { pageGraph } from '../lib/seo';
+
+const title = 'Work - Woo Kin Wai, Software Builder & Technical Partner';
+const description =
+  "Case notes on the systems I've shaped and built with founders and SMEs: the opportunity, the decisions, and what exists today.";
+
+const graph = pageGraph({ url: Astro.url, title, description });
+
+// Shared spacing — same scale as the homepage sections.
+const secWrap = 'reveal pt-24 max-[760px]:pt-20';
+// Case-study anchors are jumped to from the homepage cards and the index
+// below, so they need to clear the sticky header (taller on mobile).
+const anchorWrap = `${secWrap} scroll-mt-2 max-[760px]:scroll-mt-12`;
+
+// Case notes are LOCAL editorial content, deliberately not CMS-driven: the
+// homepage cards stay the CMS summary, this page carries the longer story.
+// Status/model/role strings here must be kept in step with the CMS entries
+// by hand. Ids match the CMS slugs so homepage cards can deep-link.
+//
+// Blocks marked [ASSUMPTION] are scaffolding drafted to show the shape and
+// still need the real story. [PENDING] blocks are awaiting inputs.
+interface Decision {
+  lead: string;
+  body: string;
+}
+interface Study {
+  slug: string;
+  name: string;
+  tease: string;
+  status: 'live' | 'building' | 'testing' | 'ongoing' | 'closed';
+  statusLabel: string;
+  meta: string; // model · role, rendered green like the homepage cards
+  gap: string[];
+  system: string[];
+  decisions: Decision[];
+  role: string;
+  stands: string;
+  stack: string[]; // empty = row omitted
+}
+
+const studies: Study[] = [
+  {
+    slug: 'concrix',
+    name: 'Concrix',
+    tease: 'A marketplace matching surplus construction materials to live demand.',
+    status: 'building',
+    statusLabel: 'in build',
+    meta: 'upside participation · technical partner',
+    gap: [
+      'Surplus construction materials hold real value, but the trade mostly happens through informal WhatsApp and Facebook groups. Supply and demand are scattered across chats, posts, and personal networks, making it hard for sellers and buyers to find each other at the right time.',
+    ],
+    system: [
+      'A marketplace that gives the trade a clearer structure: listing, discovery, matching, and the early system needed to move from informal demand to a working product.',
+    ],
+    decisions: [
+      // [NOTE] The validate-then-rebuild story is deliberately told here and
+      // not on the homepage card. Cut this block to untell it everywhere.
+      {
+        lead: 'Validate cheap, then build properly.',
+        body: 'The first version ran on WooCommerce: enough marketplace to test whether sellers would list and buyers would come, without betting a custom build on an unproven market. Demand proved out, and the platform is now being rebuilt as a custom system designed around how the trade actually works.',
+      },
+      // [ASSUMPTION] Placeholder second decision — replace with a real one
+      // (matching logic, seller onboarding, payments, ...).
+      {
+        lead: 'Structure the listing around how sellers already describe stock.',
+        body: 'Sellers were not going to fill in long forms. The listing flow was shaped around the way surplus stock is already described in chats, lowering the barrier to getting real inventory onto the platform.',
+      },
+    ],
+    role: 'Technical partner from the start, building from zero with a stake in the venture.',
+    // [ASSUMPTION] Confirm the custom build's actual status.
+    stands: 'In build, moving from the validated first version to the custom platform.',
+    // [PENDING] Current Concrix stack still owed (earlier change-list item #8);
+    // row is omitted until it lands here and in the CMS.
+    stack: [],
+  },
+  {
+    slug: 'tixlah',
+    name: 'Tixlah',
+    tease: 'One dashboard for event registration, payments, and check-in.',
+    status: 'testing',
+    statusLabel: 'in testing',
+    meta: 'upside participation · platform architect',
+    gap: [
+      'Running and sports events in Malaysia sell out fast and run on tight event-day logistics. Organisers were stitching together registration forms, payment links, spreadsheets, and manual check-in lists. Each tool worked on its own. Together they created duplicated data, slow entry queues, and organisers doing reconciliation at midnight before race day.',
+    ],
+    system: [
+      'An e-ticketing platform built with EC Pixels Asia: event listings, tiered ticket purchases, payment, participant management, and QR-based event-day entry, in one flow. A participant reserves a spot, pays, and receives a QR confirmation. An organiser sees registration, payment, and check-in as one record instead of three.',
+    ],
+    // [ASSUMPTION] All three decisions below are plausible inventions to show
+    // the shape. Replace with the real decisions.
+    decisions: [
+      {
+        lead: 'Built on Cloudflare Workers for event-day spikes.',
+        body: 'Registration traffic is bursty: quiet for weeks, then a spike when an event opens or on race morning. A serverless edge setup meant the platform does not pay for idle capacity and does not fall over at the moment it matters most.',
+      },
+      {
+        lead: 'Check-in had to survive a bad connection.',
+        body: 'Race venues have unreliable networks. The entry flow was designed so scanning keeps working when connectivity drops, syncing once it returns.',
+      },
+      {
+        lead: 'One organiser first, marketplace later.',
+        body: "The first version was proven with a single organiser's real events before generalising to many, keeping permissions and tenancy simple while the core flow was tested.",
+      },
+    ],
+    // [ASSUMPTION] Check the division of roles with EC Pixels is described fairly.
+    role: 'Platform architect and builder. I shaped the system design and data model, built the platform, and stay involved as it moves toward launch. EC Pixels Asia brings the event operations side. I hold upside participation in the outcome.',
+    // [ASSUMPTION] "with real event flows", confirm.
+    stands: 'In testing with real event flows ahead of official launch.',
+    stack: ['astro', 'hono', 'cloudflare workers', 'postgresql'],
+  },
+  {
+    slug: 'beyond-insights',
+    name: 'Beyond Insights',
+    tease: 'A learning platform for an investment educator.',
+    status: 'building',
+    statusLabel: 'in build',
+    meta: 'engaged to build · build partner',
+    gap: [
+      'Beyond Insights teaches thousands of students, many of whom stay with their programs for years. The company wanted to reach students on mobile and serve them through an updated portal. The student journey involved access, accounts, learning support, and operational workflows that needed a clearer product flow.',
+    ],
+    system: [
+      "The student-facing products: a mobile app that puts courses on students' phones, shipped on iOS and Android, and the next version of the student portal behind it, now in build.",
+    ],
+    // [ASSUMPTION] All three decisions below need the real reasoning.
+    decisions: [
+      {
+        lead: 'Scoped to student-facing products, deliberately.',
+        body: 'Their internal team knows their operational tools better than anyone outside could. The engagement covers the products where an outside builder adds the most, and stays out of the systems where it would not.',
+      },
+      {
+        lead: 'Mobile app first.',
+        body: 'Students live on their phones. Shipping the app first put the courses where the students already are, and what it revealed about student behaviour now shapes the portal rebuild.',
+      },
+      {
+        lead: 'Rebuild the portal rather than patch it.',
+        body: 'The existing portal carried years of accumulated workflows. A rebuild made room for a product flow designed around how students actually move through their programs.',
+      },
+    ],
+    role: 'Build partner for the student-facing products, on a fee engagement, working alongside their internal team. I shipped the mobile app and am building the portal.',
+    stands: 'Mobile app live on iOS and Android. Portal rebuild in progress.',
+    stack: ['react native', 'nestjs', 'next.js'],
+  },
+];
+
+// The Oryza retrospective keeps its own shape on purpose (no opportunity /
+// gap / system fields): a closed venture, not a case study.
+// [ASSUMPTION] The whole story block is scaffolding; "what I built" and
+// "what the market did not validate" in particular need the real answers.
+const oryza = {
+  intro:
+    'Before Tiny Edges, I started Oryza. It did not become a business. I keep it on the record because leaving out the work that failed would make the rest less honest.',
+  rows: [
+    [
+      'what i believed',
+      'That a well-architected product would find its market. I built for the system I wanted to exist, not the customer who would pay for it.',
+    ],
+    // [ASSUMPTION] One or two real sentences on what Oryza actually was.
+    [
+      'what i built',
+      'My first attempt at building a product company: a product built properly, before the market had asked for it.',
+    ],
+    // [ASSUMPTION] The specific thing that didn't work: no willingness to
+    // pay, wrong timing, no distribution.
+    [
+      'what the market did not validate',
+      'A business around the build. The product worked, but paying customers, timing, and distribution never lined up to carry it.',
+    ],
+    [
+      'what i would do differently',
+      'Start with the smallest version that could test the business model, not the architecture. Talk to the market before the code. Treat distribution as part of the build, not something that comes after.',
+    ],
+    [
+      'how it changed the later work',
+      'Architecture is not enough. Business model, timing, market, and distribution decide whether a product survives. Every engagement above starts from that lesson: understand where the business is trying to go before deciding what to build. It is also why Concrix started on a cheap platform instead of a custom one.',
+    ],
+  ],
+};
+
+// Compact index rows: the three case studies plus the retrospective.
+const index = [
+  ...studies.map((s) => ({
+    href: `#${s.slug}`,
+    name: s.name,
+    tease: s.tease,
+    status: s.status,
+    statusLabel: s.statusLabel,
+    meta: s.meta,
+  })),
+  {
+    href: '#oryza',
+    name: 'Oryza Technologies',
+    tease: 'My first venture, before Tiny Edges.',
+    status: 'closed',
+    statusLabel: 'closed',
+    meta: 'retrospective',
+  },
+];
+
+const fieldRow = 'grid grid-cols-[220px_1fr] gap-8 border-b border-line py-7 max-[700px]:grid-cols-1 max-[700px]:gap-3';
+const fieldLabel = 'pt-[2px] font-mono text-anno text-soft max-[700px]:pt-0';
+
+// Screenshots stay CMS-managed: join by slug so each case study shows the
+// same shot (and frame) as its homepage card. No CMS entry, no figure —
+// the page still builds standalone when the CMS is unreachable in dev.
+const cmsShots = new Map((await getCollection('work')).map((entry) => [entry.id, entry.data]));
+---
+
+<BaseLayout title={title} description={description} graph={graph} noindex={true}>
+  <!-- Hero -->
+  <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
+    <div class="rise d1 mb-[30px] kicker">work · what was built, and why it was shaped that way</div>
+    <h1
+      class="rise d2 mb-[30px] text-balance font-sans text-[clamp(32px,5.4vw,58px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
+    >
+      Work shaped around the <em class="em-acc">business</em>.
+    </h1>
+    <p class="rise d3 max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
+      The homepage shows what I build. This page shows how the work actually went: what each business needed, the
+      decisions made along the way, and what exists today.
+    </p>
+    <p class="rise d3 mt-5 max-w-[700px] text-[16.5px] leading-[1.62] text-ink">
+      Two ways I work: <b class="font-semibold">engaged to build</b>, on a fee, or{' '}
+      <b class="font-semibold">upside participation</b>, through a stake or revenue share. Both are normal ways I work;
+      the model depends on the fit, not the size of the opportunity. One project below was my own venture. It did not
+      make it, and it stays on the record.
+    </p>
+  </header>
+
+  <!-- Project index -->
+  <section class="reveal pt-16 max-[760px]:pt-12">
+    <div class="relative max-w-[880px] border-[1.5px] border-rule bg-bg">
+      <Ticks />
+      {
+        index.map((row, i) => (
+          <a
+            href={row.href}
+            class:list={[
+              'row-edge group block no-underline transition-colors hover:bg-panel',
+              i > 0 && 'border-t border-line',
+            ]}
+          >
+            <div class="grid grid-cols-[1fr_auto] items-baseline gap-x-6 px-[22px] py-[15px] max-[700px]:grid-cols-1 max-[700px]:gap-y-1">
+              <span class="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+                <span class="text-[17px] font-semibold text-ink">{row.name}</span>
+                <span class="text-[14.5px] italic text-mut">{row.tease}</span>
+              </span>
+              <span class="flex items-center gap-3.5 whitespace-nowrap font-mono text-anno text-mut">
+                <span class="flex items-center gap-1.5">
+                  <span class:list={['smark', row.status]} />
+                  {row.statusLabel}
+                </span>
+                <span class="text-soft" aria-hidden="true">
+                  ·
+                </span>
+                <span class={row.status === 'closed' ? 'text-mut' : 'text-acc'}>{row.meta}</span>
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Case studies -->
+  {
+    studies.map((s) => {
+      const shot = cmsShots.get(s.slug);
+      const hasShot = Boolean(shot && (shot.screenshotUrl || shot.shot));
+      return (
+        <section class={anchorWrap} id={s.slug}>
+          <header class="relative flex flex-wrap items-baseline gap-x-5 gap-y-2 pb-[22px]">
+            <h2 class="m-0 font-sans text-[clamp(26px,3.4vw,36px)] font-extrabold leading-[1.1] tracking-[-0.015em] text-ink">
+              {s.name}
+            </h2>
+            <span class="text-[16px] italic text-mut">{s.tease}</span>
+            <div class="sec-rule absolute inset-x-0 bottom-0 h-px bg-rule" />
+          </header>
+          <div class="mt-[18px] flex items-center gap-3.5 font-mono text-anno text-mut">
+            <span class="flex items-center gap-1.5 whitespace-nowrap">
+              <span class:list={['smark', s.status]} />
+              {s.statusLabel}
+            </span>
+            <span class="text-soft" aria-hidden="true">
+              ·
+            </span>
+            <span class="text-acc">{s.meta}</span>
+          </div>
+          {hasShot && shot && (
+            <figure class:list={['m-0 mt-8', shot.shotFrame === 'mobile' ? 'max-w-[300px]' : 'max-w-[680px]']}>
+              <ShotFrame
+                frame={shot.shotFrame}
+                src={shot.screenshotUrl}
+                alt={shot.screenshotAlt || shot.shot?.label || `${s.name} screenshot`}
+                pill={shot.shot?.url}
+                name={s.name}
+              />
+              {shot.shot?.label && (
+                <figcaption
+                  class:list={[
+                    'px-0.5 pt-3 font-mono text-anno-sm text-mut',
+                    shot.shotFrame === 'mobile' && 'text-center',
+                  ]}
+                >
+                  {shot.shot.label}
+                </figcaption>
+              )}
+            </figure>
+          )}
+          <div class="mt-8 max-w-[920px] border-t border-line" data-stagger>
+            <div class={fieldRow}>
+              <div class={fieldLabel}>the opportunity and the gap /</div>
+              <div>
+                {s.gap.map((p) => (
+                  <p class="mb-4 mt-0 max-w-[680px] text-[16.5px] leading-[1.62] text-ink last:mb-0">{p}</p>
+                ))}
+              </div>
+            </div>
+            <div class={fieldRow}>
+              <div class={fieldLabel}>the system /</div>
+              <div>
+                {s.system.map((p) => (
+                  <p class="mb-4 mt-0 max-w-[680px] text-[16.5px] leading-[1.62] text-ink last:mb-0">{p}</p>
+                ))}
+              </div>
+            </div>
+            <div class={fieldRow}>
+              <div class={fieldLabel}>decisions along the way /</div>
+              <div class="space-y-6">
+                {s.decisions.map((d) => (
+                  <div class="max-w-[680px]">
+                    <p class="m-0 text-[16.5px] font-semibold leading-[1.45] text-ink">{d.lead}</p>
+                    <p class="mb-0 mt-1.5 text-[15.5px] leading-[1.62] text-mut">{d.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div class={fieldRow}>
+              <div class={fieldLabel}>my role /</div>
+              <p class="m-0 max-w-[680px] text-[16.5px] leading-[1.62] text-ink">{s.role}</p>
+            </div>
+            <div class={fieldRow}>
+              <div class={fieldLabel}>where it stands /</div>
+              <p class="m-0 max-w-[680px] text-[16.5px] leading-[1.62] text-ink">{s.stands}</p>
+            </div>
+            {s.stack.length > 0 && (
+              <div class={fieldRow}>
+                <div class={fieldLabel}>technical foundation /</div>
+                <div class="font-mono text-anno-md text-mut">{s.stack.join(' · ')}</div>
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <!-- Oryza retrospective — a closed venture, kept in a visibly different shape -->
+  <section class={anchorWrap} id="oryza">
+    <div
+      class="relative max-w-[920px] border border-dashed border-mut bg-bg px-12 py-11 max-[760px]:px-7 max-[760px]:py-8"
+    >
+      <div class="mb-6 flex items-center gap-3.5 font-mono text-anno text-mut">
+        <span class="flex items-center gap-1.5 whitespace-nowrap">
+          <span class="smark closed"></span>
+          closed
+        </span>
+        <span class="text-soft" aria-hidden="true">·</span>
+        <span>retrospective</span>
+      </div>
+      <h2
+        class="m-0 max-w-[760px] text-balance font-sans text-[clamp(26px,3.4vw,36px)] font-extrabold leading-[1.15] tracking-[-0.015em] text-ink"
+      >
+        Oryza Technologies: the venture that changed <em class="em-acc">how I build</em>.
+      </h2>
+      <p class="mb-0 mt-5 max-w-[680px] text-[17px] leading-[1.62] text-ink">{oryza.intro}</p>
+      <div class="mt-8 border-t border-line" data-stagger>
+        {
+          oryza.rows.map(([label, text]) => (
+            <div class="grid grid-cols-[220px_1fr] gap-8 border-b border-line py-6 max-[700px]:grid-cols-1 max-[700px]:gap-2">
+              <div class="pt-[2px] font-mono text-anno text-soft max-[700px]:pt-0">{label} /</div>
+              <p class="m-0 max-w-[640px] text-[15.5px] leading-[1.62] text-ink">{text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="reveal pb-12 pt-24 max-[760px]:pt-[72px]">
+    <p
+      class="m-0 max-w-[720px] text-balance font-sans text-[clamp(26px,3.6vw,40px)] font-extrabold leading-[1.25] tracking-[-0.01em] text-ink"
+    >
+      Building something that doesn't fit neatly into a <em class="em-acc">standard brief?</em>
+    </p>
+    <p class="mb-0 mt-5 max-w-[640px] text-[18px] leading-[1.6] text-ink">
+      Tell me where the business is trying to go, what is getting in the way, and what you have already tried.
+    </p>
+    <div class="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+      <EmailButton />
+      <a href="/contact/" class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline">
+        <span
+          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+          >what to expect</span
+        >
+        <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+          >→</span
+        >
+      </a>
+    </div>
+  </section>
+</BaseLayout>

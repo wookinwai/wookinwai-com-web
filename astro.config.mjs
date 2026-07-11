@@ -71,13 +71,10 @@ export default defineConfig({
         summary:
           'Woo Kin Wai is a software builder and technical partner who helps founders and SMEs design, build, and ship products.',
       },
-      // Emits <link rel="alternate" type="text/markdown"> on every page,
-      // pointing at the .md route in src/pages/notes/[...slug].md.ts. The
-      // package verifies at build time that the target .md file actually
-      // exists in the build output and strips the link (with a warning) if
-      // not — so notes without a backfilled bodyMd degrade gracefully
-      // instead of shipping a 404 link.
-      markdownAlternate: true,
+      // Markdown discovery links are emitted by PostLayout only when the CMS
+      // note has a bodyMd value. Enabling this integration option globally
+      // would advertise nonexistent .md routes on every non-note page.
+      markdownAlternate: false,
     }),
   ],
   // Tailwind v4 is wired through its dedicated Vite plugin. Under Astro 7

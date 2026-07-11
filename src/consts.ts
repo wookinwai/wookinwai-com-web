@@ -12,10 +12,10 @@ export const SITE = {
   url: 'https://www.wookinwai.com',
 } as const;
 
-// Section links point at the homepage (`/#id`) so they work from ANY page —
-// e.g. clicking "Work" on /notes navigates home and scrolls to the section.
+// Work has its own page (/work/); the homepage keeps its #work section id so
+// any existing /#work links still resolve.
 export const NAV: { label: string; href: string }[] = [
-  { label: 'Work', href: '/#work' },
+  { label: 'Work', href: '/work/' },
   { label: 'Process', href: '/process/' },
   { label: 'About', href: '/about/' },
   { label: 'Contact', href: '/contact/' },
@@ -29,15 +29,7 @@ export const SOCIALS: { label: string; href: string }[] = [
 // Source of truth for the digital business card (/card). Kept separate from
 // SOCIALS so the footer chip set stays untouched. `icon` keys map to SocialIcon.
 export type IconName =
-  | 'email'
-  | 'linkedin'
-  | 'x'
-  | 'facebook'
-  | 'instagram'
-  | 'work'
-  | 'location'
-  | 'growth'
-  | 'system';
+  'email' | 'linkedin' | 'x' | 'facebook' | 'instagram' | 'work' | 'location' | 'growth' | 'system';
 export const PROFILE_LINKS: {
   label: string;
   value: string;

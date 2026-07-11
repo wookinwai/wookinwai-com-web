@@ -1,9 +1,8 @@
 // Markdown alternate for notes: AI agents / LLMs can fetch a clean
 // `.md` rendering of a note instead of scraping the rendered HTML.
 // Mirrors the `/notes/[...slug]` route (the site's only dynamic content
-// with bodies) and is the target the `<Seo>` component's
-// `markdownAlternate` option links to via `<link rel="alternate"
-// type="text/markdown">` (see astro.config.mjs).
+// with bodies). PostLayout emits the discovery link only for notes that have
+// bodyMd, so every advertised alternate exists in the static build.
 import { getCollection } from 'astro:content';
 import { createMarkdownEndpoint } from '@jdevalk/astro-seo-graph';
 

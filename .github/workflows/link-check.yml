@@ -2,22 +2,29 @@ name: Link check
 
 on:
   push:
-    paths:
-      - 'src/**'
-      - '*.md'
+    branches: [main]
+  pull_request:
   schedule:
-    # Mondays at 09:00 UTC — catches link rot in content the push trigger
-    # won't see (e.g. an external site that went down after the last push).
     - cron: '0 9 * * 1'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  lychee:
+  links:
+    name: Built-site links
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Link Checker
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Check generated HTML
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress './**/*.astro' './**/*.md'
+          args: --no-progress --verbose --base ./dist './dist/**/*.html'
           fail: true

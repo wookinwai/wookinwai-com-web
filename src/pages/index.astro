@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/SectionHead.astro';
+import ShotFrame from '../components/ShotFrame.astro';
 import Ticks from '../components/Ticks.astro';
 import SocialIcon from '../components/SocialIcon.astro';
 import { getCollection } from 'astro:content';
@@ -10,8 +11,12 @@ const title = 'Woo Kin Wai: software builder & technical partner';
 const description =
   'I work with founders and SMEs to shape and build the software their business needs next, from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
 
-// Selected work — CMS-driven (fig. 02).
+// Selected work — CMS-driven (fig. 02). Closed ventures come off the card
+// grid and render as a slim strip below it; the full retrospective lives on
+// /work/#oryza.
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+const sheets = work.filter((entry) => entry.data.status !== 'closed');
+const hasClosed = work.some((entry) => entry.data.status === 'closed');
 
 const statusLabel = {
   live: 'live',
@@ -170,11 +175,20 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
 
   <!-- fig. 02 — selected work: the build sheets -->
   <section class:list={[secWrap, 'max-[760px]:scroll-mt-12']} id="work">
-    <SectionHead
-      title="Selected"
-      em="work"
-      sub="a few examples of growth needs turned into working systems, from founder-led products to platforms and internal tools."
-    />
+    <SectionHead title="Selected" em="work" />
+    {/* SectionHead's own `sub` is plain text; this replicates it to carry the page link. */}
+    <p class="mb-10 mt-[18px] font-mono text-anno leading-[1.55] text-soft">
+      a few examples of growth needs turned into working systems.{' '}
+      <a href="/work/" class="group inline-flex items-baseline gap-1.5 no-underline">
+        <span
+          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+          >all case notes</span
+        >
+        <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+          >→</span
+        >
+      </a>
+    </p>
     <div class="mb-9 mt-2 max-w-[760px]">
       <p class="m-0 text-[16px] leading-[1.6] text-ink">
         Two ways I work: <b class="font-semibold">engaged to build</b>, on a fee, or{' '}
@@ -190,7 +204,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
       )
     }
     {
-      work.map((entry) => {
+      sheets.map((entry) => {
         const w = entry.data;
         const closed = w.status === 'closed';
         const hasShot = Boolean(w.screenshotUrl || w.shot);
@@ -228,35 +242,23 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
               <div class="border-r border-line p-[30px_34px_34px] max-[900px]:border-r-0 max-[900px]:border-b max-[900px]:border-line max-[900px]:p-6">
                 {hasShot ? (
                   <div>
-                    <div class="border border-rule">
-                      <div class="flex items-center gap-2.5 border-b border-rule bg-panel px-3 py-[9px]">
-                        <span class="flex gap-1.5" aria-hidden="true">
-                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
-                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
-                          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
-                        </span>
-                        <span class="flex min-w-0 flex-1 items-center gap-1.5 rounded-[5px] border border-line bg-bg px-2.5 py-1 font-mono text-anno-sm text-mut">
-                          <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-acc" />
-                          <span class="truncate">{w.shot?.url ?? w.name.toLowerCase()}</span>
-                        </span>
+                    <ShotFrame
+                      frame={w.shotFrame}
+                      src={w.screenshotUrl}
+                      alt={w.screenshotAlt || w.shot?.label || `${w.name} screenshot`}
+                      pill={w.shot?.url}
+                      name={w.name}
+                    />
+                    {w.shot?.label && (
+                      <div
+                        class:list={[
+                          'px-0.5 pt-3 font-mono text-anno-sm text-mut',
+                          w.shotFrame === 'mobile' && 'text-center',
+                        ]}
+                      >
+                        {w.shot.label}
                       </div>
-                      {w.screenshotUrl ? (
-                        <img
-                          src={w.screenshotUrl}
-                          alt={w.screenshotAlt || w.shot?.label || `${w.name} screenshot`}
-                          loading="lazy"
-                          decoding="async"
-                          class="block aspect-[16/10] w-full object-cover object-top"
-                        />
-                      ) : (
-                        <div class="grid aspect-[16/10] place-items-center bg-[repeating-linear-gradient(-45deg,var(--color-acc-soft)_0_5px,transparent_5px_11px)]">
-                          <span class="border border-line bg-bg px-3 py-1.5 font-mono text-anno-sm text-soft">
-                            {w.name.toLowerCase()} · drawing to follow
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    {w.shot?.label && <div class="px-0.5 pt-3 font-mono text-anno-sm text-mut">{w.shot.label}</div>}
+                    )}
                   </div>
                 ) : (
                   w.bodyHtml && (
@@ -286,15 +288,31 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                     ))}
                   </dl>
                 )}
-                {w.visit && (
+                <div class="mt-6 flex flex-wrap items-baseline gap-x-7 gap-y-3">
+                  {w.visit && (
+                    <a
+                      href={w.visit.href}
+                      target="_blank"
+                      rel="noopener"
+                      class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
+                    >
+                      <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
+                        {w.visit.label.toLowerCase()}
+                      </span>
+                      <span
+                        class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
+                        aria-hidden="true"
+                      >
+                        →
+                      </span>
+                    </a>
+                  )}
                   <a
-                    href={w.visit.href}
-                    target="_blank"
-                    rel="noopener"
-                    class="group mt-6 inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
+                    href={`/work/#${entry.id}`}
+                    class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
                   >
                     <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
-                      {w.visit.label.toLowerCase()}
+                      full case notes
                     </span>
                     <span
                       class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
@@ -303,12 +321,43 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                       →
                     </span>
                   </a>
-                )}
+                </div>
               </div>
             </div>
           </article>
         );
       })
+    }
+    {
+      /* Closed-venture strip — the copy is Oryza's; if another venture ever
+         closes in the CMS, this block needs revisiting. */
+      hasClosed && (
+        <aside class="mt-12 border border-dashed border-mut bg-bg px-[26px] py-6 max-[560px]:px-5">
+          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <h3 class="m-0 text-[19px] font-semibold text-ink">Oryza Technologies</h3>
+            <span class="flex items-center gap-1.5 font-mono text-anno text-mut">
+              <span class="smark closed" /> closed
+            </span>
+          </div>
+          <p class="mb-0 mt-2 max-w-[640px] text-[15.5px] leading-[1.6] text-mut">
+            My first venture did not make it. I keep it on the record, because it changed how I build.
+          </p>
+          <a
+            href="/work/#oryza"
+            class="group mt-4 inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
+          >
+            <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
+              the retrospective
+            </span>
+            <span
+              class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </a>
+        </aside>
+      )
     }
   </section>
 

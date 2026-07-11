@@ -2,3 +2,5 @@ dist
 node_modules
 .github
 .changeset
+scripts/generate-banner-assets.mjs
+scripts/generate-linkedin-banner.mjs

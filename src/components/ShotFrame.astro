@@ -1,0 +1,80 @@
+---
+// Framed work screenshot in the drafting-table language. Two frames:
+//   • browser — desktop chrome: three window dots + a URL pill (`pill` text)
+//   • mobile  — an app bezel: speaker slot, tall screen, home indicator
+// A null `src` renders the hatched "drawing to follow" placeholder inside
+// whichever frame is chosen, so a card can hold the space before the real
+// screenshot is uploaded to the CMS.
+interface Props {
+  frame?: 'browser' | 'mobile' | null;
+  src?: string | null;
+  alt: string;
+  /** Browser URL-pill text; falls back to the lowercased name. */
+  pill?: string | null;
+  /** Project name, used in the placeholder line. */
+  name: string;
+}
+const { frame, src = null, alt, pill = null, name } = Astro.props;
+const mobile = frame === 'mobile';
+---
+
+{
+  mobile ? (
+    <div class="mx-auto w-full max-w-[250px]">
+      <div class="rounded-[26px] border-[1.5px] border-rule bg-panel p-2.5">
+        <div class="mb-2 flex justify-center" aria-hidden="true">
+          <span class="h-[5px] w-12 rounded-full border border-mut" />
+        </div>
+        <div class="overflow-hidden rounded-[16px] border border-line bg-bg">
+          {src ? (
+            <img
+              src={src}
+              alt={alt}
+              loading="lazy"
+              decoding="async"
+              class="block aspect-[9/19] w-full object-cover object-top"
+            />
+          ) : (
+            <div class="grid aspect-[9/19] place-items-center bg-[repeating-linear-gradient(-45deg,var(--color-acc-soft)_0_5px,transparent_5px_11px)] px-3">
+              <span class="border border-line bg-bg px-3 py-1.5 text-center font-mono text-anno-sm text-soft">
+                {name.toLowerCase()} · drawing to follow
+              </span>
+            </div>
+          )}
+        </div>
+        <div class="mt-2 flex justify-center" aria-hidden="true">
+          <span class="h-1 w-16 rounded-full bg-line" />
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div class="border border-rule">
+      <div class="flex items-center gap-2.5 border-b border-rule bg-panel px-3 py-[9px]">
+        <span class="flex gap-1.5" aria-hidden="true">
+          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+          <span class="h-[9px] w-[9px] rounded-full border border-mut" />
+        </span>
+        <span class="flex min-w-0 flex-1 items-center gap-1.5 rounded-[5px] border border-line bg-bg px-2.5 py-1 font-mono text-anno-sm text-mut">
+          <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-acc" />
+          <span class="truncate">{pill ?? name.toLowerCase()}</span>
+        </span>
+      </div>
+      {src ? (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          class="block aspect-[16/10] w-full object-cover object-top"
+        />
+      ) : (
+        <div class="grid aspect-[16/10] place-items-center bg-[repeating-linear-gradient(-45deg,var(--color-acc-soft)_0_5px,transparent_5px_11px)]">
+          <span class="border border-line bg-bg px-3 py-1.5 font-mono text-anno-sm text-soft">
+            {name.toLowerCase()} · drawing to follow
+          </span>
+        </div>
+      )}
+    </div>
+  )
+}

@@ -1,0 +1,12 @@
+cache = true
+max_cache_age = "2d"
+max_concurrency = 8
+timeout = 20
+include_fragments = true
+
+# These destinations reject automated link checkers or require a signed-in
+# browser. Internal links and all other public destinations remain checked.
+exclude = [
+  "^https?://(www\\.)?linkedin\\.com",
+  "^https?://github\\.com/wookinwai$",
+]

@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 
 /**
  * Content comes from the CMS API (wookinwai-com-api) at BUILD time. A CMS
@@ -63,6 +64,9 @@ const work = defineCollection({
     // on an API that hasn't deployed the companion change.
     screenshotAlt: z.string().nullish(),
     updatedDate: z.coerce.date().nullish(),
+    // Same reasoning: shipped with the mobile-frame CMS change; absent from
+    // the live API until that deploys. Missing/null renders the browser frame.
+    shotFrame: z.enum(['browser', 'mobile']).nullish(),
   }),
 });
 

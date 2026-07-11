@@ -35,6 +35,7 @@ const pageDescription = seoDescription ?? description;
   ogImageAlt={`${title}, a note on wookinwai.com`}
   article={{ publishedTime: pubDate, modifiedTime: updatedDate ?? pubDate, tags }}
   graph={graph}
+  markdownAlternate={note.data.bodyMd ? `/notes/${note.data.slug}.md` : undefined}
 >
   <div class="pb-12 pt-[60px]">
     <header>

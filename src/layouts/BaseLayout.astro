@@ -37,6 +37,8 @@ export interface Props {
   /** JSON-LD @graph to emit. Defaults to the site-wide linked graph (WebSite + Person + Organization). */
   graph?: Record<string, unknown> | null;
   noindex?: boolean;
+  /** Optional alternate representation that is known to exist in the build output. */
+  markdownAlternate?: string;
 }
 
 const {
@@ -49,6 +51,7 @@ const {
   article,
   graph = siteGraph(),
   noindex,
+  markdownAlternate,
 } = Astro.props;
 
 const site = Astro.site ?? new URL(SITE.url);
@@ -90,6 +93,7 @@ const ogImageURL = new URL(ogImage, site).href;
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title="Woo Kin Wai" href="/rss.xml" />
+    {markdownAlternate && <link rel="alternate" type="text/markdown" href={markdownAlternate} />}
     <meta name="theme-color" content="#f4f0e2" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#201c13" media="(prefers-color-scheme: dark)" />
 

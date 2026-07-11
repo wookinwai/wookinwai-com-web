@@ -1,6 +1,6 @@
 {
   "name": "wookinwai-website",
-  "description": "Personal website for Woo Kin Wai — software builder & technical partner (Press Mono).",
+  "description": "Personal website for Woo Kin Wai, a software builder and technical partner for founders and SMEs.",
   "version": "2.0.0",
   "private": true,
   "type": "module",
@@ -8,6 +8,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "check": "astro check",
+    "format:check": "prettier --check .",
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "astro build && wrangler deploy",
@@ -31,9 +33,12 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/qrcode": "^1.5.6",
     "prettier": "^3.4.2",
     "prettier-plugin-astro": "^0.14.1",
     "qrcode": "^1.5.4",
+    "typescript": "~5.9.0",
     "wrangler": "^4.45.0"
   },
   "engines": {

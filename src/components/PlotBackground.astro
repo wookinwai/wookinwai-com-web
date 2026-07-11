@@ -245,9 +245,9 @@
   let usedRIC = false;
   function scheduleInit() {
     cancelInit();
-    if ('requestIdleCallback' in window) {
+    if (typeof window.requestIdleCallback === 'function') {
       usedRIC = true;
-      idleHandle = (window as any).requestIdleCallback(init, { timeout: 800 });
+      idleHandle = window.requestIdleCallback(init, { timeout: 800 });
     } else {
       usedRIC = false;
       idleHandle = window.setTimeout(init, 200);
@@ -255,7 +255,7 @@
   }
   function cancelInit() {
     if (!idleHandle) return;
-    if (usedRIC && 'cancelIdleCallback' in window) (window as any).cancelIdleCallback(idleHandle);
+    if (usedRIC && typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleHandle);
     else clearTimeout(idleHandle);
     idleHandle = 0;
   }
