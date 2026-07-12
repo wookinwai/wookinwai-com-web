@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmailButton from '../components/EmailButton.astro';
 import ShotFrame from '../components/ShotFrame.astro';
-import Ticks from '../components/Ticks.astro';
 import { pageGraph } from '../lib/seo';
 
 const title = 'Work - Woo Kin Wai, Software Builder & Technical Partner';
@@ -198,26 +197,22 @@ const orderedStudies = [...studies].sort((a, b) => {
   return orderDifference || (fallbackPosition.get(a.slug) ?? 0) - (fallbackPosition.get(b.slug) ?? 0);
 });
 
-// Compact index rows: the three case studies plus the retrospective, in CMS order.
+// Index rows are a contents list, not a summary: number, name, status only.
+// Tease, relationship, and role live in the case notes below, so the index
+// never repeats them.
 const indexRows = [
   ...orderedStudies.map((s) => ({
     href: `#${s.slug}`,
     name: s.name,
-    tease: s.tease,
     status: s.status,
     statusLabel: s.statusLabel,
-    relationship: s.relationship,
-    roleLabel: s.roleLabel,
     sortOrder: sortOrderOf(s.slug),
   })),
   {
     href: '#oryza',
     name: 'Oryza Technologies',
-    tease: 'My first venture, before Tiny Edges.',
     status: 'closed',
     statusLabel: 'closed',
-    relationship: 'retrospective',
-    roleLabel: '',
     sortOrder: cmsOrder.get('oryza-technologies') ?? cmsOrder.get('oryza') ?? Number.POSITIVE_INFINITY,
   },
 ].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -253,45 +248,25 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
     </p>
   </header>
 
-  <!-- Project index -->
+  <!-- Project index — a drafting-sheet contents list. Number, name, status
+       only: the tease, relationship, and role belong to the case notes below. -->
   <section class="reveal pt-16 max-[760px]:pt-12">
-    <div class="relative max-w-[880px] border-[1.5px] border-rule bg-bg">
-      <Ticks />
+    <div class="max-w-[520px]">
+      <div class="border-b border-rule pb-2.5 font-mono text-anno text-soft">contents /</div>
       {
         index.map((row, i) => (
           <a
             href={row.href}
-            class:list={[
-              'row-edge group block touch-manipulation no-underline transition-colors hover:bg-panel focus-visible:z-[1] focus-visible:bg-panel active:bg-panel',
-              i > 0 && 'border-t border-line',
-            ]}
+            class="row-edge group flex touch-manipulation items-baseline gap-x-5 border-b border-line py-[13px] no-underline transition-colors hover:bg-panel focus-visible:bg-panel active:bg-panel"
           >
-            <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,auto)] items-start gap-x-6 px-[22px] py-[15px] max-[700px]:grid-cols-1 max-[700px]:gap-y-3">
-              <div class="min-w-0">
-                <div class="text-[17px] font-semibold leading-[1.3] text-ink">{row.name}</div>
-                <div class="mt-1 text-[14.5px] italic leading-[1.45] text-mut">{row.tease}</div>
-              </div>
-              <div class="flex min-w-0 flex-wrap items-center gap-x-3.5 gap-y-1 font-mono text-anno text-mut max-[700px]:justify-self-start">
-                <span class="flex items-center gap-1.5 whitespace-nowrap">
-                  <span class:list={['smark', row.status]} />
-                  {row.statusLabel}
-                </span>
-                <span class="text-soft" aria-hidden="true">
-                  ·
-                </span>
-                <span class:list={['min-w-0 break-words', row.status === 'closed' ? 'text-mut' : 'text-acc']}>
-                  {row.relationship}
-                </span>
-                {row.roleLabel && (
-                  <>
-                    <span class="text-soft" aria-hidden="true">
-                      ·
-                    </span>
-                    <span class="min-w-0 break-words text-mut">{row.roleLabel}</span>
-                  </>
-                )}
-              </div>
-            </div>
+            <span class="font-mono text-anno-sm text-soft">{String(i + 1).padStart(2, '0')}</span>
+            <span class="min-w-0 text-[16.5px] font-semibold leading-[1.3] text-ink transition-colors group-hover:text-acc">
+              {row.name}
+            </span>
+            <span class="ml-auto flex shrink-0 items-center gap-1.5 whitespace-nowrap font-mono text-anno-sm text-mut">
+              <span class:list={['smark', row.status]} />
+              {row.statusLabel}
+            </span>
           </a>
         ))
       }
