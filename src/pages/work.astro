@@ -35,7 +35,8 @@ interface Study {
   tease: string;
   status: 'live' | 'building' | 'testing' | 'ongoing' | 'closed';
   statusLabel: string;
-  meta: string; // model · role, rendered green like the homepage cards
+  relationship: string; // engagement model, e.g. 'upside participation'
+  roleLabel: string; // short role tag, e.g. 'technical partner'
   gap: string[];
   system: string[];
   decisions: Decision[];
@@ -51,7 +52,8 @@ const studies: Study[] = [
     tease: 'A marketplace matching surplus construction materials to live demand.',
     status: 'building',
     statusLabel: 'in build',
-    meta: 'upside participation · technical partner',
+    relationship: 'upside participation',
+    roleLabel: 'technical partner',
     gap: [
       'Surplus construction materials hold real value, but the trade mostly happens through informal WhatsApp and Facebook groups. Supply and demand are scattered across chats, posts, and personal networks, making it hard for sellers and buyers to find each other at the right time.',
     ],
@@ -85,7 +87,8 @@ const studies: Study[] = [
     tease: 'One dashboard for event registration, payments, and check-in.',
     status: 'testing',
     statusLabel: 'in testing',
-    meta: 'upside participation · platform architect',
+    relationship: 'upside participation',
+    roleLabel: 'platform architect',
     gap: [
       'Running and sports events in Malaysia sell out fast and run on tight event-day logistics. Organisers were stitching together registration forms, payment links, spreadsheets, and manual check-in lists. Each tool worked on its own. Together they created duplicated data, slow entry queues, and organisers doing reconciliation at midnight before race day.',
     ],
@@ -120,7 +123,8 @@ const studies: Study[] = [
     tease: 'A learning platform for an investment educator.',
     status: 'building',
     statusLabel: 'in build',
-    meta: 'engaged to build · build partner',
+    relationship: 'engaged to build',
+    roleLabel: 'build partner',
     gap: [
       'Beyond Insights teaches thousands of students, many of whom stay with their programs for years. The company wanted to reach students on mobile and serve them through an updated portal. The student journey involved access, accounts, learning support, and operational workflows that needed a clearer product flow.',
     ],
@@ -202,7 +206,8 @@ const indexRows = [
     tease: s.tease,
     status: s.status,
     statusLabel: s.statusLabel,
-    meta: s.meta,
+    relationship: s.relationship,
+    roleLabel: s.roleLabel,
     sortOrder: sortOrderOf(s.slug),
   })),
   {
@@ -211,7 +216,8 @@ const indexRows = [
     tease: 'My first venture, before Tiny Edges.',
     status: 'closed',
     statusLabel: 'closed',
-    meta: 'retrospective',
+    relationship: 'retrospective',
+    roleLabel: '',
     sortOrder: cmsOrder.get('oryza-technologies') ?? cmsOrder.get('oryza') ?? Number.POSITIVE_INFINITY,
   },
 ].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -274,8 +280,16 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
                   ·
                 </span>
                 <span class:list={['min-w-0 break-words', row.status === 'closed' ? 'text-mut' : 'text-acc']}>
-                  {row.meta}
+                  {row.relationship}
                 </span>
+                {row.roleLabel && (
+                  <>
+                    <span class="text-soft" aria-hidden="true">
+                      ·
+                    </span>
+                    <span class="min-w-0 break-words text-mut">{row.roleLabel}</span>
+                  </>
+                )}
               </div>
             </div>
           </a>
@@ -298,37 +312,55 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
             <span class="text-[16px] italic text-mut">{s.tease}</span>
             <div class="sec-rule absolute inset-x-0 bottom-0 h-px bg-rule" />
           </header>
-          <div class="mt-[18px] flex items-center gap-3.5 font-mono text-anno text-mut">
-            <span class="flex items-center gap-1.5 whitespace-nowrap">
-              <span class:list={['smark', s.status]} />
-              {s.statusLabel}
-            </span>
-            <span class="text-soft" aria-hidden="true">
-              ·
-            </span>
-            <span class="text-acc">{s.meta}</span>
+          <div class="mt-8 flex flex-wrap items-start gap-x-14 gap-y-7">
+            {hasShot && shot && (
+              <figure
+                class:list={['m-0 min-w-0 flex-1', shot.shotFrame === 'mobile' ? 'max-w-[300px]' : 'max-w-[680px]']}
+              >
+                <ShotFrame
+                  frame={shot.shotFrame}
+                  src={shot.screenshotUrl}
+                  alt={shot.screenshotAlt || shot.shot?.label || `${s.name} screenshot`}
+                  pill={shot.shot?.url}
+                  name={s.name}
+                />
+                {shot.shot?.label && (
+                  <figcaption
+                    class:list={[
+                      'px-0.5 pt-3 font-mono text-anno-sm text-mut',
+                      shot.shotFrame === 'mobile' && 'text-center',
+                    ]}
+                  >
+                    {shot.shot.label}
+                  </figcaption>
+                )}
+              </figure>
+            )}
+            {/* Status, relationship, and role are three different facts; keep
+                them visibly separate instead of one run-together meta line. */}
+            <div
+              class:list={[
+                'flex font-mono text-anno',
+                hasShot ? 'w-[180px] shrink-0 flex-col gap-6 pt-1' : 'flex-wrap gap-x-14 gap-y-6',
+              ]}
+            >
+              <div>
+                <div class="text-anno-sm text-soft">status /</div>
+                <div class="mt-1.5 flex items-center gap-1.5 whitespace-nowrap text-mut">
+                  <span class:list={['smark', s.status]} />
+                  {s.statusLabel}
+                </div>
+              </div>
+              <div>
+                <div class="text-anno-sm text-soft">relationship /</div>
+                <div class="mt-1.5 text-acc">{s.relationship}</div>
+              </div>
+              <div>
+                <div class="text-anno-sm text-soft">role /</div>
+                <div class="mt-1.5 text-acc">{s.roleLabel}</div>
+              </div>
+            </div>
           </div>
-          {hasShot && shot && (
-            <figure class:list={['m-0 mt-8', shot.shotFrame === 'mobile' ? 'max-w-[300px]' : 'max-w-[680px]']}>
-              <ShotFrame
-                frame={shot.shotFrame}
-                src={shot.screenshotUrl}
-                alt={shot.screenshotAlt || shot.shot?.label || `${s.name} screenshot`}
-                pill={shot.shot?.url}
-                name={s.name}
-              />
-              {shot.shot?.label && (
-                <figcaption
-                  class:list={[
-                    'px-0.5 pt-3 font-mono text-anno-sm text-mut',
-                    shot.shotFrame === 'mobile' && 'text-center',
-                  ]}
-                >
-                  {shot.shot.label}
-                </figcaption>
-              )}
-            </figure>
-          )}
           <div class="mt-8 max-w-[920px] border-t border-line" data-stagger>
             <div class={fieldRow}>
               <div class={fieldLabel}>the opportunity and the gap /</div>
