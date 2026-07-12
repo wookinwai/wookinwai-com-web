@@ -182,15 +182,28 @@ const oryza = {
   ],
 };
 
-// Compact index rows: the three case studies plus the retrospective.
-const index = [
-  ...studies.map((s) => ({
+// Keep the editorial case notes local, but take their order from the same CMS
+// sortOrder that drives the homepage. If the CMS is unavailable in dev, the
+// source order above remains the fallback.
+const cmsWork = await getCollection('work');
+const cmsOrder = new Map(cmsWork.map((entry) => [entry.id, entry.data.sortOrder]));
+const fallbackPosition = new Map(studies.map((study, i) => [study.slug, i]));
+const sortOrderOf = (slug: string) => cmsOrder.get(slug) ?? Number.POSITIVE_INFINITY;
+const orderedStudies = [...studies].sort((a, b) => {
+  const orderDifference = sortOrderOf(a.slug) - sortOrderOf(b.slug);
+  return orderDifference || (fallbackPosition.get(a.slug) ?? 0) - (fallbackPosition.get(b.slug) ?? 0);
+});
+
+// Compact index rows: the three case studies plus the retrospective, in CMS order.
+const indexRows = [
+  ...orderedStudies.map((s) => ({
     href: `#${s.slug}`,
     name: s.name,
     tease: s.tease,
     status: s.status,
     statusLabel: s.statusLabel,
     meta: s.meta,
+    sortOrder: sortOrderOf(s.slug),
   })),
   {
     href: '#oryza',
@@ -199,8 +212,10 @@ const index = [
     status: 'closed',
     statusLabel: 'closed',
     meta: 'retrospective',
+    sortOrder: cmsOrder.get('oryza-technologies') ?? cmsOrder.get('oryza') ?? Number.POSITIVE_INFINITY,
   },
-];
+].sort((a, b) => a.sortOrder - b.sortOrder);
+const index = indexRows.map(({ sortOrder: _sortOrder, ...row }) => row);
 
 const fieldRow = 'grid grid-cols-[220px_1fr] gap-8 border-b border-line py-7 max-[700px]:grid-cols-1 max-[700px]:gap-3';
 const fieldLabel = 'pt-[2px] font-mono text-anno text-soft max-[700px]:pt-0';
@@ -208,7 +223,7 @@ const fieldLabel = 'pt-[2px] font-mono text-anno text-soft max-[700px]:pt-0';
 // Screenshots stay CMS-managed: join by slug so each case study shows the
 // same shot (and frame) as its homepage card. No CMS entry, no figure —
 // the page still builds standalone when the CMS is unreachable in dev.
-const cmsShots = new Map((await getCollection('work')).map((entry) => [entry.id, entry.data]));
+const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
 ---
 
 <BaseLayout title={title} description={description} graph={graph} noindex={true}>
@@ -271,7 +286,7 @@ const cmsShots = new Map((await getCollection('work')).map((entry) => [entry.id,
 
   <!-- Case studies -->
   {
-    studies.map((s) => {
+    orderedStudies.map((s) => {
       const shot = cmsShots.get(s.slug);
       const hasShot = Boolean(shot && (shot.screenshotUrl || shot.shot));
       return (
