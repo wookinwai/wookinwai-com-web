@@ -236,10 +236,57 @@ body {
   background: linear-gradient(270deg, var(--color-acc), transparent);
 }
 
+/* on the stacked mobile schematic the same connector turns upright: a
+   vertical leader riding the right edge of each description, arrowhead
+   pointing down toward the next card, so the growth → gap → build direction
+   survives the single column. It stretches with the text it sits beside
+   (flex items-stretch in the markup). The relay animates the pen head along
+   `top` here (see the orientation check in index.astro's relay script). */
+@media (max-width: 900px) {
+  .flow-conn {
+    height: auto;
+    min-height: 44px;
+    width: 0;
+  }
+  .flow-conn::before {
+    left: -0.75px;
+    right: auto;
+    top: 0;
+    bottom: 5px;
+    border-top: 0;
+    border-left: 1.5px dashed var(--color-mut);
+  }
+  .flow-conn .conn-arrow {
+    right: auto;
+    left: -4.5px;
+    top: auto;
+    bottom: -1px;
+    border-left: 4.5px solid transparent;
+    border-right: 4.5px solid transparent;
+    border-top: 7px solid var(--color-arrow);
+    border-bottom: 0;
+  }
+  .flow-conn .conn-packet {
+    top: 0;
+    left: -3.5px;
+  }
+  .flow-conn .conn-packet::before {
+    right: auto;
+    top: auto;
+    left: 50%;
+    bottom: 100%;
+    width: 1.5px;
+    height: 26px;
+    transform: translateX(-50%);
+    background: linear-gradient(0deg, var(--color-acc), transparent);
+  }
+}
+
 /* solid corner tick for the emphasised schematic stage (the build) — a
-   drafting-style "this one" marker in the top-right corner. Interior stays
-   clean paper for readability; opaque base so content behind it (the relay
-   pen head) can't show through */
+   drafting-style "this one" marker in the top-right corner, a square to echo
+   the status markers and the relay pen head. Interior stays clean paper for
+   readability; opaque base so content behind it (the relay pen head) can't
+   show through */
 .tick-corner {
   position: relative;
   background-color: var(--color-bg);
@@ -249,8 +296,9 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  border-top: 18px solid var(--color-acc);
-  border-left: 18px solid transparent;
+  width: 13px;
+  height: 13px;
+  background: var(--color-acc);
 }
 
 /* drafted timeline — a solid baseline with an arrowhead, square stops above.

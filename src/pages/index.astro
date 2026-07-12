@@ -88,10 +88,6 @@ const steps = [
 ];
 
 const secWrap = 'reveal pt-24 max-[760px]:pt-20';
-const factRow =
-  'grid grid-cols-[168px_1fr] gap-[18px] border-b border-line py-3 max-[560px]:grid-cols-1 max-[560px]:gap-1';
-const factKey = 'pt-[3px] font-mono text-anno text-soft max-[560px]:pt-0';
-const factVal = 'm-0 text-[14.5px] leading-[1.5] text-mut';
 
 // contact — the title block (mirrors the contact page's Direct channels).
 const ctaRows: { label: string; value: string; href?: string; icon: IconName }[] = [
@@ -133,7 +129,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
   <figure class="rise d4 relative m-0 mt-5 border border-rule bg-bg px-14 pb-12 pt-12 max-[900px]:px-7">
     <Ticks />
     <div
-      class="flow-relay grid grid-cols-[1fr_64px_1fr_64px_1fr] items-stretch max-[900px]:grid-cols-1 max-[900px]:gap-8"
+      class="flow-relay grid grid-cols-[1fr_64px_1fr_64px_1fr] items-stretch max-[900px]:grid-cols-1 max-[900px]:gap-5"
     >
       {
         flow.map((f, i) => (
@@ -154,10 +150,29 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                 </div>
                 <div class="font-mono text-anno leading-[1.5] text-mut">{f.ann}</div>
               </div>
-              <p class="mx-1 mb-0 mt-[22px] text-[15px] leading-[1.55] text-mut">{f.desc}</p>
+              <div class="mx-1 mt-[22px] flex items-stretch gap-6">
+                {/* stacked-view leader: rides the left edge of the description,
+                    running the full height of the text toward the next card */}
+                {i < flow.length - 1 && (
+                  <div class="conn flow-conn ml-1.5 hidden shrink-0 max-[900px]:block" aria-hidden="true">
+                    <span class="conn-packet" aria-hidden="true" />
+                    <span class="conn-arrow" aria-hidden="true" />
+                  </div>
+                )}
+                <p
+                  class:list={[
+                    'm-0 min-w-0 flex-1 text-[15px] leading-[1.55] text-mut',
+                    // the build has no leader beside it; match the other
+                    // descriptions' indent (leader margin + width + flex gap)
+                    i === flow.length - 1 && 'max-[900px]:pl-[30px]',
+                  ]}
+                >
+                  {f.desc}
+                </p>
+              </div>
             </div>
             {i < flow.length - 1 && (
-              <div class="conn flow-conn mt-[58px] self-start max-[900px]:hidden">
+              <div class="conn flow-conn mt-[58px] self-start max-[900px]:hidden" aria-hidden="true">
                 {/* packet before arrow so the arrowhead paints on top and the
                     pen head tucks behind it on arrival */}
                 <span class="conn-packet" aria-hidden="true" />
@@ -209,7 +224,11 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
         const w = entry.data;
         const closed = w.status === 'closed';
         const hasShot = Boolean(w.screenshotUrl || w.shot);
-        const modelBits = [w.engagement && modelLabel[w.engagement], w.role?.toLowerCase()].filter(Boolean);
+        // Header meta is relationship + status only; the role gets its own
+        // line below the paragraph. Everything else (opportunity, gap, what
+        // was built, stack) belongs to /work/ now.
+        const model = w.engagement && modelLabel[w.engagement];
+        const roleLine = w.nd.find((n) => /involved|role/i.test(n.label))?.text;
         return (
           <article
             class:list={['mt-12 border bg-bg first-of-type:mt-3', closed ? 'border-dashed border-mut' : 'border-rule']}
@@ -229,12 +248,12 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                   <span class:list={['smark', w.status]} />
                   {statusLabel[w.status]}
                 </span>
-                {modelBits.length > 0 && (
+                {model && (
                   <>
                     <span class="text-soft" aria-hidden="true">
                       ·
                     </span>
-                    <span class="text-acc">{modelBits.join(' · ')}</span>
+                    <span class="text-acc">{model}</span>
                   </>
                 )}
               </div>
@@ -267,47 +286,19 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                   )
                 )}
               </div>
-              <div class="p-[30px_34px_34px] max-[900px]:p-6">
+              <div class="flex flex-col p-[30px_34px_34px] max-[900px]:p-6">
                 {hasShot && w.bodyHtml && (
                   <p
                     class="mb-[22px] mt-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold"
                     set:html={w.bodyHtml}
                   />
                 )}
-                {w.stack.length > 0 && (
-                  <div class="mb-5 font-mono text-anno text-mut">
-                    <span class="text-soft">stack /</span> {w.stack.map((s) => s.toLowerCase()).join(' · ')}
+                {roleLine && (
+                  <div class="border-t border-line pt-4 font-mono text-anno leading-[1.55] text-mut">
+                    <span class="text-soft">my role /</span> {roleLine}
                   </div>
                 )}
-                {w.nd.length > 0 && (
-                  <dl class="m-0 border-t border-line">
-                    {w.nd.map((n) => (
-                      <div class={factRow}>
-                        <dt class={factKey}>{n.label.toLowerCase()}</dt>
-                        <dd class={factVal}>{n.text}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                )}
-                <div class="mt-6 flex flex-wrap items-baseline gap-x-7 gap-y-3">
-                  {w.visit && (
-                    <a
-                      href={w.visit.href}
-                      target="_blank"
-                      rel="noopener"
-                      class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
-                    >
-                      <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
-                        {w.visit.label.toLowerCase()}
-                      </span>
-                      <span
-                        class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
-                        aria-hidden="true"
-                      >
-                        →
-                      </span>
-                    </a>
-                  )}
+                <div class="mt-auto pt-6">
                   <a
                     href={`/work/#${entry.id}`}
                     class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
@@ -588,10 +579,13 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
         const packet = conn.querySelector<HTMLElement>('.conn-packet');
         const arrow = conn.querySelector<HTMLElement>('.conn-arrow');
         if (!packet) return;
+        // the stacked mobile schematic turns the leader upright, so the pen
+        // head travels top-to-bottom instead of left-to-right
+        const upright = conn.offsetHeight > conn.offsetWidth;
         tl.add(
           packet,
           {
-            left: ['0%', '100%'],
+            ...(upright ? { top: ['0%', '100%'] } : { left: ['0%', '100%'] }),
             // fade in fast, ride the line lit, snuff out on arrival
             opacity: [
               { to: 1, duration: 70 },
@@ -673,6 +667,15 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
 
   document.addEventListener('astro:page-load', initRelays);
   document.addEventListener('astro:before-swap', teardown);
+
+  // the fig. 01 leaders swap axis at the 900px breakpoint (horizontal row ↔
+  // stacked column), so rebuild the relays after a resize settles; teardown
+  // reverts any half-travelled pen head onto the fresh axis
+  let relayResizeTimer = 0;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(relayResizeTimer);
+    relayResizeTimer = window.setTimeout(initRelays, 200);
+  });
 </script>
 
 <script>
