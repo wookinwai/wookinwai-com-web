@@ -447,8 +447,8 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
     >
       {
         steps.map(([id, h, p]) => (
-          <div class="tl-stop relative pr-9 pt-[30px] max-[760px]:pt-0">
-            <span class="tl-mark max-[760px]:hidden" aria-hidden="true" />
+          <div class="tl-stop relative pr-9 pt-[30px] max-[760px]:pl-[34px] max-[760px]:pr-0 max-[760px]:pt-0">
+            <span class="tl-mark" aria-hidden="true" />
             <div class="mb-3 font-mono text-anno text-soft">step {id} /</div>
             <h3 class="mb-2 mt-0 text-[21px] font-semibold italic text-ink">{h}</h3>
             <p class="m-0 text-[15px] text-mut">{p}</p>
@@ -662,20 +662,43 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
       }
       tl.add(packet, { opacity: 0, duration: DWELL }, at + WALK);
       bind(stops, tl);
+    } else if (stops && marks.length === 4 && marks.every(visible)) {
+      // stacked layout (the baseline is hidden): the relay becomes a checklist
+      // running down the left rail — each stop ticks green in turn, the full
+      // list holds for a beat, then the board clears and rests before looping.
+      const tl = createTimeline({ loop: true, autoplay: false });
+      let at = 0;
+      marks.forEach((m) => {
+        tl.add(
+          m,
+          { scale: [1, 1.35, 1], duration: 420, ease: 'outQuad', onBegin: () => m.classList.add('is-done') },
+          at
+        );
+        at += 820;
+      });
+      // hold the completed list, wipe it, then rest before the next pass
+      tl.add(
+        marks[0],
+        { scale: 1, duration: 900, onComplete: () => marks.forEach((m) => m.classList.remove('is-done')) },
+        at + 600
+      );
+      tl.add(marks[0], { scale: 1, duration: DWELL }, at + 1500);
+      bind(stops, tl);
     }
   }
 
   document.addEventListener('astro:page-load', initRelays);
   document.addEventListener('astro:before-swap', teardown);
 
-  // the fig. 01 leaders swap axis at the 900px breakpoint (horizontal row ↔
-  // stacked column), so rebuild the relays after a resize settles; teardown
-  // reverts any half-travelled pen head onto the fresh axis
-  let relayResizeTimer = 0;
-  window.addEventListener('resize', () => {
-    window.clearTimeout(relayResizeTimer);
-    relayResizeTimer = window.setTimeout(initRelays, 200);
-  });
+  // the relays swap shape at the layout breakpoints (fig. 01 flips axis at
+  // 900px, fig. 05 loses its baseline at 760px), so rebuild when a breakpoint
+  // is crossed. Listen to matchMedia changes, NOT window resize: on phones,
+  // scrolling collapses the URL bar and fires resize constantly, and a
+  // resize-driven rebuild kept resetting the relay to zero mid-scroll —
+  // which read as the animation never running at all.
+  for (const bp of ['(max-width: 900px)', '(max-width: 760px)']) {
+    window.matchMedia(bp).addEventListener('change', () => initRelays());
+  }
 </script>
 
 <script>

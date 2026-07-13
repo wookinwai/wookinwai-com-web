@@ -344,6 +344,31 @@ body {
   border-color: var(--color-acc);
 }
 
+/* stacked mobile timeline: the baseline turns into a left rail. Each step
+   keeps its square marker beside the step label, and a rule runs down the
+   column connecting marker to marker (behind the opaque markers, so it reads
+   as one continuous line). The relay stays a desktop affair — the rail is
+   static here, like the reduced-motion state. */
+@media (max-width: 760px) {
+  .tl-mark {
+    top: 3px; /* optically centered on the `step NN /` label line */
+  }
+  /* marker is 11px wide with the 1.5px rule centered under it:
+     11/2 - 1.5/2 = 4.75px. bottom reaches through the 36px grid gap to the
+     next stop's marker (36px gap + 3px marker top). */
+  .tl-stop::before {
+    content: '';
+    position: absolute;
+    left: 4.75px;
+    top: 8px;
+    bottom: -39px;
+    border-left: 1.5px solid var(--color-rule);
+  }
+  .tl-stop:last-child::before {
+    content: none;
+  }
+}
+
 /* hero kicker — the mono/serif eyebrow that sits above a display heading */
 .kicker {
   font-family: var(--font-mono);
