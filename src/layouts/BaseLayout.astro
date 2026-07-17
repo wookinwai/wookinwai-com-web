@@ -7,19 +7,28 @@ import PlotBackground from '../components/PlotBackground.astro';
 import { SITE } from '../consts';
 import { siteGraph } from '../lib/seo';
 
-// Self-hosted fonts (Fontsource). The Drafting Table speaks in Hanken Grotesk
-// (voice + display) and Crimson Pro (annotations, labels, figure numbers).
-// Both are variable builds carrying the full [wght] axis plus an italic cut,
-// so headings, body, the green-italic emphasis word, and the serif annotations
-// all draw from a handful of woff2 files.
+// Self-hosted fonts (Fontsource). The Drafting Table sets headings in Alegreya
+// Sans, the body voice in Hanken Grotesk, and annotations/labels/figure numbers
+// in Crimson Pro. Hanken Grotesk and Crimson Pro are variable builds (full [wght]
+// axis plus italic); Alegreya Sans is static, so only the heading weights the
+// design uses are pulled in: 400/700/800 normal plus 500/700/800 italic (the
+// working-question blockquote, card titles, and the em-acc word).
+import '@fontsource/alegreya-sans/400.css';
+import '@fontsource/alegreya-sans/500-italic.css';
+import '@fontsource/alegreya-sans/700.css';
+import '@fontsource/alegreya-sans/700-italic.css';
+import '@fontsource/alegreya-sans/800.css';
+import '@fontsource/alegreya-sans/800-italic.css';
 import '@fontsource-variable/hanken-grotesk/wght.css';
 import '@fontsource-variable/hanken-grotesk/wght-italic.css';
 import '@fontsource-variable/crimson-pro/wght.css';
 import '@fontsource-variable/crimson-pro/wght-italic.css';
 import '../styles/global.css';
 
-// Preload the above-the-fold body/display face.
+// Preload the above-the-fold faces: the Hanken Grotesk body and the Alegreya
+// Sans 800 that carries the page-hero headings.
 import sansWoff2 from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
+import displayWoff2 from '@fontsource/alegreya-sans/files/alegreya-sans-latin-800-normal.woff2?url';
 
 export interface Props {
   title: string;
@@ -87,6 +96,7 @@ const ogImageURL = new URL(ogImage, site).href;
     </script>
 
     <link rel="preload" as="font" type="font/woff2" href={sansWoff2} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={displayWoff2} crossorigin />
 
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

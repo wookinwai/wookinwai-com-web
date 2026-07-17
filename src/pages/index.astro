@@ -108,7 +108,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
   <header class="max-w-[880px] pt-[92px] pb-9 max-[760px]:pt-16">
     <div class="rise d1 mb-[30px] kicker">software builder &amp; technical partner · kuala lumpur, gmt+8</div>
     <h1
-      class="rise d2 mb-[34px] text-balance font-sans text-[clamp(34px,5.4vw,64px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
+      class="rise d2 mb-[34px] text-balance font-display text-[clamp(34px,5.4vw,64px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
     >
       I help businesses shape and build the software they need for their{' '}
       <em class="em-acc">next stage of growth</em>.
@@ -144,7 +144,10 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                 ]}
               >
                 <div
-                  class:list={['mb-2.5 text-[25px] font-bold italic leading-none', f.build ? 'text-acc' : 'text-ink']}
+                  class:list={[
+                    'mb-2.5 font-display text-[25px] font-bold italic leading-none',
+                    f.build ? 'text-acc' : 'text-ink',
+                  ]}
                 >
                   {f.label}
                 </div>
@@ -240,7 +243,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
               ]}
             >
               <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-[22px] py-4">
-                <h3 class="m-0 whitespace-nowrap text-[27px] font-semibold text-ink">{w.name}</h3>
+                <h3 class="m-0 whitespace-nowrap font-display text-[27px] font-semibold text-ink">{w.name}</h3>
                 <span class="text-[16px] italic text-mut">{w.tease}</span>
               </div>
               <div class="flex items-center gap-3.5 border-l border-line px-[22px] py-4 font-mono text-anno text-mut max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-line max-[900px]:py-2.5">
@@ -326,7 +329,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
       hasClosed && (
         <aside class="mt-12 border border-dashed border-mut bg-bg px-[26px] py-6 max-[560px]:px-5">
           <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <h3 class="m-0 text-[19px] font-semibold text-ink">Oryza Technologies</h3>
+            <h3 class="m-0 font-display text-[19px] font-semibold text-ink">Oryza Technologies</h3>
             <span class="flex items-center gap-1.5 font-mono text-anno text-mut">
               <span class="smark closed" /> closed
             </span>
@@ -360,7 +363,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
       {
         cases.map(([, h, p]) => (
           <div class="border-b border-line py-[26px]">
-            <h3 class="mb-2 mt-0 text-[21.5px] font-semibold leading-[1.3] text-ink">{h}</h3>
+            <h3 class="mb-2 mt-0 font-display text-[21.5px] font-semibold leading-[1.3] text-ink">{h}</h3>
             <p class="m-0 text-[15.5px] text-mut">{p}</p>
           </div>
         ))
@@ -414,7 +417,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
     >
       <Ticks />
       <span class="whitespace-nowrap font-mono text-anno text-acc">the working question /</span>
-      <blockquote class="m-0 text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
+      <blockquote class="m-0 font-display text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
         What system does this business need in order to grow?
       </blockquote>
     </div>
@@ -450,7 +453,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
           <div class="tl-stop relative pr-9 pt-[30px] max-[760px]:pl-[34px] max-[760px]:pr-0 max-[760px]:pt-0">
             <span class="tl-mark" aria-hidden="true" />
             <div class="mb-3 font-mono text-anno text-soft">step {id} /</div>
-            <h3 class="mb-2 mt-0 text-[21px] font-semibold italic text-ink">{h}</h3>
+            <h3 class="mb-2 mt-0 font-display text-[21px] font-semibold italic text-ink">{h}</h3>
             <p class="m-0 text-[15px] text-mut">{p}</p>
           </div>
         ))
@@ -471,7 +474,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
   <!-- contact — the title block -->
   <section class="reveal pb-12 pt-[110px] max-[760px]:pt-20 max-[760px]:scroll-mt-12" id="contact">
     <p
-      class="mx-auto mb-14 max-w-[760px] text-balance text-center text-[clamp(26px,3.6vw,40px)] font-extrabold leading-[1.25] tracking-[-0.01em] text-ink"
+      class="mx-auto mb-14 max-w-[760px] text-balance text-center font-display text-[clamp(26px,3.6vw,40px)] font-extrabold leading-[1.25] tracking-[-0.01em] text-ink"
     >
       If you can describe where your business is trying to grow,{' '}
       <em class="em-acc">I can help you work out the system it needs.</em>

@@ -17,7 +17,7 @@ const graph = pageGraph({ url: Astro.url, title, description });
   <header class="max-w-[880px] pt-[92px] max-[760px]:pt-16">
     <div class="mb-[30px] kicker">notes /</div>
     <h1
-      class="mb-[30px] font-sans text-[clamp(32px,5.4vw,58px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
+      class="mb-[30px] font-display text-[clamp(32px,5.4vw,58px)] font-extrabold leading-[1.08] tracking-[-0.018em] text-ink"
     >
       Field <em class="em-acc">notes</em>
     </h1>
@@ -43,7 +43,7 @@ const graph = pageGraph({ url: Astro.url, title, description });
               {fmt(note.data.pubDate)}
             </div>
             <div>
-              <div class="text-[22px] font-semibold leading-[1.12] text-ink transition-colors group-hover:text-acc">
+              <div class="font-display text-[22px] font-semibold leading-[1.12] text-ink transition-colors group-hover:text-acc">
                 {note.data.title}
               </div>
               <p class="mt-1.5 text-[14.5px] leading-[1.55] text-mut">{note.data.description}</p>

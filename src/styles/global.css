@@ -41,7 +41,9 @@
   --color-on-accent: #f4f0e2;
   --color-on-ink: #f4f0e2;
 
-  /* families — grotesque voice, Crimson Pro serif annotations */
+  /* families — Alegreya Sans headings, Hanken Grotesk body voice, Crimson Pro
+     serif annotations. `font-display` carries the headings; `font-sans` the body. */
+  --font-display: 'Alegreya Sans', 'Hanken Grotesk Variable', system-ui, sans-serif;
   --font-sans: 'Hanken Grotesk Variable', 'Hanken Grotesk', system-ui, sans-serif;
   /* --font-mono keeps its utility name (`font-mono`) but now carries the serif
      annotation face; --font-code stays monospace for code/pre in prose. */
@@ -562,7 +564,7 @@ html.motion [data-stagger] > * {
 }
 .proc-title {
   margin: 0 0 8px;
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.015em;

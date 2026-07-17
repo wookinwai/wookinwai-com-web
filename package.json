@@ -21,6 +21,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/crimson-pro": "^5.2.8",
     "@fontsource-variable/hanken-grotesk": "^5.2.8",
+    "@fontsource/alegreya-sans": "^5.2.8",
     "@fontsource/crimson-pro": "^5.2.8",
     "@fontsource/hanken-grotesk": "^5.2.8",
     "@jdevalk/astro-seo-graph": "^2.2.0",
