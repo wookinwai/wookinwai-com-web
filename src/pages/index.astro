@@ -43,6 +43,18 @@ const outcomes: Record<string, string> = {
   'beyond-insights': 'Mobile app live on iOS and Android, student portal rebuild in progress.',
   concrix: 'Demand validated on a lean first version, custom marketplace in build.',
 };
+// Per-card "how involved" line: the short engagement summary. Homepage-only
+// and LOCAL for now, kept here rather than pulled from /api/work; the CMS
+// `role` field will carry this once the API is reworked to serve it. Keyed by
+// slug; an entry without a line here simply omits the block.
+const involvement: Record<string, string> = {
+  tixlah:
+    'I lead the platform architecture and technical direction, with the Tiny Edges team involved in implementation. Longer-term partnership with a share in the outcome.',
+  'beyond-insights':
+    'Fee-based build partner. I lead the technical recommendations and delivery direction, with the Tiny Edges team involved in implementation.',
+  concrix:
+    'Technical partner with a stake in the venture, involved in the product direction, business model, validation, and custom platform build.',
+};
 
 // fig. 01 — the schematic: growth → gap → build.
 const flow = [
@@ -255,6 +267,12 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                     →
                   </span>
                 </div>
+                {involvement[entry.id] && (
+                  <div class="mt-2.5 border-t border-line pt-2.5">
+                    <div class="font-mono text-anno-sm text-soft">how involved /</div>
+                    <p class="mt-1 text-[13.5px] leading-[1.5] text-mut">{involvement[entry.id]}</p>
+                  </div>
+                )}
               </div>
             </a>
           );

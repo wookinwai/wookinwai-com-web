@@ -48,34 +48,31 @@ const studies: Study[] = [
   {
     slug: 'concrix',
     name: 'Concrix',
-    tease: 'A marketplace matching surplus construction materials to live demand.',
+    tease: 'A marketplace for surplus construction materials.',
     status: 'building',
     statusLabel: 'in build',
     relationship: 'stake or revenue-share partnership',
     roleLabel: 'technical partner',
     gap: [
-      'Surplus construction materials hold real value, but the trade mostly happens through informal WhatsApp and Facebook groups. Supply and demand are scattered across chats, posts, and personal networks, making it hard for sellers and buyers to find each other at the right time.',
+      'Surplus construction materials hold real value, but much of the trade still happens through WhatsApp groups, Facebook posts, and personal networks. Supply and demand stay scattered across chats and personal contacts, so sellers and buyers struggle to find each other at the right time.',
     ],
     system: [
-      'A marketplace that gives the trade a clearer structure: listing, discovery, matching, and the early system needed to move from informal demand to a working product.',
+      'A custom marketplace built around listing, discovery, matching, and the workflows that emerge as we keep validating the business: structure that moves the trade from scattered informal demand toward a working product.',
     ],
     decisions: [
       // [NOTE] The validate-then-rebuild story is deliberately told here and
-      // not on the homepage card. Cut this block to untell it everywhere.
+      // not on the homepage card. Cut these blocks to untell it everywhere.
       {
         lead: 'Validate cheap, then build properly.',
-        body: 'The first version ran on WooCommerce: enough marketplace to test whether sellers would list and buyers would come, without betting a custom build on an unproven market. Demand proved out, and the platform is now being rebuilt as a custom system designed around how the trade actually works.',
+        body: 'The first version ran on WooCommerce so we could put the idea into the market quickly and start learning from real use, without betting a custom build on an unproven market. That version validated the problem, and the platform is now being rebuilt as a custom system designed around how the trade actually works.',
       },
-      // [ASSUMPTION] Placeholder second decision — replace with a real one
-      // (matching logic, seller onboarding, payments, ...).
       {
-        lead: 'Structure the listing around how sellers already describe stock.',
-        body: 'Sellers were not going to fill in long forms. The listing flow was shaped around the way surplus stock is already described in chats, lowering the barrier to getting real inventory onto the platform.',
+        lead: 'Move to a custom platform to follow the business, not the store.',
+        body: 'WooCommerce validated the first version fast, but it also forced the product into a conventional e-commerce shape. A custom build lets the system follow the business model as it evolves, pivoting and reshaping workflows as real market needs come into focus, instead of bending every new direction to fit a standard online store.',
       },
     ],
-    role: 'Technical partner from the start, building from zero with a stake in the venture.',
-    // [ASSUMPTION] Confirm the custom build's actual status.
-    currentState: 'In build, moving from the validated first version to the custom platform.',
+    role: 'Technical partner from the start, with a stake in the venture. Because this is a partnership and not a fee engagement, I sit closer to the product direction, business model, and path to market fit, not only the code. I am now rebuilding the platform to give us more room to pivot as the business evolves.',
+    currentState: 'In build. Rebuilding from the validated WooCommerce version into a custom platform, still testing the business model and working toward market fit.',
     // [PENDING] Current Concrix stack still owed (earlier change-list item #8);
     // row is omitted until it lands here and in the CMS.
     stack: [],
@@ -83,69 +80,57 @@ const studies: Study[] = [
   {
     slug: 'tixlah',
     name: 'Tixlah',
-    tease: 'One dashboard for event registration, payments, and check-in.',
+    tease: 'An e-ticketing platform built mainly for running and sports events.',
     status: 'testing',
     statusLabel: 'in testing',
     relationship: 'stake or revenue-share partnership',
     roleLabel: 'platform architect',
     gap: [
-      'Running and sports events in Malaysia sell out fast and run on tight event-day logistics. Organisers were stitching together registration forms, payment links, spreadsheets, and manual check-in lists. Each tool worked on its own. Together they created duplicated data, slow entry queues, and organisers doing reconciliation at midnight before race day.',
+      'Running and sports events need a clear flow from registration and payment through to participant management and event-day entry.',
+      'Organisers often rely on separate forms, payment tools, spreadsheets, and check-in lists. Each tool may work on its own, but together they create duplicated work, fragmented records, and more operational effort for the organiser.',
     ],
     system: [
-      'An e-ticketing platform built with EC Pixels Asia: event listings, tiered ticket purchases, payment, participant management, and QR-based event-day entry, in one flow. A participant reserves a spot, pays, and receives a QR confirmation. An organiser sees registration, payment, and check-in as one record instead of three.',
+      'An e-ticketing platform that brings event listings, registration, payment, ticket confirmation, participant management, and event-day check-in into one system.',
     ],
-    // [ASSUMPTION] All three decisions below are plausible inventions to show
-    // the shape. Replace with the real decisions.
     decisions: [
       {
-        lead: 'Built on Cloudflare Workers for event-day spikes.',
-        body: 'Registration traffic is bursty: quiet for weeks, then a spike when an event opens or on race morning. A serverless edge setup meant the platform does not pay for idle capacity and does not fall over at the moment it matters most.',
+        lead: 'Built for the events, not general ticketing.',
+        body: 'The platform was designed around the needs of running and sports events, rather than as a general-purpose ticketing website.',
       },
       {
-        lead: 'Check-in had to survive a bad connection.',
-        body: 'Race venues have unreliable networks. The entry flow was designed so scanning keeps working when connectivity drops, syncing once it returns.',
-      },
-      {
-        lead: 'One organiser first, marketplace later.',
-        body: "The first version was proven with a single organiser's real events before generalising to many, keeping permissions and tenancy simple while the core flow was tested.",
+        lead: 'A technical foundation built for event-day load.',
+        body: 'The technical foundation had to support concentrated registration traffic, reliable ticket allocation, payment processing, and the operational workflows that organisers need before and during an event.',
       },
     ],
-    // [ASSUMPTION] Check the division of roles with EC Pixels is described fairly.
-    role: 'Platform architect and builder. I shaped the system design and data model, built the platform, and stay involved as it moves toward launch. EC Pixels Asia brings the event operations side. I hold a stake or revenue-share partnership in the outcome.',
-    // [ASSUMPTION] "with real event flows", confirm.
+    role: 'I lead the platform architecture and technical direction, working closely with EC Pixels Asia on the product and business requirements. The Tiny Edges team is involved in the implementation, turning the agreed platform direction into the working product. The arrangement includes continued involvement and a share in the outcome.',
     currentState: 'In testing with real event flows ahead of official launch.',
     stack: ['astro', 'hono', 'cloudflare workers', 'postgresql'],
   },
   {
     slug: 'beyond-insights',
     name: 'Beyond Insights',
-    tease: 'A learning platform for an investment educator.',
+    tease: 'A learning platform for an investment and trading educator.',
     status: 'building',
     statusLabel: 'in build',
     relationship: 'fee-based engagement',
     roleLabel: 'build partner',
     gap: [
-      'Beyond Insights teaches thousands of students, many of whom stay with their programs for years. The company wanted to reach students on mobile and serve them through an updated portal. The student journey involved access, accounts, learning support, and operational workflows that needed a clearer product flow.',
+      'Beyond Insights teaches thousands of students across web and mobile. The student experience spans account access, course content, learning support, and ongoing programme participation, and those flows needed a clearer, more consistent product structure than the existing portal and apps gave them.',
     ],
     system: [
-      "The student-facing products: a mobile app that puts courses on students' phones, shipped on iOS and Android, and the next version of the student portal behind it, now in build.",
+      'Student-facing products across web and mobile: iOS and Android apps already shipped, with the next version of the web student portal now in build.',
     ],
-    // [ASSUMPTION] All three decisions below need the real reasoning.
     decisions: [
       {
-        lead: 'Scoped to student-facing products, deliberately.',
-        body: 'Their internal team knows their operational tools better than anyone outside could. The engagement covers the products where an outside builder adds the most, and stays out of the systems where it would not.',
+        lead: 'React Native for both mobile platforms.',
+        body: 'One shared codebase for the core mobile experience, deployed to iOS and Android, with room for platform-specific work where it matters. Less duplicated implementation, and one place to move the product forward.',
       },
       {
-        lead: 'Mobile app first.',
-        body: 'Students live on their phones. Shipping the app first put the courses where the students already are, and what it revealed about student behaviour now shapes the portal rebuild.',
-      },
-      {
-        lead: 'Rebuild the portal rather than patch it.',
-        body: 'The existing portal carried years of accumulated workflows. A rebuild made room for a product flow designed around how students actually move through their programs.',
+        lead: 'Next.js for the new student portal.',
+        body: 'A mature ecosystem, broad adoption, and strong ongoing support: a practical foundation for a portal that has to be maintained and extended for years, not just shipped once.',
       },
     ],
-    role: 'Build partner for the student-facing products, on a fee engagement, working alongside their internal team. I shipped the mobile app and am building the portal.',
+    role: 'Build partner on a fee-based engagement. Their team leads the business and product decisions; I provide the technical recommendations, architecture, and delivery direction, and the Tiny Edges team handles implementation across the mobile apps and the web student portal.',
     currentState: 'Mobile app live on iOS and Android. Portal rebuild in progress.',
     stack: ['react native', 'nestjs', 'next.js'],
   },
@@ -242,8 +227,8 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
     </p>
     <p class="rise d3 mt-5 max-w-[700px] text-[16.5px] leading-[1.62] text-ink">
       Two ways I work: <b class="font-semibold">fee-based engagement</b>, or{' '}
-      <b class="font-semibold">a stake or revenue-share partnership</b>. Both are normal ways I work;
-      the model depends on the fit, not the size of the opportunity.
+      <b class="font-semibold">a stake or revenue-share partnership</b>. Both are normal ways I work; the model depends
+      on the fit, not the size of the opportunity.
     </p>
   </header>
 
@@ -277,6 +262,9 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
     orderedStudies.map((s) => {
       const shot = cmsShots.get(s.slug);
       const hasShot = Boolean(shot && (shot.screenshotUrl || shot.shot));
+      // Live-site link (CMS `visit`: { href, label }), shown as its own meta
+      // item. Null for entries without a public URL, so the block is omitted.
+      const visit = shot?.visit ?? null;
       return (
         <section class={anchorWrap} id={s.slug}>
           <header class="relative flex flex-wrap items-baseline gap-x-5 gap-y-2 pb-[22px]">
@@ -310,8 +298,9 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
                 )}
               </figure>
             )}
-            {/* Status, relationship, and role are three different facts; keep
-                them visibly separate instead of one run-together meta line. */}
+            {/* Status, relationship, and role are three separate facts, and
+                the visit link is the one action; keep them visibly distinct
+                instead of one run-together meta line. */}
             <div
               class:list={[
                 'flex font-mono text-anno',
@@ -333,6 +322,19 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
                 <div class="text-anno-sm text-soft">role /</div>
                 <div class="mt-1.5 text-acc">{s.roleLabel}</div>
               </div>
+              {visit && visit.href && (
+                <div>
+                  <div class="text-anno-sm text-soft">visit /</div>
+                  <a
+                    href={visit.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-1.5 inline-block border-b border-acc pb-0.5 text-acc no-underline transition-colors hover:border-acc-2 hover:text-acc-2"
+                  >
+                    {visit.label}
+                  </a>
+                </div>
+              )}
             </div>
           </div>
           <div class="mt-8 max-w-[920px] border-t border-line" data-stagger>
