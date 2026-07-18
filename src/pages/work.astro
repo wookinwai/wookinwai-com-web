@@ -34,7 +34,7 @@ interface Study {
   tease: string;
   status: 'live' | 'building' | 'testing' | 'ongoing' | 'closed';
   statusLabel: string;
-  relationship: string; // engagement model, e.g. 'upside participation'
+  relationship: string; // engagement model, e.g. 'stake or revenue-share partnership'
   roleLabel: string; // short role tag, e.g. 'technical partner'
   gap: string[];
   system: string[];
@@ -51,7 +51,7 @@ const studies: Study[] = [
     tease: 'A marketplace matching surplus construction materials to live demand.',
     status: 'building',
     statusLabel: 'in build',
-    relationship: 'upside participation',
+    relationship: 'stake or revenue-share partnership',
     roleLabel: 'technical partner',
     gap: [
       'Surplus construction materials hold real value, but the trade mostly happens through informal WhatsApp and Facebook groups. Supply and demand are scattered across chats, posts, and personal networks, making it hard for sellers and buyers to find each other at the right time.',
@@ -86,7 +86,7 @@ const studies: Study[] = [
     tease: 'One dashboard for event registration, payments, and check-in.',
     status: 'testing',
     statusLabel: 'in testing',
-    relationship: 'upside participation',
+    relationship: 'stake or revenue-share partnership',
     roleLabel: 'platform architect',
     gap: [
       'Running and sports events in Malaysia sell out fast and run on tight event-day logistics. Organisers were stitching together registration forms, payment links, spreadsheets, and manual check-in lists. Each tool worked on its own. Together they created duplicated data, slow entry queues, and organisers doing reconciliation at midnight before race day.',
@@ -111,7 +111,7 @@ const studies: Study[] = [
       },
     ],
     // [ASSUMPTION] Check the division of roles with EC Pixels is described fairly.
-    role: 'Platform architect and builder. I shaped the system design and data model, built the platform, and stay involved as it moves toward launch. EC Pixels Asia brings the event operations side. I hold upside participation in the outcome.',
+    role: 'Platform architect and builder. I shaped the system design and data model, built the platform, and stay involved as it moves toward launch. EC Pixels Asia brings the event operations side. I hold a stake or revenue-share partnership in the outcome.',
     // [ASSUMPTION] "with real event flows", confirm.
     currentState: 'In testing with real event flows ahead of official launch.',
     stack: ['astro', 'hono', 'cloudflare workers', 'postgresql'],
@@ -122,7 +122,7 @@ const studies: Study[] = [
     tease: 'A learning platform for an investment educator.',
     status: 'building',
     statusLabel: 'in build',
-    relationship: 'engaged to build',
+    relationship: 'fee-based engagement',
     roleLabel: 'build partner',
     gap: [
       'Beyond Insights teaches thousands of students, many of whom stay with their programs for years. The company wanted to reach students on mobile and serve them through an updated portal. The student journey involved access, accounts, learning support, and operational workflows that needed a clearer product flow.',
@@ -241,8 +241,8 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
       what exists today.
     </p>
     <p class="rise d3 mt-5 max-w-[700px] text-[16.5px] leading-[1.62] text-ink">
-      Two ways I work: <b class="font-semibold">engaged to build</b>, on a fee, or{' '}
-      <b class="font-semibold">upside participation</b>, through a stake or revenue share. Both are normal ways I work;
+      Two ways I work: <b class="font-semibold">fee-based engagement</b>, or{' '}
+      <b class="font-semibold">a stake or revenue-share partnership</b>. Both are normal ways I work;
       the model depends on the fit, not the size of the opportunity. One project below was my own venture. It did not
       make it, and it stays on the record.
     </p>
