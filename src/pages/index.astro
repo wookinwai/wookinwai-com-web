@@ -9,7 +9,7 @@ import { SITE, type IconName } from '../consts';
 
 const title = 'Woo Kin Wai: software builder & technical partner';
 const description =
-  'I work with founders and SMEs to shape and build the software their business needs next, from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
+  'I work with founders and SMEs to shape and build the software their business needs next, from products to platforms to internal tools. Founder of Tiny Edges.';
 
 // Selected work — CMS-driven (fig. 02), rendered as a plate grid: the
 // screenshot is the exhibit, the caption carries a homepage-only outcome
@@ -18,6 +18,15 @@ const description =
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 const sheets = work.filter((entry) => entry.data.status !== 'closed');
 const hasClosed = work.some((entry) => entry.data.status === 'closed');
+
+// fig. 06 — the latest field notes; the full log lives on /notes/. With the
+// CMS unreachable in dev the collection is [], and the section hides itself.
+const notes = (await getCollection('notes'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+// Same date shape as the /notes index (inline there too, not a shared helper).
+const fmtDate = (d: Date) =>
+  `${d.getUTCFullYear()} · ${String(d.getUTCMonth() + 1).padStart(2, '0')} · ${String(d.getUTCDate()).padStart(2, '0')}`;
 
 const statusLabel = {
   live: 'live',
@@ -417,6 +426,45 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
       >
     </a>
   </section>
+
+  <!-- fig. 06 — the latest field notes -->
+  {
+    notes.length > 0 && (
+      <section class={secWrap} id="notes">
+        <SectionHead title="Latest" em="notes" sub="recent thinking on software, systems, and building." />
+        <div class="mt-2 border-t border-line" data-stagger>
+          {notes.map((note) => (
+            <a
+              href={`/notes/${note.data.slug}/`}
+              class="group grid grid-cols-[150px_1fr] items-baseline gap-[18px] border-b border-line py-[22px] no-underline transition-colors hover:bg-panel max-[760px]:grid-cols-1 max-[760px]:gap-2"
+            >
+              <div class="whitespace-nowrap pt-1 font-mono text-anno text-soft transition-colors group-hover:text-acc">
+                {fmtDate(note.data.pubDate)}
+              </div>
+              <div>
+                <div class="font-display text-[22px] font-semibold leading-[1.12] text-ink transition-colors group-hover:text-acc">
+                  {note.data.title}
+                </div>
+                <p class="mb-0 mt-1.5 text-[14.5px] leading-[1.55] text-mut">{note.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <a href="/notes/" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-anno-md no-underline">
+          <span class="text-soft">more /</span>
+          <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
+            all field notes
+          </span>
+          <span
+            class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
+            aria-hidden="true"
+          >
+            →
+          </span>
+        </a>
+      </section>
+    )
+  }
 
   <!-- contact — the title block -->
   <section class="reveal pb-12 pt-[110px] max-[760px]:pt-20 max-[760px]:scroll-mt-12" id="contact">
