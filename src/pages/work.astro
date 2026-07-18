@@ -39,6 +39,7 @@ interface Study {
   gap: string[];
   system: string[];
   decisions: Decision[];
+  decisionsLabel?: string; // field label for the decisions block; defaults to 'decisions along the way'
   role: string;
   currentState: string;
   stack: string[]; // empty = row omitted
@@ -51,29 +52,30 @@ const studies: Study[] = [
     tease: 'A marketplace for surplus construction materials.',
     status: 'building',
     statusLabel: 'in build',
-    relationship: 'stake or revenue-share partnership',
+    relationship: 'stake in the venture',
     roleLabel: 'technical partner',
     gap: [
       'Surplus construction materials hold real value, but much of the trade still happens through WhatsApp groups, Facebook posts, and personal networks. Supply and demand stay scattered across chats and personal contacts, so sellers and buyers struggle to find each other at the right time.',
     ],
     system: [
-      'A custom marketplace built around listing, discovery, matching, and the workflows that emerge as we keep validating the business: structure that moves the trade from scattered informal demand toward a working product.',
+      'A custom marketplace built around listing, discovery, matching, and the workflows that emerge as we continue validating the business.',
+      'The aim is to move the trade from scattered informal demand towards a working product.',
     ],
     decisions: [
       // [NOTE] The validate-then-rebuild story is deliberately told here and
       // not on the homepage card. Cut these blocks to untell it everywhere.
       {
-        lead: 'Validate cheap, then build properly.',
-        body: 'The first version ran on WooCommerce so we could put the idea into the market quickly and start learning from real use, without betting a custom build on an unproven market. That version validated the problem, and the platform is now being rebuilt as a custom system designed around how the trade actually works.',
+        lead: 'Use the first version to learn quickly.',
+        body: 'The first version ran on WooCommerce so we could put the idea into the market without betting on a large custom build. It gave us something real to learn from and helped confirm that the problem was worth pursuing.',
       },
       {
         lead: 'Move to a custom platform to follow the business, not the store.',
-        body: 'WooCommerce validated the first version fast, but it also forced the product into a conventional e-commerce shape. A custom build lets the system follow the business model as it evolves, pivoting and reshaping workflows as real market needs come into focus, instead of bending every new direction to fit a standard online store.',
+        body: 'WooCommerce helped us test the first version quickly, but it also placed the product inside a conventional e-commerce structure. We are still testing the business model and working towards market fit. A custom build gives us more room to change the workflows, pivot the product, and shape the system around what the market teaches us.',
       },
     ],
-    role: 'Technical partner from the start, with a stake in the venture. Because this is a partnership and not a fee engagement, I sit closer to the product direction, business model, and path to market fit, not only the code. I am now rebuilding the platform to give us more room to pivot as the business evolves.',
+    role: 'I am the technical partner from the start, with a stake in the venture. Because this is a partnership rather than a fee-based engagement, I am more closely involved in the product direction, business model, technical decisions, and path to market fit, not only the code. I am now leading the custom platform build so we have more room to pivot and learn as the business evolves.',
     currentState:
-      'In build. Rebuilding from the validated WooCommerce version into a custom platform, still testing the business model and working toward market fit.',
+      'In build. Moving from the first WooCommerce version into a custom platform, still testing the business model and working towards market fit.',
     // [PENDING] Current Concrix stack still owed (earlier change-list item #8);
     // row is omitted until it lands here and in the CMS.
     stack: [],
@@ -84,7 +86,7 @@ const studies: Study[] = [
     tease: 'An e-ticketing platform built mainly for running and sports events.',
     status: 'testing',
     statusLabel: 'in testing',
-    relationship: 'stake or revenue-share partnership',
+    relationship: 'longer-term partnership with a share in the outcome',
     roleLabel: 'platform architect',
     gap: [
       'Running and sports events need a clear flow from registration and payment through to participant management and event-day entry.',
@@ -95,15 +97,15 @@ const studies: Study[] = [
     ],
     decisions: [
       {
-        lead: 'Built for the events, not general ticketing.',
+        lead: 'Built around running and sports events.',
         body: 'The platform was designed around the needs of running and sports events, rather than as a general-purpose ticketing website.',
       },
       {
-        lead: 'A technical foundation built for event-day load.',
-        body: 'The technical foundation had to support concentrated registration traffic, reliable ticket allocation, payment processing, and the operational workflows that organisers need before and during an event.',
+        lead: 'Built for registration peaks and event-day operations.',
+        body: 'The technical foundation had to support concentrated registration traffic, reliable ticket allocation, payment processing, and the operational workflows organisers need before and during an event.',
       },
     ],
-    role: 'I lead the platform architecture and technical direction, working closely with EC Pixels Asia on the product and business requirements. The Tiny Edges team is involved in the implementation, turning the agreed platform direction into the working product. The arrangement includes continued involvement and a share in the outcome.',
+    role: 'I lead the platform architecture and technical direction, working closely with EC Pixels Asia on the product and event requirements. The Tiny Edges team is involved in the implementation, turning the agreed direction into the working platform. This is a longer-term partnership with a share in the outcome.',
     currentState: 'In testing with real event flows ahead of official launch.',
     stack: ['astro', 'hono', 'cloudflare workers', 'postgresql'],
   },
@@ -115,23 +117,24 @@ const studies: Study[] = [
     statusLabel: 'in build',
     relationship: 'fee-based engagement',
     roleLabel: 'build partner',
+    decisionsLabel: 'technical choices',
     gap: [
-      'Beyond Insights teaches thousands of students across web and mobile. The student experience spans account access, course content, learning support, and ongoing programme participation, and those flows needed a clearer, more consistent product structure than the existing portal and apps gave them.',
+      'Beyond Insights teaches thousands of students. Its student-facing products span web and mobile, covering account access, course content, learning support, and ongoing programme participation. Their team brought Tiny Edges in to improve those flows across the web student portal and mobile apps.',
     ],
     system: [
       'Student-facing products across web and mobile: iOS and Android apps already shipped, with the next version of the web student portal now in build.',
     ],
     decisions: [
       {
-        lead: 'React Native for both mobile platforms.',
-        body: 'One shared codebase for the core mobile experience, deployed to iOS and Android, with room for platform-specific work where it matters. Less duplicated implementation, and one place to move the product forward.',
+        lead: 'Use React Native for the mobile apps.',
+        body: 'I recommended React Native so the core mobile experience could be developed through a shared codebase and deployed across both iOS and Android. This reduced duplicated implementation while still allowing platform-specific work where needed.',
       },
       {
-        lead: 'Next.js for the new student portal.',
-        body: 'A mature ecosystem, broad adoption, and strong ongoing support: a practical foundation for a portal that has to be maintained and extended for years, not just shipped once.',
+        lead: 'Use Next.js for the new student portal.',
+        body: 'I recommended Next.js because it is widely adopted, actively maintained, and supported by a mature ecosystem. That made it a practical foundation for a portal that would need to be maintained and extended over time.',
       },
     ],
-    role: 'Build partner on a fee-based engagement. Their team leads the business and product decisions; I provide the technical recommendations, architecture, and delivery direction, and the Tiny Edges team handles implementation across the mobile apps and the web student portal.',
+    role: 'Build partner on a fee-based engagement. Their team leads the business and product decisions. I provide the technical recommendations, architecture, and delivery direction, while the Tiny Edges team handles implementation across the mobile apps and web student portal.',
     currentState: 'Mobile app live on iOS and Android. Portal rebuild in progress.',
     stack: ['react native', 'nestjs', 'next.js'],
   },
@@ -166,7 +169,7 @@ const oryza = {
     ],
     [
       'how it changed the later work',
-      'Architecture is not enough. Business model, timing, market, and distribution decide whether a product survives. Every engagement above starts from that lesson: understand where the business is trying to go before deciding what to build. It is also why Concrix started on a cheap platform instead of a custom one.',
+      'Architecture is not enough. Business model, timing, market, and distribution decide whether a product survives. Every engagement above starts from that lesson: understand where the business is trying to go before deciding what to build. It is also why Concrix started with a lean first version instead of a custom build.',
     ],
   ],
 };
@@ -227,9 +230,12 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
       what exists today.
     </p>
     <p class="rise d3 mt-5 max-w-[700px] text-[16.5px] leading-[1.62] text-ink">
-      Two ways I work: <b class="font-semibold">fee-based engagement</b>, or{' '}
-      <b class="font-semibold">a stake or revenue-share partnership</b>. Both are normal ways I work; the model depends
-      on the fit, not the size of the opportunity.
+      I usually work in one of two ways: through a <b class="font-semibold">fee-based engagement</b>, or through a{' '}
+      <b class="font-semibold">partnership built around a stake or revenue share</b>. Both are normal ways I work. The
+      right model depends on the work, the relationship, and how closely our interests should be aligned.
+    </p>
+    <p class="rise d3 mt-4 max-w-[700px] text-[16.5px] leading-[1.62] text-ink">
+      One project below was my own venture. It did not make it, and it stays on the record.
     </p>
   </header>
 
@@ -356,7 +362,7 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
               </div>
             </div>
             <div class={fieldRow}>
-              <div class={fieldLabel}>decisions along the way /</div>
+              <div class={fieldLabel}>{s.decisionsLabel ?? 'decisions along the way'} /</div>
               <div class="space-y-6">
                 {s.decisions.map((d) => (
                   <div class="max-w-[680px]">
