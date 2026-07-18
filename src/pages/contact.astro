@@ -132,7 +132,13 @@ const checklistRow =
       <ul class="m-0 list-none p-0" data-stagger>
         {
           lessFit.map((item) => (
-            <li class="relative border-b border-line py-3 pl-[26px] text-[15px] leading-[1.5] text-mut before:absolute before:left-0 before:top-[15px] before:h-[7px] before:w-[7px] before:border before:border-soft before:content-['']">
+            <li class="relative border-b border-line py-3 pl-[26px] text-[15px] leading-[1.5] text-mut">
+              <span
+                class="absolute left-0 top-[15px] font-mono text-[15px] leading-none text-warn"
+                aria-hidden="true"
+              >
+                ×
+              </span>
               {item}
             </li>
           ))
@@ -183,7 +189,7 @@ const checklistRow =
     <SectionHead title="Thoughtful builders are" em="welcome." sub="if you want to build together." />
     <div class="max-w-[700px]" data-stagger>
       <p class="mb-5 mt-0 text-[17px] leading-[1.66] text-ink">
-        I am not always looking for more people, but I am always glad to hear from thoughtful builders, designers,
+        I do not always have room for new collaborations, but I am always glad to hear from thoughtful builders, designers,
         operators, and technical people who care about useful work.
       </p>
       <p class="mb-0 text-[17px] leading-[1.66] text-ink">

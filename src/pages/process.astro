@@ -141,7 +141,7 @@ const workingPath = [
           <div class="space-y-1.5">
             {
               workingPath.map(([verb, rest]) => (
-                <p class="m-0 font-display text-[clamp(28px,4.2vw,45px)] font-medium italic leading-[1.12] tracking-[-0.02em] text-ink">
+                <p class="m-0 font-display text-[clamp(28px,4.2vw,45px)] font-semibold italic leading-[1.12] tracking-[-0.02em] text-ink">
                   <em class="em-acc">{verb}</em> {rest}
                 </p>
               ))
@@ -242,7 +242,7 @@ const workingPath = [
           >
             <div class="flex items-baseline justify-between gap-4">
               <span class="font-mono text-anno text-soft">without {stage.toLowerCase()} /</span>
-              <span class="font-mono text-[19px] leading-none text-acc" aria-hidden="true">
+              <span class="font-mono text-[19px] leading-none text-warn" aria-hidden="true">
                 ×
               </span>
             </div>
@@ -267,7 +267,7 @@ const workingPath = [
       {
         principles.map(([h, p]) => (
           <div class="grid grid-cols-[260px_1fr] gap-8 border-b border-line py-6 max-[640px]:grid-cols-1 max-[640px]:gap-2">
-            <div class="font-display text-[17px] font-semibold italic leading-[1.35] text-ink">{h}</div>
+            <div class="font-sans text-[17px] font-semibold italic leading-[1.35] text-ink">{h}</div>
             <p class="m-0 text-[15.5px] leading-[1.62] text-mut">{p}</p>
           </div>
         ))

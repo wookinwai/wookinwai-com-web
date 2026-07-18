@@ -25,6 +25,8 @@
   --color-acc-2: #265a3f;
   --color-acc-soft: rgba(47, 107, 76, 0.09); /* green wash */
 
+  --color-warn: #a4562f; /* terracotta — risk / "not a fit" markers */
+
   /* rules & hairlines */
   --color-rule: #2b261c;
   --color-line: rgba(43, 38, 28, 0.16); /* hair */
@@ -78,6 +80,7 @@ html[data-pal='ink'] {
   --color-acc: #6fae8c;
   --color-acc-2: #5d9d7b;
   --color-acc-soft: rgba(111, 174, 140, 0.12);
+  --color-warn: #cf885d; /* terracotta, lifted for the lamplight bg */
   --color-rule: #ece4d0;
   --color-line: rgba(236, 228, 208, 0.18);
   --color-line-2: rgba(236, 228, 208, 0.035);

@@ -11,9 +11,10 @@ const title = 'Woo Kin Wai: software builder & technical partner';
 const description =
   'I work with founders and SMEs to shape and build the software their business needs next, from products to platforms to internal tools. Founder of Tiny Edges, Kuala Lumpur.';
 
-// Selected work — CMS-driven (fig. 02). Closed ventures come off the card
-// grid and render as a slim strip below it; the full retrospective lives on
-// /work/#oryza.
+// Selected work — CMS-driven (fig. 02), rendered as a plate grid: the
+// screenshot is the exhibit, the caption carries a homepage-only outcome
+// line, and the story (gap, system, decisions, role) lives on /work/.
+// Closed ventures drop to a footnote line; the retrospective is /work/#oryza.
 const work = (await getCollection('work')).sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 const sheets = work.filter((entry) => entry.data.status !== 'closed');
 const hasClosed = work.some((entry) => entry.data.status === 'closed');
@@ -25,7 +26,14 @@ const statusLabel = {
   ongoing: 'ongoing',
   closed: 'closed',
 } as const;
-const modelLabel = { upside: 'upside participation', engaged: 'engaged to build' } as const;
+// Plate captions: outcome-led, homepage-only copy. The CMS tease opens each
+// /work case note, so the plates deliberately say something different; an
+// entry without a line here falls back to its tease.
+const outcomes: Record<string, string> = {
+  tixlah: 'Registration, payment, and QR entry in one flow, testing with real events.',
+  'beyond-insights': 'Mobile app live on iOS and Android, student portal rebuild in progress.',
+  concrix: 'Demand validated on a lean first version, custom marketplace in build.',
+};
 
 // fig. 01 — the schematic: growth → gap → build.
 const flow = [
@@ -120,7 +128,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
       </p>
       <p class="max-w-[700px] text-[18.5px] leading-[1.6] text-ink">
         Sometimes that means building a product from zero. Sometimes it means turning messy operations into software.
-        Sometimes it means helping a founder shape the technical path before the first serious build.
+        Sometimes it means helping a founder shape the technical path before the first build that really matters
       </p>
     </div>
   </header>
@@ -193,167 +201,106 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
 
   <!-- fig. 02 — selected work: the build sheets -->
   <section class:list={[secWrap, 'max-[760px]:scroll-mt-12']} id="work">
-    <SectionHead title="Selected" em="work" />
-    {/* SectionHead's own `sub` is plain text; this replicates it to carry the page link. */}
-    <p class="mb-10 mt-[18px] font-mono text-anno leading-[1.55] text-soft">
-      a few examples of growth needs turned into working systems.{' '}
-      <a href="/work/" class="group inline-flex items-baseline gap-1.5 no-underline">
-        <span
-          class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
-          >all case notes</span
-        >
-        <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
-          >→</span
-        >
-      </a>
-    </p>
-    <div class="mb-9 mt-2 max-w-[760px]">
-      <p class="m-0 text-[16px] leading-[1.6] text-ink">
-        Two ways I work: a <b class="font-semibold">straightforward paid engagement</b>, or a{' '}
-        <b class="font-semibold">selective longer-term partnership</b> through a stake or revenue share. Each project notes
-        the model.
-      </p>
-      <p class="mb-0 mt-2 font-mono text-anno text-mut">
-        The right model depends on the work, the relationship, and how closely our incentives should be aligned.
-      </p>
-    </div>
+    <SectionHead title="Selected" em="work" sub="a few examples of growth needs turned into working systems." />
     {
       work.length === 0 && (
         <p class="mt-3 border-b border-line pb-5 font-mono text-anno text-soft">selected work will appear here.</p>
       )
     }
-    {
-      sheets.map((entry) => {
-        const w = entry.data;
-        const closed = w.status === 'closed';
-        const hasShot = Boolean(w.screenshotUrl || w.shot);
-        // Header meta is relationship + status only; the role gets its own
-        // line below the paragraph. Everything else (opportunity, gap, what
-        // was built, stack) belongs to /work/ now.
-        const model = w.engagement && modelLabel[w.engagement];
-        const roleLine = w.nd.find((n) => /involved|role/i.test(n.label))?.text;
-        return (
-          <article
-            class:list={['mt-12 border bg-bg first-of-type:mt-3', closed ? 'border-dashed border-mut' : 'border-rule']}
-          >
-            <div
-              class:list={[
-                'grid grid-cols-[1fr_auto] border-b max-[900px]:grid-cols-1',
-                closed ? 'border-dashed border-line' : 'border-rule',
-              ]}
+    <div class="mt-2 grid grid-cols-2 gap-7 max-[760px]:grid-cols-1" data-stagger>
+      {
+        sheets.map((entry) => {
+          const w = entry.data;
+          return (
+            <a
+              href={`/work/#${entry.id}`}
+              class="group relative flex flex-col border border-rule bg-bg p-3.5 no-underline transition-colors hover:bg-panel"
             >
-              <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-[22px] py-4">
-                <h3 class="m-0 whitespace-nowrap font-display text-[27px] font-semibold text-ink">{w.name}</h3>
-                <span class="text-[16px] italic text-mut">{w.tease}</span>
-              </div>
-              <div class="flex items-center gap-3.5 border-l border-line px-[22px] py-4 font-mono text-anno text-mut max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-line max-[900px]:py-2.5">
-                <span class="flex items-center gap-1.5 whitespace-nowrap">
-                  <span class:list={['smark', w.status]} />
-                  {statusLabel[w.status]}
-                </span>
-                {model && (
-                  <>
-                    <span class="text-soft" aria-hidden="true">
-                      ·
-                    </span>
-                    <span class="text-acc">{model}</span>
-                  </>
-                )}
-              </div>
-            </div>
-            <div class:list={['grid max-[900px]:grid-cols-1', hasShot ? 'grid-cols-[1.15fr_1fr]' : 'grid-cols-2']}>
-              <div class="border-r border-line p-[30px_34px_34px] max-[900px]:border-r-0 max-[900px]:border-b max-[900px]:border-line max-[900px]:p-6">
-                {hasShot ? (
-                  <div>
-                    <ShotFrame
-                      frame={w.shotFrame}
-                      src={w.screenshotUrl}
-                      alt={w.screenshotAlt || w.shot?.label || `${w.name} screenshot`}
-                      pill={w.shot?.url}
-                      name={w.name}
-                    />
-                    {w.shot?.label && (
-                      <div
-                        class:list={[
-                          'px-0.5 pt-3 font-mono text-anno-sm text-mut',
-                          w.shotFrame === 'mobile' && 'text-center',
-                        ]}
-                      >
-                        {w.shot.label}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  w.bodyHtml && (
-                    <p class="m-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold" set:html={w.bodyHtml} />
-                  )
-                )}
-              </div>
-              <div class="flex flex-col p-[30px_34px_34px] max-[900px]:p-6">
-                {hasShot && w.bodyHtml && (
-                  <p
-                    class="mb-[22px] mt-0 text-[16.5px] leading-[1.58] text-ink [&_b]:font-semibold"
-                    set:html={w.bodyHtml}
+              <Ticks />
+              {/* shots have different frame heights (browser vs mobile bezel),
+                  so each exhibit centres in its cell like a plate on a sheet */}
+              <div class="flex flex-1 flex-col justify-center">
+                <div class:list={[w.shotFrame === 'mobile' && 'mx-auto w-full max-w-[230px] py-2']}>
+                  <ShotFrame
+                    frame={w.shotFrame}
+                    src={w.screenshotUrl}
+                    alt={w.screenshotAlt || w.shot?.label || `${w.name} screenshot`}
+                    pill={w.shot?.url}
+                    name={w.name}
                   />
-                )}
-                {roleLine && (
-                  <div class="border-t border-line pt-4 font-mono text-anno leading-[1.55] text-mut">
-                    <span class="text-soft">my role /</span> {roleLine}
-                  </div>
-                )}
-                <div class="mt-auto pt-6">
-                  <a
-                    href={`/work/#${entry.id}`}
-                    class="group inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
-                  >
-                    <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
-                      full case notes
-                    </span>
-                    <span
-                      class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
-                      aria-hidden="true"
-                    >
-                      →
-                    </span>
-                  </a>
                 </div>
               </div>
-            </div>
-          </article>
-        );
-      })
-    }
+              <div class="px-0.5 pb-0.5 pt-3.5">
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="text-[16.5px] font-semibold leading-[1.3] text-ink transition-colors group-hover:text-acc">
+                    {w.name}
+                  </span>
+                  <span class="flex shrink-0 items-center gap-1.5 whitespace-nowrap font-mono text-anno text-mut">
+                    <span class:list={['smark', w.status]} />
+                    {statusLabel[w.status]}
+                  </span>
+                </div>
+                <div class="mt-1 flex items-baseline justify-between gap-4">
+                  <span class="text-[14px] leading-[1.55] text-mut">{outcomes[entry.id] ?? w.tease}</span>
+                  <span class="text-[14px] text-acc transition-transform group-hover:translate-x-1" aria-hidden="true">
+                    →
+                  </span>
+                </div>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
     {
-      /* Closed-venture strip — the copy is Oryza's; if another venture ever
-         closes in the CMS, this block needs revisiting. */
-      hasClosed && (
-        <aside class="mt-12 border border-dashed border-mut bg-bg px-[26px] py-6 max-[560px]:px-5">
-          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <h3 class="m-0 font-display text-[19px] font-semibold text-ink">Oryza Technologies</h3>
-            <span class="flex items-center gap-1.5 font-mono text-anno text-mut">
-              <span class="smark closed" /> closed
-            </span>
-          </div>
-          <p class="mb-0 mt-2 max-w-[640px] text-[15.5px] leading-[1.6] text-mut">
-            My first venture did not make it. I keep it on the record, because it changed how I build.
-          </p>
-          <a
-            href="/work/#oryza"
-            class="group mt-4 inline-flex items-baseline gap-2 font-mono text-anno-md no-underline"
-          >
-            <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2">
-              the retrospective
-            </span>
-            <span
-              class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2"
-              aria-hidden="true"
-            >
-              →
-            </span>
-          </a>
-        </aside>
-      )
+      /* Section footnotes in the /work fieldRow shape: mono label column,
+        readable sans prose. The Oryza copy is that venture's; if another one
+        ever closes in the CMS, the row needs revisiting. */
     }
+    <div class="mt-10 max-w-[920px] border-t border-line">
+      <div
+        class="grid grid-cols-[220px_1fr] gap-8 border-b border-line py-6 max-[700px]:grid-cols-1 max-[700px]:gap-2.5"
+      >
+        <div class="pt-[2px] font-mono text-anno text-soft max-[700px]:pt-0">the model /</div>
+        <p class="m-0 max-w-[680px] text-[15.5px] leading-[1.62] text-ink">
+          Two ways I work: <b class="font-semibold">engaged to build</b>, on a fee, or{' '}
+          <b class="font-semibold">upside participation</b>, through a stake or revenue share. Each case note records
+          which.
+        </p>
+      </div>
+      {
+        hasClosed && (
+          <div class="grid grid-cols-[220px_1fr] gap-8 border-b border-line py-6 max-[700px]:grid-cols-1 max-[700px]:gap-2.5">
+            <div class="pt-[2px] font-mono text-anno text-soft max-[700px]:pt-0">on the record /</div>
+            <p class="m-0 max-w-[680px] text-[15.5px] leading-[1.62] text-ink">
+              <b class="font-semibold">Oryza Technologies</b> was my first venture, and it did not make it. I keep it on
+              the record because it changed how I build.{' '}
+              <a href="/work/#oryza" class="group/oryza inline-flex items-baseline gap-1.5 no-underline">
+                <span class="border-b border-acc pb-0.5 text-acc transition-colors group-hover/oryza:border-acc-2 group-hover/oryza:text-acc-2">
+                  the retrospective
+                </span>
+                <span
+                  class="text-acc transition-transform group-hover/oryza:translate-x-1 group-hover/oryza:text-acc-2"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+              </a>
+            </p>
+          </div>
+        )
+      }
+    </div>
+    <a href="/work/" class="group mt-8 inline-flex items-baseline gap-2.5 font-mono text-anno-md no-underline">
+      <span class="text-soft">more /</span>
+      <span
+        class="border-b border-acc pb-0.5 text-acc transition-colors group-hover:border-acc-2 group-hover:text-acc-2"
+        >the full case notes: the gap, the system, and the decisions along the way</span
+      >
+      <span class="text-acc transition-transform group-hover:translate-x-1 group-hover:text-acc-2" aria-hidden="true"
+        >→</span
+      >
+    </a>
   </section>
 
   <!-- fig. 03 — what this usually looks like -->
@@ -417,7 +364,7 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
     >
       <Ticks />
       <span class="whitespace-nowrap font-mono text-anno text-acc">the working question /</span>
-      <blockquote class="m-0 font-display text-[clamp(23px,3vw,31px)] font-medium italic leading-[1.35] text-ink">
+      <blockquote class="m-0 font-display text-[clamp(23px,3vw,31px)] font-semibold italic leading-[1.35] text-ink">
         What system does this business need in order to grow?
       </blockquote>
     </div>
