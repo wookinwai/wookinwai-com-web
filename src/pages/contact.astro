@@ -46,7 +46,7 @@ const next = [
 const faqs: { q: string; a: string }[] = [
   {
     q: 'How do you charge?',
-    a: 'Two models. <b class="font-semibold text-ink">Engaged to build</b>: a straightforward project or retainer rate. <b class="font-semibold text-ink">Upside participation</b>: a stake, revenue share, or longer-term partnership, when the opportunity is strong and the fit is right. For upside participation, the work usually starts with a focused paid phase with a useful deliverable, so both sides can test the fit before committing to a longer arrangement.',
+    a: 'Two models. A <b class="font-semibold text-ink">paid engagement</b>,through a project or retainer. Or <b class="font-semibold text-ink">upside participation</b>, through a stake, revenue share, or longer-term partnership when the opportunity is strong and the fit is right.',
   },
   {
     q: 'What size of engagement do you take?',
@@ -133,10 +133,7 @@ const checklistRow =
         {
           lessFit.map((item) => (
             <li class="relative border-b border-line py-3 pl-[26px] text-[15px] leading-[1.5] text-mut">
-              <span
-                class="absolute left-0 top-[15px] font-mono text-[15px] leading-none text-warn"
-                aria-hidden="true"
-              >
+              <span class="absolute left-0 top-[15px] font-mono text-[15px] leading-none text-warn" aria-hidden="true">
                 ×
               </span>
               {item}
@@ -186,11 +183,15 @@ const checklistRow =
 
   <!-- If you want to build together -->
   <section class:list={[secWrap, 'scroll-mt-4 max-[760px]:scroll-mt-12']} id="builders">
-    <SectionHead title="Thoughtful builders are" em="welcome." sub="if you want to build together." />
+    <SectionHead
+      title="For people who want to"
+      em="build together."
+      sub="a note for thoughtful builders, designers, operators, and technical people."
+    />
     <div class="max-w-[700px]" data-stagger>
       <p class="mb-5 mt-0 text-[17px] leading-[1.66] text-ink">
-        I do not always have room for new collaborations, but I am always glad to hear from thoughtful builders, designers,
-        operators, and technical people who care about useful work.
+        I do not always have room for new collaborations, but I am always glad to hear from people who care about useful
+        work.
       </p>
       <p class="mb-0 text-[17px] leading-[1.66] text-ink">
         Send a short note with what you are good at, what kind of work you want to do more of, and one thing you have
