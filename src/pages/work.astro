@@ -40,7 +40,7 @@ interface Study {
   system: string[];
   decisions: Decision[];
   decisionsLabel?: string; // field label for the decisions block; defaults to 'decisions along the way'
-  role: string;
+  role: string[]; // one entry per paragraph
   currentState: string;
   stack: string[]; // empty = row omitted
 }
@@ -74,7 +74,11 @@ const studies: Study[] = [
         body: 'WooCommerce helped us test the first version quickly, but it also placed the product inside a conventional e-commerce structure. We are still testing the business model and working towards market fit. A custom build gives us more room to change the workflows, pivot the product, and shape the system around what the market teaches us.',
       },
     ],
-    role: 'I have been the technical partner from the start, with a stake in the venture. Because this is a partnership rather than a fee-based engagement, my role extends beyond the code into product direction, technical decisions, business-model validation, and the path towards market fit. I am now leading the custom platform build so we have more room to pivot and learn as the business evolves.',
+    role: [
+      'I have been the technical partner from the start, with a stake in the venture.',
+      'Because this is a partnership rather than a fee-based engagement, my role extends beyond the code into product direction, technical decisions, business-model validation, and the path towards market fit.',
+      'I am now leading the custom platform build so we have more room to pivot and learn as the business evolves.',
+    ],
     currentState:
       'In build. Moving from the first WooCommerce version into a custom platform, still testing the business model and working towards market fit.',
     // [PENDING] Current Concrix stack still owed (earlier change-list item #8);
@@ -106,7 +110,10 @@ const studies: Study[] = [
         body: 'The technical foundation had to support concentrated registration traffic, reliable ticket allocation, payment processing, and the operational workflows organisers need before and during an event.',
       },
     ],
-    role: 'I lead the platform architecture and technical direction, working closely with EC Pixels Asia on the product and event requirements. The Tiny Edges team is involved in the implementation, turning the agreed direction into the working platform. This is a longer-term partnership with a share in the outcome.',
+    role: [
+      'I lead the platform architecture and technical direction, working closely with EC Pixels Asia on the product and event requirements. The Tiny Edges team is involved in the implementation, turning the agreed direction into the working platform.',
+      'This is a longer-term partnership with a share in the outcome.',
+    ],
     currentState: 'Live with running events, with the platform continuing to evolve through real organiser and participant use.',
     stack: ['astro', 'hono', 'cloudflare workers', 'postgresql'],
   },
@@ -137,7 +144,9 @@ const studies: Study[] = [
         body: 'I recommended Next.js because it is widely adopted, actively maintained, and supported by a mature ecosystem. That made it a practical foundation for a portal that would need to be maintained and extended over time.',
       },
     ],
-    role: 'Build partner on a fee-based engagement. Their team leads the business and product decisions. I advise on the technical approach and architecture, and work alongside their internal team on delivery. The Tiny Edges team handles implementation across the first mobile apps and the new web student portal.',
+    role: [
+      'Build partner on a fee-based engagement. Their team leads the business and product decisions. I advise on the technical approach and architecture, and work alongside their internal team on delivery. The Tiny Edges team handles implementation across the first mobile apps and the new web student portal.',
+    ],
     currentState: 'First iOS and Android apps shipped. New web student portal in build.',
     stack: ['react native', 'nestjs', 'next.js'],
   },
@@ -164,7 +173,7 @@ const oryza = {
     // pay, wrong timing, no distribution.
     [
       'what the market did not validate',
-      'A business around the build. The product worked, but paying customers, timing, and distribution never lined up to carry it.',
+      'A business around the build. Paying customers, timing, and distribution never lined up to carry it.',
     ],
     [
       'what i would do differently',
@@ -377,7 +386,11 @@ const cmsShots = new Map(cmsWork.map((entry) => [entry.id, entry.data]));
             </div>
             <div class={fieldRow}>
               <div class={fieldLabel}>my role /</div>
-              <p class="m-0 max-w-[680px] text-[16.5px] leading-[1.62] text-ink">{s.role}</p>
+              <div>
+                {s.role.map((p) => (
+                  <p class="mb-4 mt-0 max-w-[680px] text-[16.5px] leading-[1.62] text-ink last:mb-0">{p}</p>
+                ))}
+              </div>
             </div>
             <div class={fieldRow}>
               <div class={fieldLabel}>current state /</div>
