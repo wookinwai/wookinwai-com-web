@@ -35,26 +35,10 @@ const statusLabel = {
   ongoing: 'ongoing',
   closed: 'closed',
 } as const;
-// Plate captions: outcome-led, homepage-only copy. The CMS tease opens each
-// /work case note, so the plates deliberately say something different; an
-// entry without a line here falls back to its tease.
-const outcomes: Record<string, string> = {
-  tixlah: 'Registration, payment, participant management, and QR entry in one flow, now live with running events.',
-  'beyond-insights': 'First iOS and Android apps shipped, new web student portal in build.',
-  concrix: 'Problem validated on a lean first version, custom marketplace in build as we continue testing the business model.',
-};
-// Per-card "how involved" line: the short engagement summary. Homepage-only
-// and LOCAL for now, kept here rather than pulled from /api/work; the CMS
-// `role` field will carry this once the API is reworked to serve it. Keyed by
-// slug; an entry without a line here simply omits the block.
-const involvement: Record<string, string> = {
-  tixlah:
-    'I lead the platform architecture and technical direction, while the Tiny Edges team handles implementation. Longer-term partnership with a share in the outcome.',
-  'beyond-insights':
-    'Build partner on a fee-based engagement. I advise on the technical approach and architecture, and work alongside their internal team on delivery. The Tiny Edges team handles implementation.',
-  concrix:
-    'Technical partner with a stake in the venture, involved in the product direction, technical decisions, business-model validation, and path towards market fit.',
-};
+// Plate caption (`outcome`) and the "how involved" line (`involvement`) are
+// CMS fields on each work entry, edited in the admin. The plate caption is
+// outcome-led and deliberately differs from the tease that opens each /work
+// case note; it falls back to the tease when a card has no outcome set.
 
 // fig. 01 — the schematic: growth → gap → build.
 const flow = [
@@ -262,15 +246,15 @@ const ctaLink = 'border-b border-acc pb-0.5 text-acc transition-colors group-hov
                   </span>
                 </div>
                 <div class="mt-1 flex items-baseline justify-between gap-4">
-                  <span class="text-[14px] leading-[1.55] text-mut">{outcomes[entry.id] ?? w.tease}</span>
+                  <span class="text-[14px] leading-[1.55] text-mut">{w.outcome ?? w.tease}</span>
                   <span class="text-[14px] text-acc transition-transform group-hover:translate-x-1" aria-hidden="true">
                     →
                   </span>
                 </div>
-                {involvement[entry.id] && (
+                {w.involvement && (
                   <div class="mt-2.5 border-t border-line pt-2.5">
                     <div class="font-mono text-anno-sm text-soft">how involved /</div>
-                    <p class="mt-1 text-[13.5px] leading-[1.5] text-mut">{involvement[entry.id]}</p>
+                    <p class="mt-1 text-[13.5px] leading-[1.5] text-mut">{w.involvement}</p>
                   </div>
                 )}
               </div>

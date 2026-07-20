@@ -17,140 +17,49 @@ const secWrap = 'reveal pt-24 max-[760px]:pt-20';
 // below, so they need to clear the sticky header (taller on mobile).
 const anchorWrap = `${secWrap} scroll-mt-24 max-[760px]:scroll-mt-36`;
 
-// Case notes are LOCAL editorial content, deliberately not CMS-driven: the
-// homepage cards stay the CMS summary, this page carries the longer story.
-// Status/model/role strings here must be kept in step with the CMS entries
-// by hand. Ids match the CMS slugs so homepage cards can deep-link.
-//
-// Blocks marked [ASSUMPTION] are scaffolding drafted to show the shape and
-// still need the real story. [PENDING] blocks are awaiting inputs.
-interface Decision {
-  lead: string;
-  body: string;
-}
-interface Study {
-  slug: string;
-  name: string;
-  tease: string;
-  status: 'live' | 'building' | 'testing' | 'ongoing' | 'closed';
-  statusLabel: string;
-  relationship: string; // engagement model, e.g. 'stake or revenue-share partnership'
-  roleLabel: string; // short role tag, e.g. 'technical partner'
-  gap: string[];
-  system: string[];
-  decisions: Decision[];
-  decisionsLabel?: string; // field label for the decisions block; defaults to 'decisions along the way'
-  role: string[]; // one entry per paragraph
-  currentState: string;
-  stack: string[]; // empty = row omitted
-}
+// Case notes are CMS-driven. Each `work` entry carries both the homepage
+// summary and the longer /work story (opportunity & gap, system, decisions,
+// the multi-paragraph "my role", current state); edit it in the CMS admin, not
+// here. Ids are the CMS slugs, so the homepage cards deep-link to #<slug>.
+// Oryza stays a LOCAL block below: a closed venture kept as a retrospective,
+// deliberately not modelled in the CMS.
+const statusLabel = {
+  live: 'live',
+  building: 'in build',
+  testing: 'in testing',
+  ongoing: 'ongoing',
+  closed: 'closed',
+} as const;
 
-const studies: Study[] = [
-  {
-    slug: 'concrix',
-    name: 'Concrix',
-    tease: 'A marketplace for surplus construction materials.',
-    status: 'building',
-    statusLabel: 'in build',
-    relationship: 'stake in the venture',
-    roleLabel: 'technical partner',
-    gap: [
-      'Surplus construction materials hold real value, but much of the trade still happens through WhatsApp groups, Facebook posts, and personal networks. Supply and demand are scattered, making it difficult for sellers and buyers to find each other at the right time.',
-      'The first version of Concrix was built on WooCommerce so we could test the idea quickly and learn from real use. It helped validate that the problem was worth pursuing, but we are still testing the business model, understanding buyer and seller behaviour, and working towards market fit.',
-    ],
-    system: [
-      'A custom marketplace built around listing, discovery, matching, and the workflows that emerge as we continue validating the business.',
-      'The aim is to move the trade from scattered informal demand towards a working product.',
-    ],
-    decisions: [
-      // [NOTE] The validate-then-rebuild story is deliberately told here and
-      // not on the homepage card. Cut these blocks to untell it everywhere.
-      {
-        lead: 'Use the first version to learn quickly.',
-        body: 'The first version ran on WooCommerce so we could put the idea into the market without betting on a large custom build. It gave us something real to learn from and helped confirm that the problem was worth pursuing.',
-      },
-      {
-        lead: 'Move to a custom platform to follow the business, not the store.',
-        body: 'WooCommerce helped us test the first version quickly, but it also placed the product inside a conventional e-commerce structure. We are still testing the business model and working towards market fit. A custom build gives us more room to change the workflows, pivot the product, and shape the system around what the market teaches us.',
-      },
-    ],
-    role: [
-      'I have been the technical partner from the start, with a stake in the venture.',
-      'Because this is a partnership rather than a fee-based engagement, my role extends beyond the code into product direction, technical decisions, business-model validation, and the path towards market fit.',
-      'I am now leading the custom platform build so we have more room to pivot and learn as the business evolves.',
-    ],
-    currentState:
-      'In build. Moving from the first WooCommerce version into a custom platform, still testing the business model and working towards market fit.',
-    // [PENDING] Current Concrix stack still owed (earlier change-list item #8);
-    // row is omitted until it lands here and in the CMS.
-    stack: [],
-  },
-  {
-    slug: 'tixlah',
-    name: 'Tixlah',
-    tease: 'An e-ticketing platform built mainly for running and sports events.',
-    status: 'live',
-    statusLabel: 'live',
-    relationship: 'longer-term partnership with a share in the outcome',
-    roleLabel: 'platform architect',
-    gap: [
-      'Running and sports events need a clear flow from registration and payment through to participant management and event-day entry.',
-      'Organisers often rely on separate forms, payment tools, spreadsheets, and check-in lists. Each tool may work on its own, but together they create duplicated work, fragmented records, and more operational effort.',
-    ],
-    system: [
-      'An e-ticketing platform built with EC Pixels Asia, bringing event listings, registration, payment, participant management, ticket confirmation, and QR-based event-day entry into one system.',
-    ],
-    decisions: [
-      {
-        lead: 'Built around running and sports events.',
-        body: 'The platform was designed around the needs of running and sports events, rather than as a general-purpose ticketing website.',
-      },
-      {
-        lead: 'Built for registration peaks and event-day operations.',
-        body: 'The technical foundation had to support concentrated registration traffic, reliable ticket allocation, payment processing, and the operational workflows organisers need before and during an event.',
-      },
-    ],
-    role: [
-      'I lead the platform architecture and technical direction, working closely with EC Pixels Asia on the product and event requirements. The Tiny Edges team is involved in the implementation, turning the agreed direction into the working platform.',
-      'This is a longer-term partnership with a share in the outcome.',
-    ],
-    currentState: 'Live with running events, with the platform continuing to evolve through real organiser and participant use.',
-    stack: ['astro', 'hono', 'cloudflare workers', 'postgresql'],
-  },
-  {
-    slug: 'beyond-insights',
-    name: 'Beyond Insights',
-    tease: 'Student-facing web and mobile products for an investment and trading educator.',
-    status: 'building',
-    statusLabel: 'in build',
-    relationship: 'fee-based engagement',
-    roleLabel: 'build partner',
-    decisionsLabel: 'technical choices',
-    gap: [
-      'Beyond Insights teaches thousands of students and already had a web student portal supporting their learning experience.',
-      'Their team brought Tiny Edges in to build their first mobile apps for iOS and Android. We are now also working on the next version of the web student portal.',
-      'The business and product direction are led by their team. They needed a build partner to turn those decisions into working software and advise on technical choices that affected delivery, maintainability, and future development.',
-    ],
-    system: [
-      'Student-facing products across mobile and web: the first iOS and Android apps already shipped, with the next version of the web student portal now in build.',
-    ],
-    decisions: [
-      {
-        lead: 'Use React Native for the first mobile apps.',
-        body: 'I recommended React Native so that the first iOS and Android apps could be developed through a shared codebase. This reduced duplicated implementation while still allowing platform-specific work where needed.',
-      },
-      {
-        lead: 'Use Next.js for the new student portal.',
-        body: 'I recommended Next.js because it is widely adopted, actively maintained, and supported by a mature ecosystem. That made it a practical foundation for a portal that would need to be maintained and extended over time.',
-      },
-    ],
-    role: [
-      'Build partner on a fee-based engagement. Their team leads the business and product decisions. I advise on the technical approach and architecture, and work alongside their internal team on delivery. The Tiny Edges team handles implementation across the first mobile apps and the new web student portal.',
-    ],
-    currentState: 'First iOS and Android apps shipped. New web student portal in build.',
-    stack: ['react native', 'nestjs', 'next.js'],
-  },
-];
+const cmsWork = await getCollection('work');
+const cmsOrder = new Map(cmsWork.map((entry) => [entry.id, entry.data.sortOrder]));
+
+// The live case studies, in CMS sort order. Closed ventures (Oryza) drop out
+// here and are carried by the local retrospective block below. Field names are
+// kept as the template expects them (roleLabel = short tag, role = the
+// paragraphs, relationship/decisionsLabel = the labels).
+const orderedStudies = cmsWork
+  .filter((entry) => entry.data.status !== 'closed')
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder)
+  .map((entry) => {
+    const d = entry.data;
+    return {
+      slug: entry.id,
+      name: d.name,
+      tease: d.tease,
+      status: d.status,
+      statusLabel: statusLabel[d.status],
+      relationship: d.relationship ?? '',
+      roleLabel: d.role ?? '',
+      decisionsLabel: d.decisionsLabel ?? undefined,
+      gap: d.gap,
+      system: d.system,
+      decisions: d.decisions,
+      role: d.roleDetail,
+      currentState: d.currentState ?? '',
+      stack: d.stack,
+    };
+  });
 
 // The Oryza retrospective keeps its own shape on purpose (no opportunity /
 // gap / system fields): a closed venture, not a case study.
@@ -165,10 +74,7 @@ const oryza = {
       'That a well-architected product would find its market. I built for the system I wanted to exist, not the customer who would pay for it.',
     ],
     // [ASSUMPTION] One or two real sentences on what Oryza actually was.
-    [
-      'what i built',
-      'My first attempt at a product company. The product worked, but the market had not asked for it.',
-    ],
+    ['what i built', 'My first attempt at a product company. The product worked, but the market had not asked for it.'],
     // [ASSUMPTION] The specific thing that didn't work: no willingness to
     // pay, wrong timing, no distribution.
     [
@@ -186,28 +92,17 @@ const oryza = {
   ],
 };
 
-// Keep the editorial case notes local, but take their order from the same CMS
-// sortOrder that drives the homepage. If the CMS is unavailable in dev, the
-// source order above remains the fallback.
-const cmsWork = await getCollection('work');
-const cmsOrder = new Map(cmsWork.map((entry) => [entry.id, entry.data.sortOrder]));
-const fallbackPosition = new Map(studies.map((study, i) => [study.slug, i]));
-const sortOrderOf = (slug: string) => cmsOrder.get(slug) ?? Number.POSITIVE_INFINITY;
-const orderedStudies = [...studies].sort((a, b) => {
-  const orderDifference = sortOrderOf(a.slug) - sortOrderOf(b.slug);
-  return orderDifference || (fallbackPosition.get(a.slug) ?? 0) - (fallbackPosition.get(b.slug) ?? 0);
-});
-
 // Index rows are a contents list, not a summary: number, name, status only.
 // Tease, relationship, and role live in the case notes below, so the index
-// never repeats them.
+// never repeats them. Oryza is appended as a local row (it is not a CMS case
+// study), positioned by the CMS `oryza-technologies` sortOrder when present.
 const indexRows = [
   ...orderedStudies.map((s) => ({
     href: `#${s.slug}`,
     name: s.name,
     status: s.status,
     statusLabel: s.statusLabel,
-    sortOrder: sortOrderOf(s.slug),
+    sortOrder: cmsOrder.get(s.slug) ?? Number.POSITIVE_INFINITY,
   })),
   {
     href: '#oryza',

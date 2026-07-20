@@ -40,6 +40,7 @@ async function loadCollection<T extends { slug: string }>(
 }
 
 const needItem = z.object({ label: z.string(), text: z.string() });
+const decisionItem = z.object({ lead: z.string(), body: z.string() });
 
 /** Selected work — section 03, CMS-driven. */
 const work = defineCollection({
@@ -67,6 +68,19 @@ const work = defineCollection({
     // Same reasoning: shipped with the mobile-frame CMS change; absent from
     // the live API until that deploys. Missing/null renders the browser frame.
     shotFrame: z.enum(['browser', 'mobile']).nullish(),
+    // Structured case-study content driving the /work page and the homepage
+    // cards (CMS migrations 0008 + 0009). Same rollout tolerance as above:
+    // .nullish() for scalars, .default([]) for the arrays, so the web builds
+    // against an API that hasn't shipped these yet (renders empty, not broken).
+    relationship: z.string().nullish(), // "relationship /" display line
+    decisionsLabel: z.string().nullish(), // overrides the "decisions along the way" label
+    outcome: z.string().nullish(), // homepage plate caption
+    involvement: z.string().nullish(), // homepage "how involved" line
+    currentState: z.string().nullish(), // "current state" line
+    gap: z.array(z.string()).default([]), // opportunity & the gap
+    system: z.array(z.string()).default([]), // the system
+    decisions: z.array(decisionItem).default([]), // decisions along the way
+    roleDetail: z.array(z.string()).default([]), // "my role", one entry per paragraph
   }),
 });
 
